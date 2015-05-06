@@ -101,9 +101,9 @@ class Vector_Lib_tests(unittest.TestCase):
         Ans = Vector(4.4*10**24, 2.42*10**24, 9.24*10**24)
         print round_sig(Ans.z-C.z, 2)
        
-        self.failUnless(C.x == Ans.x )
-        self.failUnless(round_sig(C.y,2)-round_sig(Ans.y, 2) == 0)
-        self.failUnless(round_sig(C.z,2)-round_sig(Ans.z, 2) == 0)
+        self.failUnless(round_sig(C.x,2) == round_sig(Ans.x, 2) )
+        self.failUnless(round_sig(C.y,2) == round_sig(Ans.y, 2))
+        self.failUnless(round_sig(C.z,2) == round_sig(Ans.z, 2))
 
 def main():
 	unittest.main()
