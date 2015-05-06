@@ -3,7 +3,7 @@ from libs import Vector
 
 
 
-class Local_files_tests(unittest.TestCase):
+class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):
         self.A = Vector(1,2,3)
         self.B = Vector(1,2,3)
@@ -63,7 +63,7 @@ class Local_files_tests(unittest.TestCase):
         BigB = Vector(1.1*10**24, 4.0*10**24, 6.1*10**13)
         Answer = Vector(2.4*10**24, 8.0*10**24, 1.24*10**14)
         C = BigA.add(BigB)
-        self.failUnless(C.y == Answer.y )
+        self.failUnless(C.y == Answer.y)
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.z == Answer.z)
 
