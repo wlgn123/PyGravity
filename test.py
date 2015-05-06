@@ -44,8 +44,8 @@ class Local_files_tests(unittest.TestCase):
         y = C.y
         z = C.z
         self.failUnless(x == 0 )
-        self.failUnless(y == 1 )
-        self.failUnless(z == 1 )
+        self.failUnless(y == 0 )
+        self.failUnless(z == 0 )
 
 
 def main():
