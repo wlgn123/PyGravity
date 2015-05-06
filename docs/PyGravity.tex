@@ -1,0 +1,38 @@
+\documentclass[15pt]{report}
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{amssymb}
+\graphicspath{ {images/} }
+\usepackage[backend=bibtex]{biblatex}
+
+\renewcommand*{\arraystretch}{1.5}
+
+\newcommand{\dx}[1]{ \frac{\partial}{\partial x^{#1} }}
+\newcommand{\dxx}[2]{ \frac{\partial x^{#1}}{\partial x^{#2} }}
+
+\title{PyGravity}
+
+\author{Russell Loewe}
+
+\date{7~May 2015}
+
+\begin{document}
+
+\maketitle
+
+% \setcounter{section}{-1}
+
+\indent
+This is the supporting documentation for
+\textit{PyGravity} 
+
+
+\section{Intro}
+\indent \paragraph{Purpose} This is a gravity simulator written in Python and using PyGame as a render. This project is starting at the basics of using vector calculus and Newtons law of Gravity to calculate the paths of particles with respect to the gravity exerted by neighbouring particles. One of many end goals with this simulator is to simulate asteroids colliding into more massive asteroids, eventually becoming planets.
+\indent \paragraph{Vectors}I am writing my own library for  the various mathematical operations that will be need to calculate the forces. The library is going to start off with the basic vector objects. I will then add functions on vector objects such as addition, subtraction, multiplication by a scalar, normalizing, finding orthogonal vectors, and etcetera. At this point and for the rest of the application I will use Numpy to handle the large or small numbers that are going to be needed in calculations.
+\indent \paragraph{Objects} I am also going to need to create a class object to encapsulate the particles. This class will contain the needed attributes of each particle such as the scalar mass, the vectors of position and velocity.The classes will also need to contain procedures for particle collisions. This will most likely not be need until later when I use this simulate to for colliding asteroids.
+\indent \paragraph{PyGame} Once I have a foundation of vector math built into my simulator I will then move on to using PyGame to plot the position of various particles and then render their movement. PyGame will be used to render the evolution of the dynamical system and also display various stats of the particles. I will also pause at this point to use PyGame to graph the gradient of gravity in the system and other fun stuff.
+
+\end{document}
