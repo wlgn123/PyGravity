@@ -13,6 +13,13 @@ class Vector(object):
                      A.y + B.y,
                      A.z + B.z)
         return new
+        
+    @staticmethod
+    def times_scalar(a, A):
+        new = Vector(A.x * a, 
+                     A.y * a,
+                     A.z * a)
+        return new
  
 
     

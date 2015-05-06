@@ -1,6 +1,9 @@
 import unittest
 from libs import Vector
+from math import log10, floor
 
+def round_sig(x, sig=2):
+   return round(x, sig-int(floor(log10(x)))-1)
 
 
 class Vector_Lib_tests(unittest.TestCase):
@@ -66,7 +69,41 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.z == Answer.z)
+        
+    def test_Vector_scalar_multiplication_int(self):
+        A = Vector(1,1,1)        
+        C = Vector.times_scalar(2, A)
+        Ans = Vector(2,2,2)
+        self.failUnless(C.x == Ans.x)
+        self.failUnless(C.y == Ans.y)
+        self.failUnless(C.z == Ans.z)
 
+    def test_Vector_scalar_multiplication_float(self):
+        A = Vector(1.1, 1.1, 1.1)
+        C = Vector.times_scalar(2.0, A)
+        Ans = Vector(2.2,2.2,2.2)
+        self.failUnless(C.x == Ans.x)
+        self.failUnless(C.y == Ans.y)
+        self.failUnless(C.z == Ans.z)
+        
+    def test_Vector_scalar_multiplication_neg(self):
+        A = Vector(1.1, 1.2, -1)
+        C = Vector.times_scalar(2.0, A)
+        Ans = Vector(2.2,2.4,-2.0)
+        self.failUnless(C.x == Ans.x)
+        self.failUnless(C.y == Ans.y)
+        self.failUnless(C.z == Ans.z)
+        
+    def test_Vector_scalar_multiple_big_numbers(self):
+        A = Vector(2.0*10**20, 1.1*10**20, 4.2*10**20)
+        a = 2.2*10**4
+        C = Vector.times_scalar(a, A)
+        Ans = Vector(4.4*10**24, 2.42*10**24, 9.24*10**24)
+        print round_sig(Ans.z-C.z, 2)
+       
+        self.failUnless(C.x == Ans.x )
+        self.failUnless(round_sig(C.y,2)-round_sig(Ans.y, 2) == 0)
+        self.failUnless(round_sig(C.z,2)-round_sig(Ans.z, 2) == 0)
 
 def main():
 	unittest.main()
