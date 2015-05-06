@@ -12,7 +12,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.Aneg = Vector(-1, -2, -3)
         
     def test_Vector_Addition_integer(self):
-        C = self.A.add(self.B)
+        C = Vector.add(self.A, self.B)
         x = C.x
         y = C.y
         z = C.z
@@ -21,7 +21,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(z == 6 )
         
     def test_Vector_Addition_real(self):
-        C = self.An.add(self.Bn)
+        C = Vector.add(self.An, self.Bn)
         x = C.x
         y = C.y
         z = C.z
@@ -30,7 +30,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(z == 6.6 )
         
     def test_Vector_Addition_mixed(self):
-        C = self.An.add(self.B)
+        C = Vector.add(self.An, self.B)
         x = C.x
         y = C.y
         z = C.z
@@ -39,7 +39,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(z == 6.3 )
 
     def test_Vector_Addition_negative(self):
-        C = self.Aneg.add(self.B)
+        C = Vector.add(self.Aneg, self.B)
         x = C.x
         y = C.y
         z = C.z
@@ -50,7 +50,7 @@ class Vector_Lib_tests(unittest.TestCase):
     def test_Vector_Addition_bignumber(self):
         BigA = Vector(1.3*10**12, 4.0*10**12, 6.3*10**13)
         BigB = Vector(1.1*10**12, 4.0*10**12, 6.1*10**13)
-        C = BigA.add(BigB)
+        C = Vector.add(BigA, BigB)
         x = C.x
         y = C.y
         z = C.z
@@ -62,7 +62,7 @@ class Vector_Lib_tests(unittest.TestCase):
         BigA = Vector(1.3*10**24, 4.0*10**24, 6.3*10**13)
         BigB = Vector(1.1*10**24, 4.0*10**24, 6.1*10**13)
         Answer = Vector(2.4*10**24, 8.0*10**24, 1.24*10**14)
-        C = BigA.add(BigB)
+        C = Vector.add(BigA, BigB)
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.z == Answer.z)

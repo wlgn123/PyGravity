@@ -7,10 +7,12 @@ class Vector(object):
         self.show = "(" + str(self.x) + ',' + str(self.y) + ',' + str(self.z) + ')'
        # print "particle created at (", x, ',', y, ',', z, ')'
     
-    def add(self, vector):
-        new = Vector(self.x + vector.x, 
-                     self.y + vector.y,
-                     self.z + vector.z)
-        
+    @staticmethod
+    def add(A, B ):
+        new = Vector(A.x + B.x, 
+                     A.y + B.y,
+                     A.z + B.z)
         return new
  
+
+    
