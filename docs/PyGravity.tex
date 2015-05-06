@@ -6,6 +6,7 @@
 \usepackage{amssymb}
 \graphicspath{ {images/} }
 \usepackage[backend=bibtex]{biblatex}
+
 \usepackage{listings}
 \usepackage{color}
 
@@ -14,7 +15,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-  language=Java,
+  language=Python,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
@@ -29,10 +30,15 @@
   breakatwhitespace=true,
   tabsize=3
 }
+
+
+
 \renewcommand*{\arraystretch}{1.5}
 
 \newcommand{\dx}[1]{ \frac{\partial}{\partial x^{#1} }}
 \newcommand{\dxx}[2]{ \frac{\partial x^{#1}}{\partial x^{#2} }}
+
+\bibliography{ref1}
 
 \title{PyGravity \\
 		\small http://github.com/russloewe/PyGravity}
@@ -107,4 +113,37 @@ C = Vector.add(BigA, BigB)
 C.x == Answer.x        ::True
 C.x == 2.4*10**24      ::False
 \end{lstlisting} 
+
+\paragraph{Scalar Multiplication} Next the Vector Class needs a method for multiplying vectors by a scalar. The multiplication method will be very similar to the addition method.
+
+\begin{lstlisting}
+@staticmethod
+def times_scalar(a, A):
+    new = Vector(A.x * a, 
+                 A.y * a,
+                 A.z * a)
+    return new
+\end{lstlisting}
+This method returns a new vector, thus usage is as following:
+\begin{lstlisting}
+A = Vector(1.1, 2.2, 4.4)
+a = 2.0
+C = Vector.times_scalar(a, A)
+C.show
+'(2.2, 4.4, 8.8)'
+\end{lstlisting}
+For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be need so only significant figures would be compared. Here is a quick rounding to signifigant digits function taken from \textit{StackOverflow}\cite{indgar}.
+\begin{lstlisting}
+from math import log10, floor
+
+def round_sig(x, sig=2):
+   return round(x, sig-int(floor(log10(x)))-1)
+\end{lstlisting}
+Then the tests look like this:
+\begin{lstlisting}
+self.failUnless(C.x == Ans.x )            
+self.failUnless(round_sig(C.y, 2) == round_sig(Ans.y, 2))
+\end{lstlisting}
+The first line above won't hold true for large numbers with more than two significant digits. The second line will hold true since it cuts off the computer error, but preservers the significant digits.
+\printbibliography
 \end{document}
