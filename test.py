@@ -9,6 +9,7 @@ class Local_files_tests(unittest.TestCase):
         self.B = Vector(1,2,3)
         self.An = Vector(1.1, 2.2, 3.3)
         self.Bn = Vector(1.1, 2.2, 3.3)
+        self.Aneg = Vector(-1, -2, -3)
         
     def test_Vector_Addition_integer(self):
         C = self.A.add(self.B)
@@ -37,6 +38,14 @@ class Local_files_tests(unittest.TestCase):
         self.failUnless(y == 4.2 )
         self.failUnless(z == 6.3 )
 
+    def test_Vector_Addition_negative(self):
+        C = self.Aneg.add(self.B)
+        x = C.x
+        y = C.y
+        z = C.z
+        self.failUnless(x == 0 )
+        self.failUnless(y == 0 )
+        self.failUnless(z == 1 )
 
 
 def main():
