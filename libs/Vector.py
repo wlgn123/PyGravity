@@ -38,6 +38,8 @@ class Vector(object):
         mag = Vector.magnitude(A)
         new = Vector.times_scalar(1.0/mag, A)
         return new
+        
+    
  
     
 
