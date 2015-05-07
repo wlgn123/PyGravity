@@ -6,5 +6,5 @@ class Particle(object):
         self.m = m        #particles mass
         
     def move(self):
-        new_pos = Vector.add(P, V)
+        new_pos = Vector.add(self.P, self.V)
         self.P = new_pos
