@@ -1,5 +1,5 @@
 import unittest
-from libs import Vector
+from libs import Vector, Particle
 from math import log10, floor
 
 def round_sig(x, sig=2):
@@ -129,6 +129,26 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.y, 3) == .577)
         self.failUnless(round_sig(C.z, 3) == .577)
 
+class Particle_Class_Tests(unittest.TestCase):
+    def setUp(self):
+       pass
+       
+    def test_particle_creation(self):
+        a = Particle(Vector(1,2,3), Vector(1,1,1), 55.5)
+        self.failUnless(hasattr(a, 'P'))
+        self.failUnless(hasattr(a, 'V'))
+        self.failUnless(hasattr(a, 'm'))
+        
+    def test_particle_motion(self):
+        a = Particle(Vector(1,2,3), Vector(1,1,1), 55.5)
+        a.move()
+        V = Vector(1,1,1)
+        N = a.P
+        P = Vector(2,3,4)
+        self.failUnless(P.x == a.P.x)
+        self.failUnless(P.y == a.P.y)
+        self.failUnless(P.z == a.P.z)
+        
 def main():
 	unittest.main()
 
