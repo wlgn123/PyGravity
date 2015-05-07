@@ -30,7 +30,10 @@
   breakatwhitespace=true,
   tabsize=3
 }
-
+\lstnewenvironment{code}%
+  {\noindent\minipage{\linewidth}
+   \lstset{}}
+  {\endminipage}
 
 
 \renewcommand*{\arraystretch}{1.5}
@@ -64,11 +67,15 @@ This is the supporting documentation for
 \indent \paragraph{Objects} I am also going to need to create a class object to encapsulate the particles. This class will contain the needed attributes of each particle such as the scalar mass, the vectors of position and velocity.The classes will also need to contain procedures for particle collisions. This will most likely not be need until later when I use this simulate to for colliding asteroids.
 \indent \paragraph{PyGame} Once I have a foundation of vector math built into my simulator I will then move on to using PyGame to plot the position of various particles and then render their movement. PyGame will be used to render the evolution of the dynamical system and also display various stats of the particles. I will also pause at this point to use PyGame to graph the gradient of gravity in the system and other fun stuff.
 
-\newpage
+%\section{Physics and Math Refresher}
+
+
+\chapter{Basic Math and Physics}
+
 \section{The Vector Class}
 \paragraph{Base} First thing is to have a code representation of a vector. A vector in 3-space needs to have three components. The general vector class is structured as follows:
 
-\begin{lstlisting}
+\begin{code}
 
 class Vector(object):
     def __init__(self, x, y, z):
@@ -78,33 +85,40 @@ class Vector(object):
         self.show = "(" + str(self.x) + ',' + str(self.y) + ',' + str(self.z) + ')'
            
 
-\end{lstlisting}
+\end{code}
+
 The vector is initialized with the three components. The \textit{\_\_init\_\_} method also contains the attribute \textit{show}, which is an easy way to view the vector in string format for interactive sessions. Thus a new vector, $\vec{A}$, is created and displayed by
-\begin{lstlisting}
+
+\begin{code}
 A = Vector(1.1, 1.3, 1.4)
 A.show
 '(1.1, 1.3, 1.4)'
-\end{lstlisting}
+\end{code}
 
 \paragraph{Addition} Next method to add to the base vector class is the function for adding two vectors. Vector addition is going to be a static class method of the Vector Class which takes two vectors and returns a new vector.
-\begin{lstlisting}
+
+\begin{code}
     @staticmethod
     def add(A, B):
         new = Vector(A.x + B.x, 
                      A.y + B.y,
                      A.z + B.z)
         return new
-\end{lstlisting}
+\end{code}
+
 Thus to find $\vec{C} =\vec{A} + \vec{B}$, we would use this
-\begin{lstlisting}
+
+\begin{code}
 A = Vector(1,1,1)
 B = Vector(2,1,3)
 C = Vector.add(A,B)
 C.show
 '(3,2,4)'
-\end{lstlisting} 
+\end{code} 
+
 The test suite ensures that this addition holds true for positive and negative integers, and real numbers up to $10^{24}$. It is important to note that boolean operations are only guaranteed to hold true when comparing two vector components, not necessarily a vector component and an isolated number. Example below.
-\begin{lstlisting}
+
+\begin{code}
 BigA = Vector(1.3*10**24, 0, 0)
 BigB = Vector(1.1*10**24, 0, 0)
 Answer = Vector(2.4*10**24, 0, 0)
@@ -112,67 +126,94 @@ C = Vector.add(BigA, BigB)
 
 C.x == Answer.x        ::True
 C.x == 2.4*10**24      ::False
-\end{lstlisting} 
+\end{code} 
 
 \paragraph{Subtraction}Subtraction is coded exactly like addition except that each component of $\vec{A}$ is subtracted by each cmponent of $\vec{B}$. The first function argument is the minuend and the second argument is the subtrahend. Example:
-\begin{lstlisting}
+
+\begin{code}
 A = Vector(1,1,1)
 B = Vector(2,2,2)
 Vector.sub(A, B) = (-1, -1, -1)
 Vector.sub(B, A) = (1, 1, 1)
-\end{lstlisting}
+\end{code}
 
 \paragraph{Scalar Multiplication} Next the Vector Class needs a method for multiplying vectors by a scalar. The multiplication method will be very similar to the addition method.
 
-\begin{lstlisting}
+\begin{code}
 @staticmethod
 def times_scalar(a, A):
     new = Vector(A.x * a, 
                  A.y * a,
                  A.z * a)
     return new
-\end{lstlisting}
+\end{code}
+
 This method returns a new vector, thus usage is as following:
-\begin{lstlisting}
+
+\begin{code}
 A = Vector(1.1, 2.2, 4.4)
 a = 2.0
 C = Vector.times_scalar(a, A)
 C.show
 '(2.2, 4.4, 8.8)'
-\end{lstlisting}
+\end{code}
+
 For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be needed so only significant figures would be compared. Here is a quick rounding to significant digits function taken from \textit{StackOverflow}\cite{indgar}.
-\newpage
-\begin{lstlisting}
+
+\begin{code}
 from math import log10, floor
 
 def round_sig(x, sig=2):
    return round(x, sig-int(floor(log10(x)))-1)
-\end{lstlisting}
+\end{code}
+
 Then the tests look like this:
-\begin{lstlisting}
+
+\begin{code}
 self.failUnless(C.x == Ans.x )            
 self.failUnless(round_sig(C.y, 2) == round_sig(Ans.y, 2))
-\end{lstlisting}
+\end{code}
+
 The first line above won't hold true for large numbers with more than two significant digits. The second line will hold true since it cuts off the computer error, but preservers the significant digits.
 \paragraph{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of a 3-space vector is 
 \begin{equation}
 \left| \vec{V} \right|  = \sqrt{dx^2 + dy^2 + dz^2}
 \end{equation}
 The code is still pretty straight forward:
-\begin{lstlisting}
+
+\begin{code}
 @staticmethod
 def magnitude(A):
    mag = math.sqrt(A.x**2 + A.y**2 + A.z**2)
    return mag
-\end{lstlisting}
+\end{code}
+
 And usage is straight forward too
-\begin{lstlisting}
+
+\begin{code}
 A = Vector(5, 8, 10)
 B = Vector(3, 1, 2)
 Vector.magnitude(A)                 :: = 13.7
 Vector.magnitude(B)                 :: = 3.7
 Vector.magnitude(Vector.sub(A,B))  :: = 10.8
-\end{lstlisting}
+\end{code}
+
 The last line gives us the distance between $\vec{A}$ and $\vec{B}$.
+
+\section{The Particle Class}
+The particle class is the object that will encapsulate the velocity, positional vectors and mass scalar of various point particles. To come will be an attribute for the radius of the particle for collisions and growth but for now we will be working with point particles.
+
+\paragraph{Base} The base class for the particle needs to include a information for where the particle is, how fast it is moving and how heavy it is. Therefore the Particle Class needs three attributes, two vectors and one scalar.
+
+\begin{code}
+from Vector import Vector
+
+class Particle(object):
+    def __init__(self, P, V, m):
+        self.P = P        #particles position vector
+        self.V = V        #Particles velocity vector
+        self.m = m        #particles mass
+\end{code}
+
 \printbibliography
 \end{document}
