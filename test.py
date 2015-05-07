@@ -104,6 +104,30 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.x,2) == round_sig(Ans.x, 2) )
         self.failUnless(round_sig(C.y,2) == round_sig(Ans.y, 2))
         self.failUnless(round_sig(C.z,2) == round_sig(Ans.z, 2))
+        
+    def test_Vector_sub(self):
+        A = Vector(1.1, 2.2, 3.3)
+        B = Vector(1.1, 4.4, 1.1)
+        C = Vector.sub(A, B)   
+        Ans = Vector(0, -2.2, 2.2)
+        self.failUnless(C.x == Ans.x)
+        self.failUnless(C.y == Ans.y)
+        self.failUnless(round_sig(C.z,2) == round_sig(Ans.z, 2))
+        
+    def test_vector_magnitude(self):
+        A = Vector(3,4,0)
+        self.failUnless(round_sig(Vector.magnitude(A), 2) == 5)
+        
+        A = Vector(3.1*10**12,4.1*10**12,5.2*10**12)
+        self.failUnless(round_sig(Vector.magnitude(A), 2) == 7.3*10**12)
+        
+    def test_Vector_magnitude(self):
+        A = Vector(10,10,10)
+        C = Vector.unit(A)
+        self.failUnless(round_sig(Vector.magnitude(C), 2) == 1)
+        self.failUnless(round_sig(C.x, 3) == .577)
+        self.failUnless(round_sig(C.y, 3) == .577)
+        self.failUnless(round_sig(C.z, 3) == .577)
 
 def main():
 	unittest.main()

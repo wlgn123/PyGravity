@@ -114,6 +114,14 @@ C.x == Answer.x        ::True
 C.x == 2.4*10**24      ::False
 \end{lstlisting} 
 
+\paragraph{Subtraction}Subtraction is coded exactly like addition except that each component of $\vec{A}$ is subtracted by each cmponent of $\vec{B}$. The first function argument is the minuend and the second argument is the subtrahend. Example:
+\begin{lstlisting}
+A = Vector(1,1,1)
+B = Vector(2,2,2)
+Vector.sub(A, B) = (-1, -1, -1)
+Vector.sub(B, A) = (1, 1, 1)
+\end{lstlisting}
+
 \paragraph{Scalar Multiplication} Next the Vector Class needs a method for multiplying vectors by a scalar. The multiplication method will be very similar to the addition method.
 
 \begin{lstlisting}
@@ -132,7 +140,8 @@ C = Vector.times_scalar(a, A)
 C.show
 '(2.2, 4.4, 8.8)'
 \end{lstlisting}
-For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be need so only significant figures would be compared. Here is a quick rounding to signifigant digits function taken from \textit{StackOverflow}\cite{indgar}.
+For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be needed so only significant figures would be compared. Here is a quick rounding to significant digits function taken from \textit{StackOverflow}\cite{indgar}.
+\newpage
 \begin{lstlisting}
 from math import log10, floor
 
@@ -145,5 +154,25 @@ self.failUnless(C.x == Ans.x )
 self.failUnless(round_sig(C.y, 2) == round_sig(Ans.y, 2))
 \end{lstlisting}
 The first line above won't hold true for large numbers with more than two significant digits. The second line will hold true since it cuts off the computer error, but preservers the significant digits.
+\paragraph{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of a 3-space vector is 
+\begin{equation}
+\left| \vec{V} \right|  = \sqrt{dx^2 + dy^2 + dz^2}
+\end{equation}
+The code is still pretty straight forward:
+\begin{lstlisting}
+@staticmethod
+def magnitude(A):
+   mag = math.sqrt(A.x**2 + A.y**2 + A.z**2)
+   return mag
+\end{lstlisting}
+And usage is straight forward too
+\begin{lstlisting}
+A = Vector(5, 8, 10)
+B = Vector(3, 1, 2)
+Vector.magnitude(A)                 :: = 13.7
+Vector.magnitude(B)                 :: = 3.7
+Vector.magnitude(Vector.sub(A,B))  :: = 10.8
+\end{lstlisting}
+The last line gives us the distance between $\vec{A}$ and $\vec{B}$.
 \printbibliography
 \end{document}
