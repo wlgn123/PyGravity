@@ -143,11 +143,20 @@ class Particle_Class_Tests(unittest.TestCase):
         a = Particle(Vector(1,2,3), Vector(1,1,1), 55.5)
         a.move()
         V = Vector(1,1,1)
-        N = a.P
         P = Vector(2,3,4)
         self.failUnless(P.x == a.P.x)
         self.failUnless(P.y == a.P.y)
         self.failUnless(P.z == a.P.z)
+        
+    def test_particle_motion(self):
+        a = Particle(Vector(1.1,2.1,3.0), Vector(1.1,2.1,3.0), 55.5)
+        Accel = Vector(2,2,-4)
+        Ans = Vector(3.1, 4.1, -1.0)
+        a.accelerate(Accel)
+        self.failUnless(Ans.x == a.V.x)
+        self.failUnless(Ans.y == a.V.y)
+        self.failUnless(Ans.z == a.V.z)
+        
         
 def main():
 	unittest.main()

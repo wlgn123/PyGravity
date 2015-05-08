@@ -8,3 +8,8 @@ class Particle(object):
     def move(self):
         new_pos = Vector.add(self.P, self.V)
         self.P = new_pos
+        
+    def accelerate(self, A):
+        new = Vector.add(self.V, A)
+        self.V = new
+        
