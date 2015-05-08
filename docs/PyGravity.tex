@@ -65,6 +65,7 @@ This is the supporting documentation for
 \indent \paragraph{Purpose} This is a gravity simulator written in Python and using PyGame as a render. This project is starting at the basics of using vector calculus and Newtons law of Gravity to calculate the paths of particles with respect to the gravity exerted by neighbouring particles. One of many end goals with this simulator is to simulate asteroids colliding into more massive asteroids, eventually becoming planets.
 \indent \paragraph{Vectors}I am writing my own library for  the various mathematical operations that will be need to calculate the forces. The library is going to start off with the basic vector objects. I will then add functions on vector objects such as addition, subtraction, multiplication by a scalar, normalizing, finding orthogonal vectors, and etcetera. At this point and for the rest of the application I will use Numpy to handle the large or small numbers that are going to be needed in calculations.
 \indent \paragraph{Objects} I am also going to need to create a class object to encapsulate the particles. This class will contain the needed attributes of each particle such as the scalar mass, the vectors of position and velocity.The classes will also need to contain procedures for particle collisions. This will most likely not be need until later when I use this simulate to for colliding asteroids.
+\indent \paragraph{Physics} After the math foundation and base object classes are established then I will need to develop a physics library to calculate physics specfic formulaes such as the force of gravity, acceleration and the net force of gravity for more than two objects.
 \indent \paragraph{PyGame} Once I have a foundation of vector math built into my simulator I will then move on to using PyGame to plot the position of various particles and then render their movement. PyGame will be used to render the evolution of the dynamical system and also display various stats of the particles. I will also pause at this point to use PyGame to graph the gradient of gravity in the system and other fun stuff.
 
 %\section{Physics and Math Refresher}
@@ -72,7 +73,7 @@ This is the supporting documentation for
 
 \chapter{Basic Math and Physics}
 
-\section{The Vector Class}
+\section{The Vector Class} \label{vectors}
 \paragraph{Base} First thing is to have a code representation of a vector. A vector in 3-space needs to have three components. The general vector class is structured as follows:
 
 \begin{code}
@@ -97,7 +98,7 @@ A.show
 
 \paragraph{Addition} Next method to add to the base vector class is the function for adding two vectors. Vector addition is going to be a static class method of the Vector Class which takes two vectors and returns a new vector.
 
-\begin{code}
+\begin{code} 
     @staticmethod
     def add(A, B):
         new = Vector(A.x + B.x, 
@@ -175,7 +176,7 @@ self.failUnless(round_sig(C.y, 2) == round_sig(Ans.y, 2))
 \end{code}
 
 The first line above won't hold true for large numbers with more than two significant digits. The second line will hold true since it cuts off the computer error, but preservers the significant digits.
-\paragraph{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of a 3-space vector is 
+\paragraph{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of an \textit{Euclidean} 3-space vector is 
 \begin{equation}
 \left| \vec{V} \right|  = \sqrt{dx^2 + dy^2 + dz^2}
 \end{equation}
@@ -193,9 +194,9 @@ And usage is straight forward too
 \begin{code}
 A = Vector(5, 8, 10)
 B = Vector(3, 1, 2)
-Vector.magnitude(A)                 :: = 13.7
-Vector.magnitude(B)                 :: = 3.7
-Vector.magnitude(Vector.sub(A,B))  :: = 10.8
+Vector.magnitude(A)                     # = 13.7
+Vector.magnitude(B)                     # = 3.7
+Vector.magnitude(Vector.sub(A,B))       # = 10.8
 \end{code}
 
 The last line gives us the distance between $\vec{A}$ and $\vec{B}$.
@@ -213,6 +214,55 @@ class Particle(object):
         self.P = P        #particles position vector
         self.V = V        #Particles velocity vector
         self.m = m        #particles mass
+\end{code}
+
+\paragraph{Movement} The particle needs to be moved. For each tick of time, $\Delta t$, the particle is displaced by its velocity vector. Thus at time $t$, the particle $a$ has a positional vector $\vec{P}_{a}(t)$ and velocity vector $\vec{V}_{a}(t)$. Thus if the position and velocity are know at $t=n$, then the position at $t = n+1$ can be given by
+
+\begin{equation}
+ \vec{P}_a (t_{n+1}) = \vec{P}_{a}(t_n) + \vec{V}_a (t_n)
+\end{equation}
+
+Utilizing the previous vector addition function the above equation is easily given by the method function:
+
+\begin{code}
+def move(self):
+    new_pos = Vector.add(self.P, self.V)
+    self.P = new_pos
+\end{code}
+
+The usage is really simple. When it comes time to move the particle we simply call move(): 
+
+\begin{code}
+a = Particle(Vector(1,1,1), Vector(1,2,-3)
+a.move()
+print a.P.show		#display pos vector
+'(2, 3, -2)'   
+\end{code}
+
+The new position is then calculated using the current position and velocity of the vector.
+
+\paragraph{Acceleration} The particle is going to be moving in gravitational fields and therefore must be able to be accelerated. At some particular time $t$ there will be a gravitational force acting on the particle. This force will be a force vector $\vec{F}$. The acceleration will then be found by $\vec{a} = \frac{\vec{F}}{m}$, where $m$ is the mass of the particle in question. The acceleration will not need to be saved as an attribute of the particle because it is calculated for each $t_n$ and does not depend on the acceleration at $t_{n-1}$. What does need to happen is at each time interval, after the acceleration is calculated, the acceleration vector will be added to the particle's velocity vector. Therefore the velocity of particle $A$ at $t = {n + 1}$ is given by 
+\begin{equation}
+\vec{V}_a (t_{n+1}) = \vec{V}_a (t_n) + \vec{A}_a (t_n)
+\end{equation}
+
+The particle's method function to apply acceleration is given by
+
+\begin{code}
+def accelerate(self, A):
+    new = Vector.add(self.V, A)
+    self.V = new
+\end{code}
+
+Usage first requires that the acceleration acting on the particle is first calculated. This will come in the next chapter when the physics calculations are formed. For now I will use explicitly define the acceleration vector.
+
+\begin{code}
+Vol_vec = Vector(1, 1, 1)
+Acc_vec = Vector(2, 2, -1)
+p = Particle(Pos_Vec, Vol_vec, mass)
+p.accelerate(Acc_vec)
+print p.V.show		#display vol vector
+'(3, 3, 0)'
 \end{code}
 
 \printbibliography
