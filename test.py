@@ -157,6 +157,21 @@ class Particle_Class_Tests(unittest.TestCase):
         self.failUnless(Ans.y == a.V.y)
         self.failUnless(Ans.z == a.V.z)
         
+    def test_particle_acceleration(self):
+        a = Particle(Vector(1, 1, 1), Vector(1,1,1), 44)
+        Acc = Vector(3, 3, -1)
+        V_ans = Vector(4, 4, 0)
+        P_ans = Vector(5, 5, 1)
+        a.accelerate(Acc)
+        self.failUnless(V_ans.x == a.V.x)
+        self.failUnless(V_ans.y == a.V.y)
+        self.failUnless(V_ans.z == a.V.z)
+        a.move()
+        self.failUnless(P_ans.x == a.P.x)
+        self.failUnless(P_ans.y == a.P.y)
+        self.failUnless(P_ans.z == a.P.z)
+        
+        
         
 def main():
 	unittest.main()
