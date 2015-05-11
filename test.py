@@ -8,7 +8,7 @@ class Round_test(unittest.TestCase):
         
     def test_rounding_domain(self):
         a = 0
-        self.failUnless(round_sig(a, 1) == 0)
+        self.failUnless(round_sig(a, 1) == 
 
 class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):

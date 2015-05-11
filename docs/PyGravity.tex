@@ -60,6 +60,7 @@
 This is the supporting documentation for
 \textit{PyGravity} 
 
+%\tableofcontents
 
 \section{Intro}
 \indent \paragraph{Purpose} This is a gravity simulator written in Python and using PyGame as a render. This project is starting at the basics of using vector calculus and Newtons law of Gravity to calculate the paths of particles with respect to the gravity exerted by neighbouring particles. One of many end goals with this simulator is to simulate asteroids colliding into more massive asteroids, eventually becoming planets.
@@ -263,6 +264,21 @@ p = Particle(Pos_Vec, Vol_vec, mass)
 p.accelerate(Acc_vec)
 print p.V.show		#display vol vector
 '(3, 3, 0)'
+\end{code}
+
+\section{Physics}
+This section of code is going to contain the Physics class. This class will have a list attribute for keeping track of all the particles and class methods for calculating the force of gravity in the system. The Physics class will depend on the Vector and Particle classes but will be separated for easier editing down the road.
+\paragraph{Base} The base class takes no arguments. It has a list as an attribute that holds the various particles in the system. Right away I'm going to add the method for adding particles to the attribute list. The implementation also depends on the Particle class.
+
+\begin{code}
+from Vector import Vector
+from Particle import Particle
+class Physics(object):
+    def __init__(self):
+        self.objects = []
+        
+    def add_obj(self, obj):
+        self.objects.append(obj)
 \end{code}
 
 \printbibliography
