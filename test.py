@@ -1,5 +1,5 @@
 import unittest
-from libs import Vector, Particle
+from libs import Vector, Particle, Physics
 from math import log10, floor
 
 def round_sig(x, sig=2):
@@ -171,7 +171,22 @@ class Particle_Class_Tests(unittest.TestCase):
         self.failUnless(P_ans.y == a.P.y)
         self.failUnless(P_ans.z == a.P.z)
         
-        
+class Particle_Class_Tests(unittest.TestCase):
+    def setUp(self):
+        self.part1 = Particle(Vector(1,1,1), Vector(1,1,1), 5)
+        self.part2 = Particle(Vector(2*10**12,1*10**12,3*10**12), Vector(2.3, 1.2, 4.2), 5*10**6)
+       
+       
+    def test_physics_particle_add(self):
+        base = Physics()
+        base.add_obj(self.part1)
+        base.add_obj(self.part2)
+        self.failUnless(self.part1 == base.objects[0])
+        self.failIf(self.part1 == base.objects[1])
+        self.failUnless(self.part2 == base.objects[1])
+        self.failIf(self.part2 == base.objects[0])
+    
+    
         
 def main():
 	unittest.main()
