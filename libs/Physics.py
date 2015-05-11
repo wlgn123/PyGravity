@@ -1,7 +1,11 @@
-
+from Vector import Vector
+from Particle import Particle
 class Physics(object):
     def __init__(self):
-        pass
+        self.objects = []
+        
+    def add_obj(self, obj):
+        self.objects.append(obj)
     
     @staticmethod
     def Fg(A, B):
