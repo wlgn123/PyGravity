@@ -1,39 +1,45 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {0.1}Intro}{2}
+\contentsline {section}{\numberline {0.1}Intro}{3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Purpose}{2}
+\contentsline {paragraph}{Purpose}{3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Vectors}{2}
+\contentsline {paragraph}{Vectors}{3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Objects}{2}
+\contentsline {paragraph}{Objects}{3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Physics}{2}
+\contentsline {paragraph}{Physics}{3}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{PyGame}{2}
+\contentsline {paragraph}{PyGame}{3}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}Basic Math and Physics}{4}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.1}The Vector Class}{4}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Base}{4}
+\contentsline {subsection}{\numberline {1.1.1}Vector Base}{4}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Addition}{4}
+\contentsline {subsection}{\numberline {1.1.2}Addition}{4}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Subtraction}{5}
+\contentsline {subsection}{\numberline {1.1.3}Subtraction}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Scalar Multiplication}{5}
+\contentsline {subsection}{\numberline {1.1.4}Scalar Multiplication}{5}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Magnitude}{6}
+\contentsline {subsection}{\numberline {1.1.5}Magnitude}{6}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.2}The Particle Class}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Base}{7}
+\contentsline {subsection}{\numberline {1.2.1}Particle Base}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Movement}{7}
+\contentsline {subsection}{\numberline {1.2.2}Movement}{7}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Acceleration}{8}
+\contentsline {subsection}{\numberline {1.2.3}Acceleration}{8}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.3}Physics}{8}
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Base}{8}
+\contentsline {subsection}{\numberline {1.3.1}Physics Base}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.3.2}Force of Gravity}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{}{9}
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{}{10}

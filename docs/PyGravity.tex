@@ -42,7 +42,7 @@
 \newcommand{\dxx}[2]{ \frac{\partial x^{#1}}{\partial x^{#2} }}
 
 \bibliography{ref1}
-
+\setcounter{tocdepth}{3}
 \title{PyGravity \\
 		\small http://github.com/russloewe/PyGravity}
 
@@ -54,13 +54,16 @@
 
 \maketitle
 
-% \setcounter{section}{-1}
-
 \indent
 This is the supporting documentation for
 \textit{PyGravity} 
 
-%\tableofcontents
+\tableofcontents
+% \setcounter{section}{-1}
+
+\newpage
+
+
 
 \section{Intro}
 \indent \paragraph{Purpose} This is a gravity simulator written in Python and using PyGame as a render. This project is starting at the basics of using vector calculus and Newtons law of Gravity to calculate the paths of particles with respect to the gravity exerted by neighbouring particles. One of many end goals with this simulator is to simulate asteroids colliding into more massive asteroids, eventually becoming planets.
@@ -75,7 +78,7 @@ This is the supporting documentation for
 \chapter{Basic Math and Physics}
 
 \section{The Vector Class} \label{vectors}
-\paragraph{Base} First thing is to have a code representation of a vector. A vector in 3-space needs to have three components. The general vector class is structured as follows:
+\subsection{Vector Base} First thing is to have a code representation of a vector. A vector in 3-space needs to have three components. The general vector class is structured as follows:
 
 \begin{code}
 
@@ -97,7 +100,7 @@ A.show
 '(1.1, 1.3, 1.4)'
 \end{code}
 
-\paragraph{Addition} Next method to add to the base vector class is the function for adding two vectors. Vector addition is going to be a static class method of the Vector Class which takes two vectors and returns a new vector.
+\subsection{Addition} Next method to add to the base vector class is the function for adding two vectors. Vector addition is going to be a static class method of the Vector Class which takes two vectors and returns a new vector.
 
 \begin{code} 
     @staticmethod
@@ -130,7 +133,7 @@ C.x == Answer.x        ::True
 C.x == 2.4*10**24      ::False
 \end{code} 
 
-\paragraph{Subtraction}Subtraction is coded exactly like addition except that each component of $\vec{A}$ is subtracted by each cmponent of $\vec{B}$. The first function argument is the minuend and the second argument is the subtrahend. Example:
+\subsection{Subtraction}Subtraction is coded exactly like addition except that each component of $\vec{A}$ is subtracted by each cmponent of $\vec{B}$. The first function argument is the minuend and the second argument is the subtrahend. Example:
 
 \begin{code}
 A = Vector(1,1,1)
@@ -139,7 +142,7 @@ Vector.sub(A, B) = (-1, -1, -1)
 Vector.sub(B, A) = (1, 1, 1)
 \end{code}
 
-\paragraph{Scalar Multiplication} Next the Vector Class needs a method for multiplying vectors by a scalar. The multiplication method will be very similar to the addition method.
+\subsection{Scalar Multiplication} Next the Vector Class needs a method for multiplying vectors by a scalar. The multiplication method will be very similar to the addition method.
 
 \begin{code}
 @staticmethod
@@ -177,7 +180,7 @@ self.failUnless(round_sig(C.y, 2) == round_sig(Ans.y, 2))
 \end{code}
 
 The first line above won't hold true for large numbers with more than two significant digits. The second line will hold true since it cuts off the computer error, but preservers the significant digits.
-\paragraph{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of an \textit{Euclidean} 3-space vector is 
+\subsection{Magnitude} The next function needed is finding the magnitude of a vector. The equation for the magnitude of an \textit{Euclidean} 3-space vector is 
 \begin{equation}
 \left| \vec{V} \right|  = \sqrt{dx^2 + dy^2 + dz^2}
 \end{equation}
@@ -205,7 +208,7 @@ The last line gives us the distance between $\vec{A}$ and $\vec{B}$.
 \section{The Particle Class}
 The particle class is the object that will encapsulate the velocity, positional vectors and mass scalar of various point particles. To come will be an attribute for the radius of the particle for collisions and growth but for now we will be working with point particles.
 
-\paragraph{Base} The base class for the particle needs to include a information for where the particle is, how fast it is moving and how heavy it is. Therefore the Particle Class needs three attributes, two vectors and one scalar.
+\subsection{Particle Base} The base class for the particle needs to include a information for where the particle is, how fast it is moving and how heavy it is. Therefore the Particle Class needs three attributes, two vectors and one scalar.
 
 \begin{code}
 from Vector import Vector
@@ -217,7 +220,7 @@ class Particle(object):
         self.m = m        #particles mass
 \end{code}
 
-\paragraph{Movement} The particle needs to be moved. For each tick of time, $\Delta t$, the particle is displaced by its velocity vector. Thus at time $t$, the particle $a$ has a positional vector $\vec{P}_{a}(t)$ and velocity vector $\vec{V}_{a}(t)$. Thus if the position and velocity are know at $t=n$, then the position at $t = n+1$ can be given by
+\subsection{Movement} The particle needs to be moved. For each tick of time, $\Delta t$, the particle is displaced by its velocity vector. Thus at time $t$, the particle $a$ has a positional vector $\vec{P}_{a}(t)$ and velocity vector $\vec{V}_{a}(t)$. Thus if the position and velocity are know at $t=n$, then the position at $t = n+1$ can be given by
 
 \begin{equation}
  \vec{P}_a (t_{n+1}) = \vec{P}_{a}(t_n) + \vec{V}_a (t_n)
@@ -242,7 +245,7 @@ print a.P.show		#display pos vector
 
 The new position is then calculated using the current position and velocity of the vector.
 
-\paragraph{Acceleration} The particle is going to be moving in gravitational fields and therefore must be able to be accelerated. At some particular time $t$ there will be a gravitational force acting on the particle. This force will be a force vector $\vec{F}$. The acceleration will then be found by $\vec{a} = \frac{\vec{F}}{m}$, where $m$ is the mass of the particle in question. The acceleration will not need to be saved as an attribute of the particle because it is calculated for each $t_n$ and does not depend on the acceleration at $t_{n-1}$. What does need to happen is at each time interval, after the acceleration is calculated, the acceleration vector will be added to the particle's velocity vector. Therefore the velocity of particle $A$ at $t = {n + 1}$ is given by 
+\subsection{Acceleration} The particle is going to be moving in gravitational fields and therefore must be able to be accelerated. At some particular time $t$ there will be a gravitational force acting on the particle. This force will be a force vector $\vec{F}$. The acceleration will then be found by $\vec{a} = \frac{\vec{F}}{m}$, where $m$ is the mass of the particle in question. The acceleration will not need to be saved as an attribute of the particle because it is calculated for each $t_n$ and does not depend on the acceleration at $t_{n-1}$. What does need to happen is at each time interval, after the acceleration is calculated, the acceleration vector will be added to the particle's velocity vector. Therefore the velocity of particle $A$ at $t = {n + 1}$ is given by 
 \begin{equation}
 \vec{V}_a (t_{n+1}) = \vec{V}_a (t_n) + \vec{A}_a (t_n)
 \end{equation}
@@ -268,7 +271,7 @@ print p.V.show		#display vol vector
 
 \section{Physics}
 This section of code is going to contain the Physics class. This class will have a list attribute for keeping track of all the particles and class methods for calculating the force of gravity in the system. The Physics class will depend on the Vector and Particle classes but will be separated for easier editing down the road.
-\paragraph{Base} The base class takes no arguments. It has a list as an attribute that holds the various particles in the system. Right away I'm going to add the method for adding particles to the attribute list. The implementation also depends on the Particle class.
+\subsection{Physics Base} The base class takes no arguments. It has a list as an attribute that holds the various particles in the system. Right away I'm going to add the method for adding particles to the attribute list. The implementation also depends on the Particle class.
 
 \begin{code}
 from Vector import Vector
@@ -280,6 +283,40 @@ class Physics(object):
     def add_obj(self, obj):
         self.objects.append(obj)
 \end{code}
+ 
+To use create a Physics Class object then particles can be add using the Physics Class method. 
 
+\begin{code}
+from libs import Vector, Particle, Physics
+
+base = Physics()
+part1 = Particle(Vector(1,1,1), (1,1,1), 5)
+part2 = Particle(Vetor(5,.3,2), Vector(.2, 0, .1), 100)
+
+base.add_obj(part1)
+base.add_obj(part2)
+
+\end{code}
+
+\subsection{Force of Gravity}
+Now we are ready to start calculating the force of gravity between two particles. This section is going to use the familiar Newtonian force of gravity,
+\begin{equation} \label{grav}
+F = \frac{G m_1 m_2}{R^2} 
+\end{equation}
+where, \\
+$G$ = Gravitational constant \\
+$m_1$ = mass of particle 1 \\
+$m_2$ = mass of particle 2 \\
+$r$ = distance between particle 1 and 2
+
+\paragraph{} The above equation only gives the magnitude of the force of gravity. The for the simulation the vector form is need. We already have the magnitude, now all we need is direction which is given by the unit vector pointing from particle 1 to particle 2. 
+\paragraph{} Instead of $r$ in the above equation let's instead take $\vec{R}$ and define it as the displacement vector :
+\begin{equation}
+\vec{R} = \vec{P_2} - \vec{P_1}
+\end{equation}
+where $P_1$ and $P_2$ are the position vectors for both respective particles in question. Then the magnitude of $\vec{R}$ is noted as $\left| \vec{R} \right| $. Thus the unit vector pointing in the direction of $\vec{R}$ is $\frac{\vec{R}}{\left| \vec{R} \right|}$. Now we can rewrite the equation \ref{grav} as 
+\begin{equation}
+F = \frac{G m_1 m_2}{\left| \vec{R} \right| ^2}  \frac{\vec{R}}{\left| \vec{R} \right|}
+\end{equation}
 \printbibliography
 \end{document}
