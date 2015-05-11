@@ -1,10 +1,14 @@
 import unittest
-from libs import Vector, Particle, Physics
+from libs import round_sig, Vector, Particle, Physics
 from math import log10, floor
 
-def round_sig(x, sig=2):
-   return round(x, sig-int(floor(log10(x)))-1)
-
+class Round_test(unittest.TestCase):
+    def setUp(self):
+        pass
+        
+    def test_rounding_domain(self):
+        a = 0
+        self.failUnless(round_sig(a, 1) == 0)
 
 class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):
@@ -22,6 +26,9 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(x == 2 )
         self.failUnless(y == 4 )
         self.failUnless(z == 6 )
+        self.failIf(x == 20 )
+        self.failIf(y == 40 )
+        self.failIf(z == 60 )
         
     def test_Vector_Addition_real(self):
         C = Vector.add(self.An, self.Bn)
@@ -40,6 +47,9 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(x == 2.1 )
         self.failUnless(y == 4.2 )
         self.failUnless(z == 6.3 )
+        self.failIf(x == 2.2 )
+        self.failIf(y == 4.1 )
+        self.failIf(z == 6.4 )
 
     def test_Vector_Addition_negative(self):
         C = Vector.add(self.Aneg, self.B)
@@ -60,6 +70,9 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(x == 2.4*10**12 )
         self.failUnless(y == 8.0*10**12 )
         self.failUnless(z == 1.24*10**14 )
+        self.failIf(x == 2.3*10**12 )
+        self.failIf(y == 8.1*10**12 )
+        self.failIf(z == 1.23*10**14 )
         
     def test_Vector_Addition_biger_number(self):
         BigA = Vector(1.3*10**24, 4.0*10**24, 6.3*10**13)
@@ -79,12 +92,15 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(C.z == Ans.z)
 
     def test_Vector_scalar_multiplication_float(self):
-        A = Vector(1.1, 1.1, 1.1)
+        A = Vector(1.1, 2.1, 3.1)
         C = Vector.times_scalar(2.0, A)
-        Ans = Vector(2.2,2.2,2.2)
+        Ans = Vector(2.2,4.2,6.2)
         self.failUnless(C.x == Ans.x)
         self.failUnless(C.y == Ans.y)
         self.failUnless(C.z == Ans.z)
+        self.failIf(C.z == Ans.x)
+        self.failIf(C.x == Ans.y)
+        self.failIf(C.y == Ans.z)
         
     def test_Vector_scalar_multiplication_neg(self):
         A = Vector(1.1, 1.2, -1)
@@ -93,6 +109,9 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(C.x == Ans.x)
         self.failUnless(C.y == Ans.y)
         self.failUnless(C.z == Ans.z)
+        self.failIf(C.z == Ans.x)
+        self.failIf(C.x == Ans.y)
+        self.failIf(C.y == Ans.z)
         
     def test_Vector_scalar_multiple_big_numbers(self):
         A = Vector(2.0*10**20, 1.1*10**20, 4.2*10**20)
@@ -104,6 +123,9 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.x,2) == round_sig(Ans.x, 2) )
         self.failUnless(round_sig(C.y,2) == round_sig(Ans.y, 2))
         self.failUnless(round_sig(C.z,2) == round_sig(Ans.z, 2))
+        self.failIf(round_sig(C.z,2) == round_sig(Ans.x, 2) )
+        self.failIf(round_sig(C.x,2) == round_sig(Ans.y, 2))
+        self.failIf(round_sig(C.y,2) == round_sig(Ans.z, 2))
         
     def test_Vector_sub(self):
         A = Vector(1.1, 2.2, 3.3)
@@ -113,13 +135,18 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(C.x == Ans.x)
         self.failUnless(C.y == Ans.y)
         self.failUnless(round_sig(C.z,2) == round_sig(Ans.z, 2))
+        self.failIf(C.x == Ans.y)
+        self.failIf(C.y == Ans.x)
+        self.failIf(round_sig(C.z,2) == round_sig(Ans.x, 2))
         
     def test_vector_magnitude(self):
         A = Vector(3,4,0)
         self.failUnless(round_sig(Vector.magnitude(A), 2) == 5)
+        self.failIf(round_sig(Vector.magnitude(A), 2) == 4)
         
         A = Vector(3.1*10**12,4.1*10**12,5.2*10**12)
         self.failUnless(round_sig(Vector.magnitude(A), 2) == 7.3*10**12)
+        self.failIf(round_sig(Vector.magnitude(A), 2) == 7.2*10**12)
         
     def test_Vector_magnitude(self):
         A = Vector(10,10,10)
@@ -134,6 +161,9 @@ class Particle_Class_Tests(unittest.TestCase):
        pass
        
     def test_particle_creation(self):
+        self.failIf(hasattr(a, 'P'))
+        self.failIf(hasattr(a, 'V'))
+        self.failIf(hasattr(a, 'm'))
         a = Particle(Vector(1,2,3), Vector(1,1,1), 55.5)
         self.failUnless(hasattr(a, 'P'))
         self.failUnless(hasattr(a, 'V'))
@@ -147,6 +177,9 @@ class Particle_Class_Tests(unittest.TestCase):
         self.failUnless(P.x == a.P.x)
         self.failUnless(P.y == a.P.y)
         self.failUnless(P.z == a.P.z)
+        self.failIf(P.x == a.P.y)
+        self.failIf(P.y == a.P.z)
+        self.failIf(P.z == a.P.x)
         
     def test_particle_motion(self):
         a = Particle(Vector(1.1,2.1,3.0), Vector(1.1,2.1,3.0), 55.5)
@@ -156,6 +189,9 @@ class Particle_Class_Tests(unittest.TestCase):
         self.failUnless(Ans.x == a.V.x)
         self.failUnless(Ans.y == a.V.y)
         self.failUnless(Ans.z == a.V.z)
+        self.failIf(Ans.x == a.V.z)
+        self.failIf(Ans.y == a.V.x)
+        self.failIf(Ans.z == a.V.y)
         
     def test_particle_acceleration(self):
         a = Particle(Vector(1, 1, 1), Vector(1,1,1), 44)
