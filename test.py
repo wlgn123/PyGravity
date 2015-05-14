@@ -8,8 +8,8 @@ class Round_test(unittest.TestCase):
         
     def test_rounding_domain(self):
         a = 0
-        self.failUnless(round_sig(a, 1) == 
-
+        self.failUnless(round_sig(a, 1) == 0)
+        
 class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):
         self.A = Vector(1,2,3)
@@ -161,9 +161,6 @@ class Particle_Class_Tests(unittest.TestCase):
        pass
        
     def test_particle_creation(self):
-        self.failIf(hasattr(a, 'P'))
-        self.failIf(hasattr(a, 'V'))
-        self.failIf(hasattr(a, 'm'))
         a = Particle(Vector(1,2,3), Vector(1,1,1), 55.5)
         self.failUnless(hasattr(a, 'P'))
         self.failUnless(hasattr(a, 'V'))
@@ -207,7 +204,7 @@ class Particle_Class_Tests(unittest.TestCase):
         self.failUnless(P_ans.y == a.P.y)
         self.failUnless(P_ans.z == a.P.z)
         
-class Particle_Class_Tests(unittest.TestCase):
+class Physics_Class_Tests(unittest.TestCase):
     def setUp(self):
         self.part1 = Particle(Vector(1,1,1), Vector(1,1,1), 5)
         self.part2 = Particle(Vector(2*10**12,1*10**12,3*10**12), Vector(2.3, 1.2, 4.2), 5*10**6)
