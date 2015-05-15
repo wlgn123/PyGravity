@@ -18,6 +18,15 @@ class Physics(object):
         f_mag = (G*ma*mb)/r_squared
         f_vec = Vector.times_scalar(f_mag, r_hat)
         return f_vec
+        
+    def sum_Fg_one_particle(self, A):
+        force_list = []
+        for particle in self.objects:
+            if particle != A:
+                force_list.append(self.Fg(particle, A))
+        f = lambda a,b: Vector.add(a,b)
+        total_force = reduce(f, force_list)
+        return total_force
     
 #For summing the force of gravity on the particle, calcuate
 # the force for each particle, add to list the use fancy python reduce

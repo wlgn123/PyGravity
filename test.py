@@ -12,7 +12,7 @@ class Round_test(unittest.TestCase):
         
     def test_neg_numbers(self):
         a = -1.2
-        self.failUnless(round_sig(a,1) == 1)
+        self.failUnless(round_sig(a,2) == -1.2)
         
 class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):
@@ -238,6 +238,23 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failIf(round_sig(wrong_ans.x,2) == round_sig(force_vec.x, 2) )
         self.failIf(round_sig(wrong_ans.y,2) == round_sig(force_vec.y, 2) )
         self.failIf(round_sig(wrong_ans.z,2) == round_sig(force_vec.z, 2) )
+        
+    def test_Physics_force_gravity_summation_for_one_particle(self):
+        A = Particle(Vector(1.00,1.00,1.00), Vector(0,0,0), 10)
+        B = Particle(Vector(2.00,2.00,2.00), Vector(0,0,0), 10)
+        C = Particle(Vector(3.00,3.00,3.00), Vector(0,0,0), 10)
+        D = Particle(Vector(4.00,4.00,4.00), Vector(0,0,0), 10)
+        base = Physics()
+        base.add_obj(A)
+        base.add_obj(B)
+        base.add_obj(C)
+        base.add_obj(D)
+        
+        f = base.sum_Fg_one_particle(base.objects[0])
+        print round_sig(f.x, 3)
+        self.failUnless(round_sig(f.x, 3 ) == round_sig(-1.75*10**(-9), 3))
+        self.failUnless(round_sig(f.y, 3 ) == round_sig(-1.75*10**(-9), 3))
+        self.failUnless(round_sig(f.z, 3 ) == round_sig(-1.75*10**(-9), 3))
         
 def main():
 	unittest.main()
