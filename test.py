@@ -155,7 +155,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.x, 3) == .577)
         self.failUnless(round_sig(C.y, 3) == .577)
         self.failUnless(round_sig(C.z, 3) == .577)
-
+#need to test Vector.unit()
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
@@ -219,7 +219,21 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failUnless(self.part2 == base.objects[1])
         self.failIf(self.part2 == base.objects[0])
     
-    
+    def test_Physics_Force_of_Gravity(self):
+        part1 = Particle(Vector(1,1,1), Vector(1,1,1), 5)
+        part2 = Particle(Vector(2,2,2), Vector(2.3, 1.2, 4.2), 10)
+        answer = Vector(6.42*10**(-10), 6.42*10**(-10),6.42*10**(-10) )
+        wrong_ans = Vector(1, 1, 1)
+        base = Physics()
+        force_vec = Physics.Fg(part1, part2)
+        self.failUnless(force_vec)
+        self.failUnless(round_sig(answer.x,2) == round_sig(force_vec.x, 2) )
+        self.failUnless(round_sig(answer.y,2) == round_sig(force_vec.y, 2) )
+        self.failUnless(round_sig(answer.z,2) == round_sig(force_vec.z, 2) )
+        
+        self.failIf(round_sig(wrong_ans.x,2) == round_sig(force_vec.x, 2) )
+        self.failIf(round_sig(wrong_ans.y,2) == round_sig(force_vec.y, 2) )
+        self.failIf(round_sig(wrong_ans.z,2) == round_sig(force_vec.z, 2) )
         
 def main():
 	unittest.main()
