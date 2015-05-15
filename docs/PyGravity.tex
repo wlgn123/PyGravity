@@ -311,12 +311,39 @@ $r$ = distance between particle 1 and 2
 
 \paragraph{} The above equation only gives the magnitude of the force of gravity. The for the simulation the vector form is need. We already have the magnitude, now all we need is direction which is given by the unit vector pointing from particle 1 to particle 2. 
 \paragraph{} Instead of $r$ in the above equation let's instead take $\vec{R}$ and define it as the displacement vector :
-\begin{equation}
+\begin{equation}\label{r_displace}
 \vec{R} = \vec{P_2} - \vec{P_1}
 \end{equation}
-where $P_1$ and $P_2$ are the position vectors for both respective particles in question. Then the magnitude of $\vec{R}$ is noted as $\left| \vec{R} \right| $. Thus the unit vector pointing in the direction of $\vec{R}$ is $\frac{\vec{R}}{\left| \vec{R} \right|}$. Now we can rewrite the equation \ref{grav} as 
+where $P_1$ and $P_2$ are the position vectors for both respective particles in question. Then the magnitude of $\vec{R}$ is noted as $\| \vec{R} \| $. Thus the unit vector pointing in the direction of $\vec{R}$ is $\hat{R} = \frac{\vec{R}}{\| \vec{R} \|}$. Now we can rewrite the equation \ref{grav} as 
 \begin{equation}
-F = \frac{G m_1 m_2}{\left| \vec{R} \right| ^2}  \frac{\vec{R}}{\left| \vec{R} \right|}
+\vec{F} = \frac{G m_1 m_2}{\| \vec{R} \| ^2}  \frac{\vec{R}}{\| \vec{R} \|}
 \end{equation}
+or
+\begin{equation}
+\vec{F} = \frac{G m_1 m_2}{\| \vec{R} \| ^2}  \hat{R}
+\end{equation}
+
+The code for the force of gravity will use the functions from the Vector class for subtracting vectors, multiplying vectors by scalars and finding vector magnitude and unit vectors. The code for finding the force of gravity vector is:
+
+\begin{code}
+@staticmethod
+def Fg(B, A):
+	G = 6.67384 * 10**(-11)                     # 1
+	r = Vector.sub(A.P, B.P)                    # 2 
+ 	r_hat = Vector.unit(r)                      # 3 
+	r_squared = Vector.magnitude(r) ** 2        # 4 
+	f_mag = (G*A.m*B.m)/r_squared               # 5
+	f_vec = Vector.times_scalar(f_mag, r_hat)   # 6
+	return f_vec
+
+\end{code}
+
+Here is a breakdown of what each line is doing in the above function.
+\paragraph{1} Here the newton’s gravitational constant is defined. It is in metric units, so the units are in $\frac{m^3}{KgS^2}$.
+\paragraph{2} Here the displacement vector $\vec{R}$, which goes from $\vec{A}$, to $\vec{B}$, is defined. $\vec{R}$ is found by  subtracting $\vec{B}$ and $\vec{A}$ in accordance to equation \ref{r_displace} above.
+\paragraph{3} Here we find the unit vector $\hat{R}$ is found using the Vector.unit() function.
+\paragraph{4} Here we find $\| \vec{R} \| ^2$ by using Vector.magnitude() and squaring the result. Vector.magnitude() returns a scalar so this is pretty straight forward.
+\paragraph{5} Here the magnitude of the force of gravity is calculated. The magnitude of the force of gravity is given by equation \ref{grav}. So we multiply the gravitational constant by both masses and divide by the distance squared which was already found in lines 1 and 4.
+\paragraph{6} Finally the vector form of the force is found by multiplying the magnitude of the force of gravity by the unit vector pointing from $\vec{B}$ to$\vec{A}$ . This can be summed up by the equation $\vec{F} = \|\vec{F}\| \times \hat{R}$.
 \printbibliography
 \end{document}
