@@ -10,6 +10,10 @@ class Round_test(unittest.TestCase):
         a = 0
         self.failUnless(round_sig(a, 1) == 0)
         
+    def test_neg_numbers(self):
+        a = -1.2
+        self.failUnless(round_sig(a,1) == 1)
+        
 class Vector_Lib_tests(unittest.TestCase):
     def setUp(self):
         self.A = Vector(1,2,3)
