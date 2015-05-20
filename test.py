@@ -78,7 +78,7 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failIf(y == 8.1*10**12 )
         self.failIf(z == 1.23*10**14 )
 
-    def test_Vector_Addition_biger_number(self):
+    def test_Vector_Addition_bigger_number(self):
         BigA = Vector(1.3*10**24, 4.0*10**24, 6.3*10**13)
         BigB = Vector(1.1*10**24, 4.0*10**24, 6.1*10**13)
         Answer = Vector(2.4*10**24, 8.0*10**24, 1.24*10**14)
@@ -86,6 +86,13 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.x, 2) == round_sig(Answer.x,2))
         self.failUnless(C.y == Answer.y)
         self.failUnless(C.z == Answer.z)
+
+    def test_Vector_Addition_really_small_numbers(self):
+        A = Vector(1.3*10**(-15), 4.56*10**(-20), 3.332*10**(-25))
+        C = Vector.add(A,A)
+        self.failUnless(round_sig(C.x,2) == round_sig(2.6*10**(-15),2))
+        self.failUnless(round_sig(C.y,2) == round_sig(9.1*10**(-20),2))
+        self.failUnless(round_sig(C.z,2) == round_sig(6.66*10**(-25),2))
 
     def test_Vector_scalar_multiplication_int(self):
         A = Vector(1,1,1)
@@ -162,8 +169,13 @@ class Vector_Lib_tests(unittest.TestCase):
 
     def test_Vector_unit_mag_equals_1(self):
         A = Vector(5,6,4)
-        A_hat = Vector.unit(A)
-        self.failUnless(round_sig(Vector.magnitude(A_hat), 1) == 1)
+        B = Vector(1.2, 2.233,  1.665)
+        C = Vector(-.3, -300, 5)
+        D = Vector(2*10**10, 4.4*10**13, 4*10**(-12))
+        vec_set = [A,B,C,D]
+        for vector in vec_set:
+            hat_vec = Vector.unit(vector)
+            self.failUnless(round_sig(Vector.magnitude(hat_vec), 2) == 1)
 
 #need to test Vector.unit()
 class Particle_Class_Tests(unittest.TestCase):
