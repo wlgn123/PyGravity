@@ -345,6 +345,16 @@ Here is a breakdown of what each line is doing in the above function.
 \paragraph{4} Here we find $\| \vec{R} \| ^2$ by using Vector.magnitude() and squaring the result. Vector.magnitude() returns a scalar so this is pretty straight forward.
 \paragraph{5} Here the magnitude of the force of gravity is calculated. The magnitude of the force of gravity is given by equation \ref{grav}. So we multiply the gravitational constant by both masses and divide by the distance squared which was already found in lines 1 and 4.
 \paragraph{6} Finally the vector form of the force is found by multiplying the magnitude of the force of gravity by the unit vector pointing from $\vec{B}$ to$\vec{A}$ . This can be summed up by the equation $\vec{F} = \|\vec{F}\| \times \hat{R}$.
+
+\paragraph{} The usage here is pretty straight forward. The force function takes two vectors and returns a thrid vector. 
+Below is an example of finding the force vector, Force, between the two particles A and B:
+
+\begin{code}
+	A = Particle(Pos_vec, Vol_vec, mass)
+	B = Particle(Pos_vec, Vol_vec, mass)
+	Force = Physics.Fg(A,B)
+\end{code}
+
 \subsection{Sum of Force of Gravity}
 \printbibliography
 \end{document}
