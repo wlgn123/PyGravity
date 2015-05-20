@@ -164,13 +164,19 @@ C.show
 '(2.2, 4.4, 8.8)'
 \end{code}
 
-For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be needed so only significant figures would be compared. Here is a quick rounding to significant digits function taken from \textit{StackOverflow}\cite{indgar}.
+For testing there were problems when working with large numbers. The computation could be correct but the answer wouldn't pass the tests because of small errors resulting from working with such large numbers. Thus rounding would be needed so only significant figures would be compared. Here is a quick rounding to significant digits function taken from \textit{StackOverflow}\cite{indgar} along with a tweak to avoid math domain errors.
 
 \begin{code}
 from math import log10, floor
-
 def round_sig(x, sig=2):
-   return round(x, sig-int(floor(log10(x)))-1)
+    if x == 0:
+        return 0
+    if x < 0:
+        x = -x
+        return (-1)* round(x, sig-int(floor(log10(x)))-1)
+    else:
+        return round(x, sig-int(floor(log10(x)))-1)
+
 \end{code}
 
 Then the tests look like this:
