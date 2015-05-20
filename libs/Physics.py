@@ -31,9 +31,6 @@ class Physics(object):
     def apply_gravitational_acceleration(self, A):
         total_Fg_A = self.sum_Fg_one_particle(A)
         acceleration = Vector.times_scalar((1/A.m), total_Fg_A)
-        #print "acceleration: ", acceleration.show
         A.accelerate(acceleration)
 
-#For summing the force of gravity on the particle, calcuate
-# the force for each particle, add to list the use fancy python reduce
-# or  something to sum the list using the Vector.add() function
+#At delta time to accelerate and move methods in Particle class
