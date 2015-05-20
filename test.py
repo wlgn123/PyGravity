@@ -159,6 +159,12 @@ class Vector_Lib_tests(unittest.TestCase):
         self.failUnless(round_sig(C.x, 3) == .577)
         self.failUnless(round_sig(C.y, 3) == .577)
         self.failUnless(round_sig(C.z, 3) == .577)
+
+    def test_Vector_unit_mag_equals_1(self):
+        A = Vector(5,6,4)
+        A_hat = Vector.unit(A)
+        self.failUnless(round_sig(Vector.magnitude(A_hat), 1) == 1)
+
 #need to test Vector.unit()
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
