@@ -269,7 +269,6 @@ class Physics_Class_Tests(unittest.TestCase):
         base.add_obj(D)
 
         f = base.sum_Fg_one_particle(base.objects[0])
-        print round_sig(f.x, 3)
         self.failUnless(round_sig(f.x, 3 ) == round_sig(-1.75*10**(-9), 3))
         self.failUnless(round_sig(f.y, 3 ) == round_sig(-1.75*10**(-9), 3))
         self.failUnless(round_sig(f.z, 3 ) == round_sig(-1.75*10**(-9), 3))
