@@ -208,16 +208,16 @@ The last line gives us the distance between $\vec{A}$ and $\vec{B}$.
 \section{The Particle Class}
 The particle class is the object that will encapsulate the velocity, positional vectors and mass scalar of various point particles. To come will be an attribute for the radius of the particle for collisions and growth but for now we will be working with point particles.
 
-\subsection{Particle Base} The base class for the particle needs to include a information for where the particle is, how fast it is moving and how heavy it is. Therefore the Particle Class needs three attributes, two vectors and one scalar.
+\subsection{Particle Base} The base class for the particle needs to include a information for where the particle is, how fast it is moving and how heavy it is. Therefore the Particle Class needs three attributes: two vectors and one scalar.
 
 \begin{code}
 from Vector import Vector
 
 class Particle(object):
     def __init__(self, P, V, m):
-        self.P = P        #particles position vector
-        self.V = V        #Particles velocity vector
-        self.m = m        #particles mass
+        self.P = P        #particle's position vector
+        self.V = V        #Particle's velocity vector
+        self.m = m        #particle's mass
 \end{code}
 
 \subsection{Movement} The particle needs to be moved. For each tick of time, $\Delta t$, the particle is displaced by its velocity vector. Thus at time $t$, the particle $a$ has a positional vector $\vec{P}_{a}(t)$ and velocity vector $\vec{V}_{a}(t)$. Thus if the position and velocity are know at $t=n$, then the position at $t = n+1$ can be given by
@@ -250,7 +250,7 @@ The new position is then calculated using the current position and velocity of t
 \vec{V}_a (t_{n+1}) = \vec{V}_a (t_n) + \vec{A}_a (t_n)
 \end{equation}
 
-The particle's method function to apply acceleration is given by
+The particle's method function to apply acceleration closely resembles the function to move the particle, however it takes the acceleration as an argument since acceleration is not stored with the particle.  The function is given by
 
 \begin{code}
 def accelerate(self, A):
@@ -258,7 +258,7 @@ def accelerate(self, A):
     self.V = new
 \end{code}
 
-Usage first requires that the acceleration acting on the particle is first calculated. This will come in the next chapter when the physics calculations are formed. For now I will use explicitly define the acceleration vector.
+Usage first requires that the acceleration acting on the particle is calculated. This will come in the next chapter when the physics calculations are formed. For now I will use explicitly define the acceleration vector.
 
 \begin{code}
 Vol_vec = Vector(1, 1, 1)
@@ -284,17 +284,17 @@ class Physics(object):
         self.objects.append(obj)
 \end{code}
  
-To use create a Physics Class object then particles can be add using the Physics Class method. 
+To use first create a Physics Class object then particles can be add using the Physics Class method. 
 
 \begin{code}
 from libs import Vector, Particle, Physics
 
-base = Physics()
+system = Physics()
 part1 = Particle(Vector(1,1,1), (1,1,1), 5)
 part2 = Particle(Vetor(5,.3,2), Vector(.2, 0, .1), 100)
 
-base.add_obj(part1)
-base.add_obj(part2)
+system.add_obj(part1)
+system.add_obj(part2)
 
 \end{code}
 
@@ -327,7 +327,7 @@ The code for the force of gravity will use the functions from the Vector class f
 
 \begin{code}
 @staticmethod
-def Fg(B, A):
+def Fg(A, B):
 	G = 6.67384 * 10**(-11)                     # 1
 	r = Vector.sub(A.P, B.P)                    # 2 
  	r_hat = Vector.unit(r)                      # 3 
@@ -345,5 +345,6 @@ Here is a breakdown of what each line is doing in the above function.
 \paragraph{4} Here we find $\| \vec{R} \| ^2$ by using Vector.magnitude() and squaring the result. Vector.magnitude() returns a scalar so this is pretty straight forward.
 \paragraph{5} Here the magnitude of the force of gravity is calculated. The magnitude of the force of gravity is given by equation \ref{grav}. So we multiply the gravitational constant by both masses and divide by the distance squared which was already found in lines 1 and 4.
 \paragraph{6} Finally the vector form of the force is found by multiplying the magnitude of the force of gravity by the unit vector pointing from $\vec{B}$ to$\vec{A}$ . This can be summed up by the equation $\vec{F} = \|\vec{F}\| \times \hat{R}$.
+\subsection{Sum of Force of Gravity}
 \printbibliography
 \end{document}
