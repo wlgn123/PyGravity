@@ -244,7 +244,7 @@ class Physics_Class_Tests(unittest.TestCase):
     def test_Physics_Force_of_Gravity(self):
         part1 = Particle(Vector(1,1,1), Vector(1,1,1), 5)
         part2 = Particle(Vector(2,2,2), Vector(2.3, 1.2, 4.2), 10)
-        answer = Vector(6.42*10**(-10), 6.42*10**(-10),6.42*10**(-10) )
+        answer = Vector(-6.42*10**(-10), -6.42*10**(-10),-6.42*10**(-10) )
         wrong_ans = Vector(1, 1, 1)
         base = Physics()
         force_vec = Physics.Fg(part1, part2)
@@ -269,9 +269,9 @@ class Physics_Class_Tests(unittest.TestCase):
         base.add_obj(D)
 
         f = base.sum_Fg_one_particle(base.objects[0])
-        self.failUnless(round_sig(f.x, 3 ) == round_sig(-1.75*10**(-9), 3))
-        self.failUnless(round_sig(f.y, 3 ) == round_sig(-1.75*10**(-9), 3))
-        self.failUnless(round_sig(f.z, 3 ) == round_sig(-1.75*10**(-9), 3))
+        self.failUnless(round_sig(f.x, 3 ) == round_sig(1.75*10**(-9), 3))
+        self.failUnless(round_sig(f.y, 3 ) == round_sig(1.75*10**(-9), 3))
+        self.failUnless(round_sig(f.z, 3 ) == round_sig(1.75*10**(-9), 3))
 
 def main():
 	unittest.main()
