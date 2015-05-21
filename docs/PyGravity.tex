@@ -406,5 +406,8 @@ Therefore $\vec{F}_{\sigma x}$ is given by
 \paragraph{5} Here we use the built in python lambda operator to make a nameless function that wraps the vector addition method from the Vector class.
 \paragraph{6} Now we use the high level built in function reduce to apply the function from line 5 to the list of forces. This is pretty much a fancy way of summing over the set of forces, but python doesn't know how to sum our vectors so we use reduce to define it.
 \paragraph{7} Spit out the answer.
+\paragraph{} This function is really just a helper function for later so I will skip the implementation. It should be pretty obvious how to use it at this point.
+\subsection{Accelerate Particle}
+Accelerating the particle is a simple matter of finding the net force, dividing by the mass and adding to the particles velocity. more to follow. 
 \printbibliography
 \end{document}
