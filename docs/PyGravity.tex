@@ -4,8 +4,10 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{amssymb}
+\usepackage{bbm}
 \graphicspath{ {images/} }
 \usepackage[backend=bibtex]{biblatex}
+\usepackage{graphicx}
 
 \usepackage{listings}
 \usepackage{color}
@@ -362,6 +364,27 @@ Below is an example of finding the force vector, Force, between the two particle
 	Force = Physics.Fg(A,B)
 \end{code}
 
-\subsection{Sum of Force of Gravity}
+\subsection{Sum Force of Gravity}
+\paragraph{} Let's consider a system of particles greater then the simple two object system. Let's call these particles $P^1$, $P^2$, $P^3$ up to some numbered particle $P^N$. Thus we have a system of particles, 
+
+\begin{equation}
+\{ P^n | \ \ n, N \in \mathbb{N} ,\ \ n \leq N \} .
+\end{equation}
+
+Now let's consider the force of gravity, hereby abbreviated plainly as 'force', acting on some particular particle. For notation let's say that the force between $P^1$ and $P^2$ is written as the vector $\vec{F}_{12}$, and the force between $P^2$ and $P^1$ as $\vec{F}_{21}$. The force between some arbitrary particle $P^n$ and $P^x$ can be written as \begin{equation}
+\vec{F}_{nx}
+\end{equation}
+\paragraph{} Now the total force acting on some particle, $P^x$, can be noted as $\vec{F}_{\sigma x}$.
+
+\centerline{\includegraphics[scale=0.5]{vector}}
+
+ This total force is given by the sum of all other forces acting on $P^x$ as crudely illustrated above.
+Therefore $\vec{F}_{\sigma x}$ is given by 
+
+\begin{equation}
+\vec{F}_{\sigma x} = \sum_{n = 1, n \neq x}^{N} \vec{F}_{nx}
+\end{equation}
+
+
 \printbibliography
 \end{document}
