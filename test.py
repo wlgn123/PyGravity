@@ -273,6 +273,10 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failUnless(round_sig(f.z, 3 ) == round_sig(1.75*10**(-9), 3))
 
     def test_partitcle_acceleration_3_object_harmonic_range(self):
+        #this test setups 3 particles. one tiny, spaced eqidistance above the line of two
+        #very heavy objects. The particle is supposed to bounce up and down across the line the
+        # two heavy objects set on. This is testing to make sure the particle stays between
+        # a maxima and minima and doesn't fly off in either direction.
         A = Particle(Vector(0,10.00,0), Vector(0,0,0), 1)
         B = Particle(Vector(-10,0,0), Vector(0,0,0), 10000000000)
         C = Particle(Vector(10,0,0), Vector(0,0,0), 10000000000)
