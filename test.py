@@ -177,7 +177,6 @@ class Vector_Lib_tests(unittest.TestCase):
             hat_vec = Vector.unit(vector)
             self.failUnless(round_sig(Vector.magnitude(hat_vec), 2) == 1)
 
-#need to test Vector.unit()
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
@@ -272,6 +271,26 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failUnless(round_sig(f.x, 3 ) == round_sig(1.75*10**(-9), 3))
         self.failUnless(round_sig(f.y, 3 ) == round_sig(1.75*10**(-9), 3))
         self.failUnless(round_sig(f.z, 3 ) == round_sig(1.75*10**(-9), 3))
+
+    def test_partitcle_acceleration_3_object_harmonic_range(self):
+        A = Particle(Vector(0,10.00,0), Vector(0,0,0), 1)
+        B = Particle(Vector(-10,0,0), Vector(0,0,0), 10000000000)
+        C = Particle(Vector(10,0,0), Vector(0,0,0), 10000000000)
+
+        base = Physics()
+        base.add_obj(A)
+        base.add_obj(B)
+        base.add_obj(C)
+        for i in range(1000):
+            base.apply_gravitational_acceleration(base.objects[0])
+            base.objects[0].move
+            self.failIf(base.objects[0].P.y > 12)
+            self.failIf(base.objects[0].P.y < (-12))
+
+            self.failUnless(base.objects[0].P.y < 12)
+            self.failUnless(base.objects[0].P.y > (-12))
+
+
 
 def main():
 	unittest.main()
