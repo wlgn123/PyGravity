@@ -1,5 +1,5 @@
 import unittest
-from libs import round_sig, Particle, Physics
+from libs import round_sig, Vector, Particle, Physics
 import numpy as np
 from math import log10, floor
 
@@ -14,7 +14,33 @@ class Round_test(unittest.TestCase):
     def test_neg_numbers(self):
         a = -1.2
         self.failUnless(round_sig(a,2) == -1.2)
-
+        
+        
+class Vector_Class_Tests(unittest.TestCase):
+    def setUp(self):
+       self.A = Vector([1,2,3])
+       self.B = Vector([1,1,1])
+       self.C = Vector([2.334*10**20, 3.123456*10*20])
+       self.D = Vector([4.334*10**20, 2.123456*10*20])
+       self.E = Vector([1.2131313131231231231231231231231231231123123123123, 2.213123123123131231231312312312312312123])
+       self.F = Vector([1.2131313131231231231231231231231231231123123123121, 2.213123123123131231231312312312312312121])
+       self.Z = Vector([0,0])
+       
+    def test_equalities(self):
+        self.failUnless(self.A == self.A)
+        self.failUnless((self.B + self.A) == (self.B + self.A))
+        self.failIf(self.A == self.B)
+        
+    def test_big_equalities(self):
+        self.failUnless(self.C == self.C)
+        self.failIf(self.C == self.D)
+        
+    def _test_equality_precise(self):
+        self.failUnless(self.E == self.E)
+        self.failIf(self.E == self.A)
+        self.failIf(( self.E- self.F) == self.Z)
+        
+       
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
@@ -30,14 +56,9 @@ class Particle_Class_Tests(unittest.TestCase):
         a.move()
         V = np.array([1,1,1])
         P = np.array([2,3,4])
-        self.failUnless(P.x == a.P.x)
-        self.failUnless(P.y == a.P.y)
-        self.failUnless(P.z == a.P.z)
-        self.failIf(P.x == a.P.y)
-        self.failIf(P.y == a.P.z)
-        self.failIf(P.z == a.P.x)
+        self.failUnless(np.allclose(P, a.P))
 
-    def test_particle_motion(self):
+    def test_particle_motion2(self):
         a = Particle(np.array([1.1,2.1,3.0]), np.array([1.1,2.1,3.0]), 55.5)
         Accel = np.array([2,2,-4])
         Ans = np.array([3.1, 4.1, -1.0])
@@ -64,7 +85,7 @@ class Physics_Class_Tests(unittest.TestCase):
         base = Physics()
         base.add_obj(self.part1)
         base.add_obj(self.part2)
-        self.failUnless(np.allclose(self.part1, base.objects[0]) )        
+        self.failUnless(np.allclose(self.part1, base.objects[0]) )
         self.failUnless(np.allclose(self.part2, base.objects[1]) )
 
     def test_Physics_Force_of_Gravity(self):
