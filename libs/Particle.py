@@ -1,4 +1,4 @@
-from Vector import Vector
+import numpy as np
 class Particle(object):
     def __init__(self, P, V, m):
         self.P = P        #particles position vector
@@ -6,10 +6,10 @@ class Particle(object):
         self.m = m        #particles mass
         
     def move(self):
-        new_pos = Vector.add(self.P, self.V)
+        new_pos = np.add(self.P, self.V)
         self.P = new_pos
         
     def accelerate(self, A):
-        new = Vector.add(self.V, A)
+        new = np.add(self.V, A)
         self.V = new
         
