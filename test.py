@@ -31,6 +31,13 @@ class Vector_Class_Tests(unittest.TestCase):
         self.failUnless((self.B + self.A) == (self.B + self.A))
         self.failIf(self.A == self.B)
 
+    def test_array_match(self):
+        self.failIf(self.E.array_mismatch(self.F))
+        self.failUnless(self.F.array_mismatch(Vector(['1'])))
+
+    def test_more_addition(self):
+        self.failUnless((self.E+self.F) == (self.E+self.F))
+
     def test_big_equalities(self):
         self.failUnless(self.C == self.C)
         self.failIf(self.C == self.D)
