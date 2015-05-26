@@ -14,33 +14,33 @@ class Round_test(unittest.TestCase):
     def test_neg_numbers(self):
         a = -1.2
         self.failUnless(round_sig(a,2) == -1.2)
-        
-        
+
+
 class Vector_Class_Tests(unittest.TestCase):
     def setUp(self):
        self.A = Vector([1,2,3])
        self.B = Vector([1,1,1])
        self.C = Vector([2.334*10**20, 3.123456*10*20])
        self.D = Vector([4.334*10**20, 2.123456*10*20])
-       self.E = Vector([1.2131313131231231231231231231231231231123123123123, 2.213123123123131231231312312312312312123])
-       self.F = Vector([1.2131313131231231231231231231231231231123123123121, 2.213123123123131231231312312312312312121])
+       self.E = Vector(['1.2131313131231231231231231231231231231123123123123', '2.213123123123131231231312312312312312123'])
+       self.F = Vector(['1.2131313131231231231231231231231231231123123123121', '2.213123123123131231231312312312312312121'])
        self.Z = Vector([0,0])
-       
+
     def test_equalities(self):
         self.failUnless(self.A == self.A)
         self.failUnless((self.B + self.A) == (self.B + self.A))
         self.failIf(self.A == self.B)
-        
+
     def test_big_equalities(self):
         self.failUnless(self.C == self.C)
         self.failIf(self.C == self.D)
-        
-    def _test_equality_precise(self):
+
+    def test_equality_precise(self):
         self.failUnless(self.E == self.E)
         self.failIf(self.E == self.A)
         self.failIf(( self.E- self.F) == self.Z)
-        
-       
+
+
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass

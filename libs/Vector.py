@@ -1,27 +1,50 @@
 import sympy
+from bigfloat import *
 class Vector(object):
     def __init__(self, array):
-        self.vector = sympy.Matrix(array)
+        self.vector = self.makebig(array)
 
     def __str__(self):
-        return str(self.vector)
+        string = '('
+        c = 0
+        for item in self.vector:
+            if c!=0:
+                string = string + ',' + str(item)
+            else:
+                string = string  + str(item)
+            c += 1
+        string = string + ')'
+
+        return string
 
     def __add__(self, other_vector):
-        new_vector = Vector(self.vector + other_vector.vector)
-        return new_vector
+        if self.array_mismatch(other_vector):
+            raise ValueError('vector dimension doesnt match')
+
+        new_array = []
+        for index, val in enumerate(self.vector):
+            new_array.append(val + other_vector.vector[index])
+        return Vector(new_array)
 
     def __radd__(self, other_vector):
-        new_vector = Vector(self.vector + other_vector.vector)
-        return new_vector
+        new_vector = []
+        for index, val in enumerate(self.vector):
+            new_array.append(val + other_vector.vector[index])
+
+        return Vector(new_array)
 
     def __sub__(self, other_vector):
-        new_vector = Vector(self.vector - other_vector.vector)
-        return new_vector
+        new_array = []
+        for index, val in enumerate(self.vector):
+            new_array.append(val - other_vector.vector[index])
+        return Vector(new_array)
 
     def __rsub__(self, other_vector):
-        new_vector = Vector(self.vector - other_vector.vector)
-        return new_vector
-        
+        new_array = []
+        for index, val in enumerate(self.vector):
+            new_array.append(val - other_vector.vector[index])
+        return Vector(new_array)
+
     def __eq__(self, other_vector):
         i=0
         for element in self.vector:
@@ -33,6 +56,17 @@ class Vector(object):
             i += 1
         return True
 
+    def makebig(self, array):
+        new_array = []
+        for val in array:
+            new_array.append(BigFloat.exact(str(val), precision=200))
+        return new_array
+
+    def array_mismatch(self, other):
+        if len(self.vector) != len(other.vector) :
+            return True
+        else:
+            return False
 
     @staticmethod
     def times_scalar(a, A):
