@@ -2,6 +2,7 @@ import unittest
 from libs import round_sig, Vector, Particle, Physics
 import numpy as np
 from math import log10, floor
+from decimal import *
 
 class Round_test(unittest.TestCase):
     def setUp(self):
@@ -26,6 +27,9 @@ class Vector_Class_Tests(unittest.TestCase):
        self.F = Vector(['1.2131313131231231231231231231231231231123123123121', '2.213123123123131231231312312312312312121'])
        self.H = Vector(['1.00000000000000000000000000000000000000000000000001','0'])
        self.I = Vector(['1.00000000000000000000000000000000000000000000000002','0'])
+       self.L = Vector(['1.1111111111111111111111111111111111111222'])
+       self.M = Vector(['1.2345679133333333333333333333333333333456543211084'])
+
        self.Z = Vector([0,0])
 
     def test_equalities(self):
@@ -51,6 +55,9 @@ class Vector_Class_Tests(unittest.TestCase):
         self.failIf(( self.E- self.F) == self.Z)
         self.failUnless(self.I - self.I  == self.Z)
         self.failIf(self.H + self.H == self.H + self.I)
+
+    def test_scalar_mul(self):
+        self.failUnless(self.L*Decimal('1.111111122') == self.M)
 
 
 class Particle_Class_Tests(unittest.TestCase):
