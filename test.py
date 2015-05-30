@@ -68,6 +68,9 @@ class Vector_Class_Tests(unittest.TestCase):
         ans_b = Decimal('2089627528981311829491.1651755792781224241378604149887198762611497762517918313595066680613531301073141511728460949328602506908336809936538778205045521740966301651816135598736415281509427651835812164324')
         self.failUnless(b.magnitude() == ans_b)
         
+        c = Vector(['3','4'])
+        self.failUnless(c.magnitude() == Decimal('5'))
+        
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
