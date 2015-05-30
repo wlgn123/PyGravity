@@ -1,4 +1,4 @@
-import sympy
+from round_sig import round_sig
 from decimal import *
 class Vector(object):
     def __init__(self, array):
@@ -72,8 +72,15 @@ class Vector(object):
     def __mul__(self, scalar):
         new_array = []
         for item in self.vector:
-            new_array.append(item * scalar)
+            new_array.append(item * Decimal(scalar))
         return Vector(new_array)
+
+    def round(self, a):
+        i = int(round_sig(a,1))
+        new = []
+        for item in self.vector:
+            new.append(round_sig(item, i))
+        return Vector(new)
 
 
     def magnitude(self):
