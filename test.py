@@ -20,16 +20,19 @@ class Vector_Class_Tests(unittest.TestCase):
     def setUp(self):
        self.A = Vector([1,2,3])
        self.B = Vector([1,1,1])
-       self.C = Vector([2.334*10**20, 3.123456*10*20])
-       self.D = Vector([4.334*10**20, 2.123456*10*20])
+       self.C = Vector([2.334e+20, 3.123456e+20])
+       self.D = Vector([4.334e+20, 2.123456e+20])
        self.E = Vector(['1.2131313131231231231231231231231231231123123123123', '2.213123123123131231231312312312312312123'])
        self.F = Vector(['1.2131313131231231231231231231231231231123123123121', '2.213123123123131231231312312312312312121'])
+       self.H = Vector(['1.00000000000000000000000000000000000000000000000001','0'])
+       self.I = Vector(['1.00000000000000000000000000000000000000000000000002','0'])
        self.Z = Vector([0,0])
 
     def test_equalities(self):
         self.failUnless(self.A == self.A)
         self.failUnless((self.B + self.A) == (self.B + self.A))
         self.failIf(self.A == self.B)
+
 
     def test_array_match(self):
         self.failIf(self.E.array_mismatch(self.F))
@@ -46,6 +49,8 @@ class Vector_Class_Tests(unittest.TestCase):
         self.failUnless(self.E == self.E)
         self.failIf(self.E == self.A)
         self.failIf(( self.E- self.F) == self.Z)
+        self.failUnless(self.I - self.I  == self.Z)
+        self.failIf(self.H + self.H == self.H + self.I)
 
 
 class Particle_Class_Tests(unittest.TestCase):
