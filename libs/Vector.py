@@ -1,8 +1,9 @@
 import sympy
-from bigfloat import *
+from decimal import *
 class Vector(object):
     def __init__(self, array):
-        self.vector = self.makebig(array)
+        getcontext().prec = 200
+        self.vector = self.makedecimal(array)
 
     def __str__(self):
         string = '('
@@ -56,10 +57,10 @@ class Vector(object):
             i += 1
         return True
 
-    def makebig(self, array):
+    def makedecimal(self, array):
         new_array = []
         for val in array:
-            new_array.append(BigFloat.exact(str(val), precision=200))
+            new_array.append(Decimal(str(val)))
         return new_array
 
     def array_mismatch(self, other):
@@ -68,12 +69,11 @@ class Vector(object):
         else:
             return False
 
-    @staticmethod
-    def times_scalar(a, A):
-        new = Vector(A.x * a,
-                     A.y * a,
-                     A.z * a)
-        return new
+    def __mul__(self, scalar):
+        new_array = []
+        for item in self.vector:
+            new_array.append(item * scalar)
+        return Vector(new_array)
 
     @staticmethod
     def magnitude(A):
