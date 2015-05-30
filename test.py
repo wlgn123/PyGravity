@@ -57,20 +57,26 @@ class Vector_Class_Tests(unittest.TestCase):
         self.failIf(self.H + self.H == self.H + self.I)
 
     def test_scalar_mul(self):
-        self.failUnless(self.L*Decimal('1.111111122') == self.M)
+        new_vec = self.L * 1.111111122
+        self.failUnless(new_vec.round(10) == self.M.round(10))
+
+    def test_rounding(self):
+        self.failUnless(self.E.round(2) == self.F.round(2))
+        self.failUnless(self.E.round(4.1) == self.F.round(4.2))
+
 
     def test_magnitude(self):
         a = Vector(['2','4','4'])
         ans_a = Decimal('6')
         self.failUnless(a.magnitude() == ans_a)
-        
+
         b = Vector(['2.0000000000000000000000002e+21','4.4444444444444444444444444444e+20','4.111111111111111111111e+20'])
         ans_b = Decimal('2089627528981311829491.1651755792781224241378604149887198762611497762517918313595066680613531301073141511728460949328602506908336809936538778205045521740966301651816135598736415281509427651835812164324')
         self.failUnless(b.magnitude() == ans_b)
-        
+
         c = Vector(['3','4'])
         self.failUnless(c.magnitude() == Decimal('5'))
-        
+
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
