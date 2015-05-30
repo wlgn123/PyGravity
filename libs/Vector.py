@@ -75,10 +75,12 @@ class Vector(object):
             new_array.append(item * scalar)
         return Vector(new_array)
 
-    @staticmethod
-    def magnitude(A):
-        mag = sympy.sqrt(A.x**2 + A.y**2 + A.z**2)
-        return mag
+
+    def magnitude(self):
+        total = 0
+        for item in self.vector:
+            total += item**2
+        return total.sqrt()
 
     @staticmethod
     def unit(A):

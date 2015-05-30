@@ -59,7 +59,15 @@ class Vector_Class_Tests(unittest.TestCase):
     def test_scalar_mul(self):
         self.failUnless(self.L*Decimal('1.111111122') == self.M)
 
-
+    def test_magnitude(self):
+        a = Vector(['2','4','4'])
+        ans_a = Decimal('6')
+        self.failUnless(a.magnitude() == ans_a)
+        
+        b = Vector(['2.0000000000000000000000002e+21','4.4444444444444444444444444444e+20','4.111111111111111111111e+20'])
+        ans_b = Decimal('2089627528981311829491.1651755792781224241378604149887198762611497762517918313595066680613531301073141511728460949328602506908336809936538778205045521740966301651816135598736415281509427651835812164324')
+        self.failUnless(b.magnitude() == ans_b)
+        
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
        pass
