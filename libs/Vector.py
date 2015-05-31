@@ -89,11 +89,9 @@ class Vector(object):
             total += item**2
         return total.sqrt()
 
-    @staticmethod
-    def unit(A):
-        mag = Vector.magnitude(A)
-        new = Vector.times_scalar(1.0/mag, A)
-        return new
+
+    def unit(self):
+        return self * (1/ self.magnitude())
 
 
 

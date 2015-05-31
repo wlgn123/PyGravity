@@ -76,6 +76,15 @@ class Vector_Class_Tests(unittest.TestCase):
 
         c = Vector(['3','4'])
         self.failUnless(c.magnitude() == Decimal('5'))
+        
+    def test_vector_unit(self):
+        a = Vector(['1.12','2.34','3.45'])
+        ans_a = Vector(['0.259467195511802019559694863263','0.54210110490858636229436248217','0.79925162903189014953656'])
+        self.failUnless(a.unit().round(10) == ans_a.round(10))
+        
+        b = Vector(['2','4','4'])
+        ans_b = Vector(['1','2','2'])
+        self.failUnless(b.unit() * 3 == ans_b)
 
 class Particle_Class_Tests(unittest.TestCase):
     def setUp(self):
