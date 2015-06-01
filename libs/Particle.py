@@ -5,12 +5,12 @@ class Particle(object):
         self.V = V        #Particles velocity vector
         self.m = m        #particles mass
 
-    def move(self):
-        new_pos = self.P + self.V
+    def move(self, timestep):
+        new_pos = self.P + self.V*timestep
         self.P = new_pos
 
-    def accelerate(self, A):
-        new = self.V + A
+    def accelerate(self, A, timestep):
+        new = self.V + A*timestep
         self.V = new
 
     def __str__(self):
