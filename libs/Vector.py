@@ -75,6 +75,10 @@ class Vector(object):
             new_array.append(item * Decimal(scalar))
         return Vector(new_array)
 
+    def __getitem__(self,index):
+        return self.vector[index]
+
+
     def round(self, a):
         i = int(round_sig(a,1))
         new = []
