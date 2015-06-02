@@ -32,6 +32,10 @@ class Vector_Class_Tests(unittest.TestCase):
 
        self.Z = Vector([0,0])
 
+    def test_indexing(self):
+        self.failUnless(self.A[0] == self.B[1])
+        self.failIf(self.A[2] == self.B[0])
+
     def test_equalities(self):
         self.failUnless(self.A == self.A)
         self.failUnless((self.B + self.A) == (self.B + self.A))
@@ -76,12 +80,12 @@ class Vector_Class_Tests(unittest.TestCase):
 
         c = Vector(['3','4'])
         self.failUnless(c.magnitude() == Decimal('5'))
-        
+
     def test_vector_unit(self):
         a = Vector(['1.12','2.34','3.45'])
         ans_a = Vector(['0.259467195511802019559694863263','0.54210110490858636229436248217','0.79925162903189014953656'])
         self.failUnless(a.unit().round(10) == ans_a.round(10))
-        
+
         b = Vector(['2','4','4'])
         ans_b = Vector(['1','2','2'])
         self.failUnless(b.unit() * 3 == ans_b)
@@ -98,7 +102,7 @@ class Particle_Class_Tests(unittest.TestCase):
 
     def test_particle_motion(self):
         a = Particle(np.array([1,2,3]), np.array([1,1,1]), 55.5)
-        a.move()
+        a.move(1)
         V = np.array([1,1,1])
         P = np.array([2,3,4])
         self.failUnless(np.allclose(P, a.P))
@@ -107,7 +111,7 @@ class Particle_Class_Tests(unittest.TestCase):
         a = Particle(np.array([1.1,2.1,3.0]), np.array([1.1,2.1,3.0]), 55.5)
         Accel = np.array([2,2,-4])
         Ans = np.array([3.1, 4.1, -1.0])
-        a.accelerate(Accel)
+        a.accelerate(Accel,1)
         self.failUnless(np.allclose(Ans, a.V))
 
     def test_particle_acceleration(self):
@@ -115,9 +119,9 @@ class Particle_Class_Tests(unittest.TestCase):
         Acc = np.array([3, 3, -1])
         V_ans = np.array([4, 4, 0])
         P_ans = np.array([5, 5, 1])
-        a.accelerate(Acc)
+        a.accelerate(Acc,1)
         self.failUnless(np.allclose(V_ans, a.V))
-        a.move()
+        a.move(1)
         self.failUnless(np.allclose(P_ans, a.P))
 
 class Physics_Class_Tests(unittest.TestCase):
