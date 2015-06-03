@@ -1,23 +1,24 @@
-import numpy as np
-from numpy import linalg as LA
+from decimal import *
 from Particle import Particle
 class Physics(object):
     def __init__(self):
         self.objects = []
 
     def add_obj(self, obj):
+        for item in self.objects:
+            if obj.name == item.name:
+                raise ValueError("duplicate name found, not adding last entry")
+                return
         self.objects.append(obj)
 
     @staticmethod
     def Fg(A, B):
-        G = 6.67384 * 10**(-11)
-        ma = A.m
-        mb = B.m
-        r = np.subtract(A.P, B.P)  #vector between two particles
-        r_hat = np.multiply((1/LA.norm(r)), r)    #unit vector of r
-        r_squared = LA.norm(r) ** 2  # dist between A, B squared
-        f_mag = (G*ma*mb)/r_squared
-        f_vec = np.multiply(f_mag, r_hat)
+        G = Decimal('6.67384e-11')
+        r = A.P -  B.P  #vector between two particles
+        r_hat =r    #unit vector of r
+        r_squared = r.magnitude() ** 2  # dist between A, B squared
+        f_mag = (G*A.m*B.m)*(r_squared**(-1))
+        f_vec = r.unit() * f_mag
         return f_vec
 
     def sum_Fg_one_particle(self, A):
