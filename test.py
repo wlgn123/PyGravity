@@ -95,27 +95,28 @@ class Particle_Class_Tests(unittest.TestCase):
        pass
 
     def test_particle_creation(self):
-        a = Particle(np.array([1,2,3]), np.array([1,1,1]), 55.5)
+        a = Particle('a',np.array([1,2,3]), np.array([1,1,1]), 55.5)
         self.failUnless(hasattr(a, 'P'))
         self.failUnless(hasattr(a, 'V'))
         self.failUnless(hasattr(a, 'm'))
+        self.failUnless(a.name == 'a')
 
     def test_particle_motion(self):
-        a = Particle(np.array([1,2,3]), np.array([1,1,1]), 55.5)
+        a = Particle('a', np.array([1,2,3]), np.array([1,1,1]), 55.5)
         a.move(1)
         V = np.array([1,1,1])
         P = np.array([2,3,4])
         self.failUnless(np.allclose(P, a.P))
 
     def test_particle_motion2(self):
-        a = Particle(np.array([1.1,2.1,3.0]), np.array([1.1,2.1,3.0]), 55.5)
+        a = Particle('a',np.array([1.1,2.1,3.0]), np.array([1.1,2.1,3.0]), 55.5)
         Accel = np.array([2,2,-4])
         Ans = np.array([3.1, 4.1, -1.0])
         a.accelerate(Accel,1)
         self.failUnless(np.allclose(Ans, a.V))
 
     def test_particle_acceleration(self):
-        a = Particle(np.array([1, 1, 1]), np.array([1,1,1]), 44)
+        a = Particle('a',np.array([1, 1, 1]), np.array([1,1,1]), 44)
         Acc = np.array([3, 3, -1])
         V_ans = np.array([4, 4, 0])
         P_ans = np.array([5, 5, 1])
@@ -126,8 +127,8 @@ class Particle_Class_Tests(unittest.TestCase):
 
 class Physics_Class_Tests(unittest.TestCase):
     def setUp(self):
-        self.part1 = Particle(np.array([1,1,1]), np.array([1,1,1]), 5)
-        self.part2 = Particle(np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
+        self.part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
+        self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
 
 
     def _test_physics_particle_add(self):
@@ -138,8 +139,8 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failUnless(np.allclose(self.part2, base.objects[1]) )
 
     def test_Physics_Force_of_Gravity(self):
-        part1 = Particle(np.array([1,1,1]), np.array([1,1,1]), 5)
-        part2 = Particle(np.array([2,2,2]), np.array([2.3, 1.2, 4.2]), 10)
+        part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
+        part2 = Particle('b',np.array([2,2,2]), np.array([2.3, 1.2, 4.2]), 10)
         answer = np.array([-6.42*10**(-10), -6.42*10**(-10),-6.42*10**(-10) ])
         wrong_ans = np.array([1, 1, 1])
         base = Physics()
@@ -148,10 +149,10 @@ class Physics_Class_Tests(unittest.TestCase):
 
 
     def _test_Physics_force_gravity_summation_for_one_particle(self):
-        A = Particle(Vector(1.00,1.00,1.00), Vector(0,0,0), 10)
-        B = Particle(Vector(2.00,2.00,2.00), Vector(0,0,0), 10)
-        C = Particle(Vector(3.00,3.00,3.00), Vector(0,0,0), 10)
-        D = Particle(Vector(4.00,4.00,4.00), Vector(0,0,0), 10)
+        A = Particle('A',Vector(1.00,1.00,1.00), Vector(0,0,0), 10)
+        B = Particle('B',Vector(2.00,2.00,2.00), Vector(0,0,0), 10)
+        C = Particle('C',Vector(3.00,3.00,3.00), Vector(0,0,0), 10)
+        D = Particle('D',Vector(4.00,4.00,4.00), Vector(0,0,0), 10)
         base = Physics()
         base.add_obj(A)
         base.add_obj(B)
@@ -168,9 +169,9 @@ class Physics_Class_Tests(unittest.TestCase):
         #very heavy objects. The particle is supposed to bounce up and down across the line the
         # two heavy objects set on. This is testing to make sure the particle stays between
         # a maxima and minima and doesn't fly off in either direction.
-        A = Particle(Vector(0,10.00,0), Vector(0,0,0), 1)
-        B = Particle(Vector(-10,0,0), Vector(0,0,0), 10000000000)
-        C = Particle(Vector(10,0,0), Vector(0,0,0), 10000000000)
+        A = Particle('A',Vector(0,10.00,0), Vector(0,0,0), 1)
+        B = Particle('B',Vector(-10,0,0), Vector(0,0,0), 10000000000)
+        C = Particle('C',Vector(10,0,0), Vector(0,0,0), 10000000000)
 
         base = Physics()
         base.add_obj(A)
