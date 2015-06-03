@@ -130,6 +130,22 @@ class Physics_Class_Tests(unittest.TestCase):
         self.part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
         self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
 
+    def test_read_csv(self):
+        a = Particle('a', Vector(['1.1','1.2','1.3']), Vector(['0','0','0']), Vector(['50']))
+        d = Particle('d', Vector(['2.1e20','2.1e21','2.1e19']), Vector(['-2.1e20','-2.1e21','-2.1e19']), Vector(['20']))
+        base = Physics()
+        base.read_file('./test_data.csv')
+        self.failUnless(base.objects[0].name == a.name)
+        self.failUnless(base.objects[0].P == a.P)
+        self.failUnless(base.objects[0].V == a.V)
+        self.failUnless(base.objects[0].m == a.m)
+
+        self.failUnless(base.objects[3].name == d.name)
+        self.failUnless(base.objects[3].P == d.P)
+        self.failUnless(base.objects[3].V == d.V)
+        self.failUnless(base.objects[3].m == d.m)
+
+
 
     def _test_physics_particle_add(self):
         base = Physics()
@@ -139,13 +155,13 @@ class Physics_Class_Tests(unittest.TestCase):
         self.failUnless(np.allclose(self.part2, base.objects[1]) )
 
     def test_Physics_Force_of_Gravity(self):
-        part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
-        part2 = Particle('b',np.array([2,2,2]), np.array([2.3, 1.2, 4.2]), 10)
-        answer = np.array([-6.42*10**(-10), -6.42*10**(-10),-6.42*10**(-10) ])
-        wrong_ans = np.array([1, 1, 1])
+        part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
+        part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
+        answer = Vector([-6.42e-10, -6.42e-10,-6.42e-10 ])
+        wrong_ans = Vector([1, 1, 1])
         base = Physics()
         force_vec = Physics.Fg(part1, part2)
-        self.failUnless(np.allclose(answer, force_vec) )
+        self.failUnless(answer.round(2) == force_vec.round(2) )
 
 
     def _test_Physics_force_gravity_summation_for_one_particle(self):
