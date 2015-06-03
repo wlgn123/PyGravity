@@ -16,11 +16,10 @@ class Physics(object):
                 return
         self.objects.append(obj)
 
-    @staticmethod
-    def Fg(A, B):
+
+    def Fg(self, A, B):
         G = Decimal('6.67384e-11')
-        r = A.P -  B.P  #vector between two particles
-        r_hat =r    #unit vector of r
+        r =  A.P - B.P   #vector between two particles
         r_squared = r.magnitude() ** 2  # dist between A, B squared
         f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
         f_vec = r.unit() * f_mag
