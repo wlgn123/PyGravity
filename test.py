@@ -131,8 +131,8 @@ class Physics_Class_Tests(unittest.TestCase):
         self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
 
     def test_read_csv(self):
-        a = Particle('a', Vector(['1.1','1.2','1.3']), Vector(['0','0','0']), Vector(['50000000']))
-        d = Particle('d', Vector(['2.1','2.1','2.1']), Vector(['0','0','0']), Vector(['20000000']))
+        a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
+        d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
         base = Physics()
         base.read_file('./test_data.csv')
         self.failUnless(base.objects[0].name == a.name)
