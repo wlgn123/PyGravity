@@ -18,3 +18,7 @@ class Particle(object):
         particle_str = self.name + ': Position: ' + str(self.P) + ', Velocity: ' + str(self.V) + ', Mass: ' + str(self.m)
         return particle_str
 
+    def round(self, n):
+         particle_str = self.name + ': Position: ' + str(self.P.round(n)) + ', Velocity: ' + str(self.V.round(n)) + ', Mass: ' + str(self.m.round(n))
+         return particle_str
+
