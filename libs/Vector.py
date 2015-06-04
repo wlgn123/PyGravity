@@ -1,8 +1,12 @@
 from round_sig import round_sig
 from decimal import *
+
+
+
+
 class Vector(object):
     def __init__(self, array):
-        getcontext().prec = 200
+        
         self.vector = self.makedecimal(array)
 
     def __str__(self):
@@ -85,7 +89,6 @@ class Vector(object):
         for item in self.vector:
             new.append(round_sig(item, i))
         return Vector(new)
-
 
     def magnitude(self):
         total = 0

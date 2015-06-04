@@ -8,6 +8,10 @@ class Physics(object):
         self.timestep = 1
         self.total_steps = 0
         self.dimension = 3
+        self.set_prec(100)
+    
+    def set_prec(self, a):
+        getcontext().prec = a
 
     def add_obj(self, obj):
         for item in self.objects:
