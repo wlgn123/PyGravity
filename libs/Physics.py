@@ -9,6 +9,7 @@ class Physics(object):
         self.total_steps = 0
         self.dimension = 3
         self.set_prec(100)
+        self.fast = True
     
     def set_prec(self, a):
         getcontext().prec = a
@@ -42,10 +43,28 @@ class Physics(object):
         total_Fg_A = self.sum_Fg_one_particle(A)
         acceleration = total_Fg_A * (1/A.m.magnitude())
         A.accelerate(acceleration,self.timestep)
+        
+    def calculate_acc(self,A, B):
+        G = Decimal('6.67384e-11')
+        r =  A.P - B.P   #vector between two particles
+        r_cube = r.magnitude() ** 3  # dist between A, B cubed
+        acc = G * B.m[0] / r_cube
+        return r * acc
 
+    def fast_accelerate(self, A):
+        acc_list = []
+        for particle in self.objects:
+            if particle != A:
+                acc_list.append(self.calculate_acc(particle, A))
+        total_acc = reduce(lambda a,b:a+b, acc_list)
+        A.accelerate(total_acc, self.timestep)
+        
     def step_all(self):
         for item in self.objects:
-            self.apply_gravitational_acceleration(item)
+            if self.fast == True:
+                self.fast_accelerate(item)
+            else:
+                self.apply_gravitational_acceleration(item)
         for item in self.objects:
             item.move(self.timestep)
         self.total_steps += 1
