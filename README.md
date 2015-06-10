@@ -13,7 +13,7 @@ The precsion is excetued using Python's built in Decimal module. There is an opt
 #### Features
 Loading a set of objects from a CSV file, adjusting precision, adjusting time interval.
 #### Examples
-I included a couple exmple Ipython notebooks in the repo. The main one is called "2D_Physics.ipynb" or also "2d_Physics.py". These examples really use most of the features in one file to graph a ring of planets.
+I included a couple example Ipython notebooks in the repo. The main one is called "2D_Physics.ipynb" or also "2d_Physics.py". These examples really use most of the features in one file to graph a ring of planets.
 #### Documentaion
 Documentation at TBA.
 There is some at ./docs/PyGravity.pdf but it is sorely outdated
