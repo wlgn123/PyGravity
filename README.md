@@ -8,7 +8,7 @@ A library to simulate the motion due to gravity for any number of objects of any
 -  This is also not realtivistic. So no black holes, no orbits near the speed of light, no time dialation. 
 
 ##### Under The Hood
-THe precsion is excetued using Python's built in Decimal module. There is an optoion to specify the global Decimal precision so you can quickly deicide on a compromise between accuruarcy and speed.
+The precsion is excetued using Python's built in Decimal module. There is an optoion to specify the global Decimal precision so you can quickly deicide on a compromise between accuruarcy and speed.
 
 #### Features
 Loading a set of objects from a CSV file, adjusting precision, adjusting time interval.
