@@ -20,6 +20,7 @@ There is some at ./docs/PyGravity.pdf but it is sorely outdated
 
 #### TODO
 - Gravitational fields. 
+- multiprocessor
 - Save to CSV
 - better docs
 
