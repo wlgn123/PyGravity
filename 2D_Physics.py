@@ -6,7 +6,7 @@ import PyGravity
 base = PyGravity.PyGravity()
 base.dimension = 3
 
-base.set_reader_type('CSV')
+
 base.read_file('example_data.csv')
 
 base.Physics.timestep = 60
