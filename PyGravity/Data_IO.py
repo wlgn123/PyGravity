@@ -1,12 +1,21 @@
 import csv
 
 class Reader(object):
-	def __init__(self, path, physics):
-		self.path = path
+	def __init__(self):
 		self.data = []
+		self.dimension = 3
+		self.data_type = None
+	
+	def set_reader_type(self, type):
+		if type == 'CSV':
+			self.data_type = 1
+			
+	def read_file(self, path):
+		if self.data_type == 1:
+			self.CSV_Reader(path)
 		
-	def read_file(self):		
-		with open(self.path, 'rb') as csvfile:
+	def CSV_Reader(self, path):		
+		with open(path, 'rb') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=':', quotechar='|')
 			for row in spamreader:
 				try:
