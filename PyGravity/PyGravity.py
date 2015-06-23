@@ -6,7 +6,7 @@ class PyGravity():
 		self.dimension = 3
 		self.Physics = Physics()
 		self.reader = Data_IO.Reader()
-		self.objects = []
+
 		
 	def set_reader_type(self, r_type):
 		self.reader.dimension = self.dimension
@@ -16,7 +16,7 @@ class PyGravity():
 		self.Physics.dimension = dim
 		
 	def read_file(self, file_name):
-		self.objects = self.reader.read_file(file_name)
+		self.Physics.objects = self.reader.read_file(file_name)
 	
 			
 	
