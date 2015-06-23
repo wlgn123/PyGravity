@@ -16,7 +16,8 @@ class PyGravity():
 		self.Physics.dimension = dim
 		
 	def read_file(self, file_name):
-		self.Physics.objects = self.reader.read_file(file_name)
+		self.reader.read_file(file_name)
+		self.Physics.objects = self.reader.objects
 	
 			
 	
