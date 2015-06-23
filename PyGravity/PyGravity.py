@@ -10,4 +10,7 @@ class PyGravity():
 		if type == 'CSV':
 			self.reader = Data_IO.CSV_Reader()
 		
+	def set_dimension(self, dim):
+		self.Physics.dimension = dim
+		
 	
