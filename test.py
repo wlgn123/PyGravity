@@ -1,5 +1,5 @@
 import unittest
-from libs import round_sig, Vector, Particle, Physics, data_io
+from PyGravity import round_sig, Vector, Particle, Physics, Data_IO
 import numpy as np
 from math import log10, floor
 from decimal import *
@@ -193,10 +193,11 @@ class Data_io_Class_Tests(unittest.TestCase):
         self.part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
         self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
 
-    def _test_read_csv(self):
+    def test_read_csv(self):
         a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
         d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
-        base = Physics()
+        base = Data_IO.Reader()
+        base.set_reader_type('CSV')
         base.read_file('./test_data.csv')
         self.failUnless(base.objects[0].name == a.name)
         self.failUnless(base.objects[0].P == a.P)

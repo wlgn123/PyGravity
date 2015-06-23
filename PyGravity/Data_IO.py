@@ -1,8 +1,10 @@
 import csv
+from Particle import Particle
+from Vector import Vector
 
 class Reader(object):
 	def __init__(self):
-		self.data = []
+		self.objects = []
 		self.dimension = 3
 		self.data_type = None
 	
@@ -26,9 +28,9 @@ class Reader(object):
 				except ValueError as e:
 					print e
 					
-    def add_obj(self, obj):
-        for item in self.data:
-            if obj.name == item.name:
-                raise ValueError("duplicate name found, not adding last entry")
-                return
-        self.data.append(obj)
+	def add_obj(self, obj):
+		for item in self.objects:
+			if obj.name == item.name:
+				raise ValueError("duplicate name found, not adding last entry")
+				return
+		self.objects.append(obj)
