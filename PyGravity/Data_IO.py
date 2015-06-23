@@ -6,15 +6,16 @@ class Reader(object):
 	def __init__(self):
 		self.objects = []
 		self.dimension = 3
-		self.data_type = None
-	
-	def set_reader_type(self, type):
-		if type == 'CSV':
-			self.data_type = 1
+
 			
 	def read_file(self, path):
-		if self.data_type == 1:
+		file_type = path.split('.')[-1]
+		
+		if file_type == 'csv':
 			self.CSV_Reader(path)
+		else:
+			raise ValueError('File type not supported')
+			return
 		
 	def CSV_Reader(self, path):		
 		with open(path, 'rb') as csvfile:
