@@ -25,3 +25,10 @@ class Reader(object):
 						self.add_obj(Particle(row[0], Vector(row[1:3]), Vector(row[3:5]), Vector(row[5:]) ) )
 				except ValueError as e:
 					print e
+					
+    def add_obj(self, obj):
+        for item in self.data:
+            if obj.name == item.name:
+                raise ValueError("duplicate name found, not adding last entry")
+                return
+        self.data.append(obj)

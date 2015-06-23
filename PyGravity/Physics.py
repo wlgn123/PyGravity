@@ -14,12 +14,7 @@ class Physics(object):
     def set_prec(self, a):
         getcontext().prec = a
 
-    def add_obj(self, obj):
-        for item in self.objects:
-            if obj.name == item.name:
-                raise ValueError("duplicate name found, not adding last entry")
-                return
-        self.objects.append(obj)
+
 
     #classic vector form force of gravity
     def Fg(self, A, B):
