@@ -1,5 +1,5 @@
 import unittest
-from libs import round_sig, Vector, Particle, Physics
+from libs import round_sig, Vector, Particle, Physics, data_io
 import numpy as np
 from math import log10, floor
 from decimal import *
@@ -130,21 +130,6 @@ class Physics_Class_Tests(unittest.TestCase):
         self.part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
         self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
 
-    def test_read_csv(self):
-        a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
-        d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
-        base = Physics()
-        base.read_file('./test_data.csv')
-        self.failUnless(base.objects[0].name == a.name)
-        self.failUnless(base.objects[0].P == a.P)
-        self.failUnless(base.objects[0].V == a.V)
-        self.failUnless(base.objects[0].m == a.m)
-
-        self.failUnless(base.objects[1].name == d.name)
-        self.failUnless(base.objects[1].P == d.P)
-        self.failUnless(base.objects[1].V == d.V)
-        self.failUnless(base.objects[1].m == d.m)
-
 
 
     def _test_physics_particle_add(self):
@@ -201,6 +186,27 @@ class Physics_Class_Tests(unittest.TestCase):
 
             self.failUnless(base.objects[0].P.y < 12)
             self.failUnless(base.objects[0].P.y > (-12))
+
+
+class Data_io_Class_Tests(unittest.TestCase):
+    def setUp(self):
+        self.part1 = Particle('a',np.array([1,1,1]), np.array([1,1,1]), 5)
+        self.part2 = Particle('b',np.array([2*10**42,1*10**42,3*10**42]), np.array([2.3, 1.2, 4.2]), 5*10**6)
+
+    def _test_read_csv(self):
+        a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
+        d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
+        base = Physics()
+        base.read_file('./test_data.csv')
+        self.failUnless(base.objects[0].name == a.name)
+        self.failUnless(base.objects[0].P == a.P)
+        self.failUnless(base.objects[0].V == a.V)
+        self.failUnless(base.objects[0].m == a.m)
+
+        self.failUnless(base.objects[1].name == d.name)
+        self.failUnless(base.objects[1].P == d.P)
+        self.failUnless(base.objects[1].V == d.V)
+        self.failUnless(base.objects[1].m == d.m)
 
 
 
