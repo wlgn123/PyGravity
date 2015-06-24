@@ -35,3 +35,21 @@ class Reader(object):
 				raise ValueError("duplicate name found, not adding last entry")
 				return
 		self.objects.append(obj)
+
+class Writer(object):
+    def __init__(self):
+        self.objects = []
+        
+    def write_file(self, file_name):
+        with open(file_name, 'w+') as f:
+            for object in self.objects:
+                f.write(self.object_to_string(object))
+                
+    def object_to_string(self, ob):
+        string = str(ob.name) + ':' 
+        for item in ob.P:
+            string = string + str(item) +':'
+        for item in ob.V:
+            string = string + str(item) + ':'
+        string = string + str(ob.m[0])+'\n'
+        return string
