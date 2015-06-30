@@ -14,11 +14,13 @@ A library to simulate the motion due to gravity for any number of objects of any
 
 ## Documentaion
 ##### core 
-The main docs are generated with Doxygen. To output the docs as html and latex run
+The main docs are generated with Sphinx, find them at http://russloewe.com/PyGravity/index.html or generate
+them yourself by running 
+    
+    make html
+    
+in ./documentation folder
 
-    doxygen PyGravity.Doxyfile
-
-Or find them at http://russloewe.com/PyGravity/index.html
 ##### example
 Documentation illustrating an example usage can be found under ./docs/PyGravity_doc.tex. The 
 tex file can be compiled into a PDF with 
