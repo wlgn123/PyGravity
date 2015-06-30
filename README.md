@@ -20,14 +20,13 @@ The main docs are generated with Doxygen. To output the docs as html and latex r
 
 Or find them at http://russloewe.com/PyGravity/index.html
 ##### example
-Documentation illustrating an example usage can be found under ./examples/docs/PyGravity_doc.tex. The 
+Documentation illustrating an example usage can be found under ./docs/PyGravity_doc.tex. The 
 tex file can be compiled into a PDF with 
 
     make all clean
 
 Pdflatex is required.
 
-There is some at ./docs/PyGravity.pdf but it is sorely outdated
 #### Features
 Loading a set of objects from a CSV file, adjusting precision, adjusting time interval.
 
