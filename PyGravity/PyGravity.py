@@ -41,8 +41,8 @@ class PyGravity():
 	def read_file(self, file_name):
 		''' 
 		Use to load a set of particles from a CSV data file, 
-		 The particles are then loaded into the objects list
-		 under Physics.objects.
+		The particles are then loaded into the objects list
+		under Physics.objects.
 		 
 		:param: file_name(string) Name of data file to be read.
 		
@@ -61,11 +61,13 @@ class PyGravity():
 
 
 	def write_file(self, file_name):
-		self.writer.objects = self.Physics.objects
-		self.writer.write_file(file_name)
-		'''Write current particle set to output file
+		'''
+		Write current particle set to output file
 		
 		:param: (string)file_name File name and path to write current
-		dataset
+			dataset
 		
 		'''
+		self.writer.objects = self.Physics.objects
+		self.writer.write_file(file_name)
+
