@@ -1,3 +1,5 @@
+all:
+	pdflatex PyGravity_doc.tex
 clean:
 	rm *.log
 	rm *.run.xml
