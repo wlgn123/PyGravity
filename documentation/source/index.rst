@@ -39,13 +39,14 @@ This is something I want to say that is not in the docstring.
 
       
 .. autoclass:: PyGravity.Physics
-   :members: 
+	:members: 
 
 Data Input Ouptut
 ========================
 
-.. autoclass:: PyGravity.Data_IO
-   :members: 
+.. automodule:: PyGravity.Data_IO
+    :members:
+    
 
 ToDo
 ========================
