@@ -2,7 +2,7 @@ from Physics import Physics
 import Data_IO
 ##
 #@author Russell Loewe russloewe@gmail.com
-#@file PyGravity.py
+#@file ./PyGravity/PyGravity.py
 #@date 6-28-2015
 #@brief main entry point for PyGravty module
 #cantains the base class to tie together the sub modules of 
