@@ -1,5 +1,10 @@
 # PyGravity
+## Install
 
+
+    sudo python setup.py install
+
+## About
 #### What is it
 A library to simulate the motion due to gravity for any number of objects of any size to a high degree of precision. This program allows you to create any number of particles or asteriods or planets at any location in two or three dimensions and watch how they orbit eachother. 
 ##### What it is not
@@ -7,21 +12,30 @@ A library to simulate the motion due to gravity for any number of objects of any
 -  In one word: fast. Using the awesomness of numpy's speed was scrapped for the accuracy of Decimal. So while you'll die of old age trying to simulate a very large system for more then a few seconds, you will be able to see how fast gravity could pull two baseballs together in deep space without the simulator rounding the extremly weak forces to zero.
 -  This is also not realtivistic. So no black holes, no orbits near the speed of light, no time dialation. 
 
-##### Under The Hood
-The precsion is excetued using Python's built in Decimal module. There is an optoion to specify the global Decimal precision so you can quickly deicide on a compromise between accuruarcy and speed.
+## Documentaion
+##### core 
+The main docs are generated with Doxygen. To output the docs as html and latex run
 
+    doxygen PyGravity.Doxyfile
+
+Or find them at http://russloewe.com/PyGravity/index.html
+##### example
+Documentation illustrating an example usage can be found under ./examples/docs/PyGravity_doc.tex. The 
+tex file can be compiled into a PDF with 
+
+    make all clean
+
+Pdflatex is required.
+
+There is some at ./docs/PyGravity.pdf but it is sorely outdated
 #### Features
 Loading a set of objects from a CSV file, adjusting precision, adjusting time interval.
-#### Examples
-I included a couple example Ipython notebooks in the repo. The main one is called "2D_Physics.ipynb" or also "2d_Physics.py". These examples really use most of the features in one file to graph a ring of planets.
-#### Documentaion
-Documentation at TBA.
-There is some at ./docs/PyGravity.pdf but it is sorely outdated
 
-#### TODO
+## TODO
 - Gravitational fields. 
 - multiprocessor
-- Save to CSV
+- ~~Save to CSV~~
 - better docs
+- move Physics.objects to seperate attribute object. ditto to dimension, precision, timestep, etc.
 
 
