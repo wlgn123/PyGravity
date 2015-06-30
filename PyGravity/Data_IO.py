@@ -1,7 +1,14 @@
 import csv
 from Particle import Particle
 from Vector import Vector
+'''
+.. module:: Data_IO
+   :platform: Unix
+   :synopsis: data imput output
 
+.. moduleauthor:: Russell Loewe <russloewe@gmail.com>
+
+'''
 class Reader(object):
 	def __init__(self):
 		self.objects = []

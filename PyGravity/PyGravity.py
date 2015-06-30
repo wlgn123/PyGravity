@@ -1,47 +1,62 @@
 from Physics import Physics
 import Data_IO
-##
-#@author Russell Loewe russloewe@gmail.com
-#@file ./PyGravity/PyGravity.py
-#@date 6-28-2015
-#@brief main entry point for PyGravty module
-#cantains the base class to tie together the sub modules of 
-#PyGravity
+'''
+.. module:: PyGravity
+   :platform: Unix
+   :synopsis: Main PyGravity mod.
 
+.. moduleauthor:: Russell Loewe <russloewe@gmail.com>
+
+'''
 class PyGravity():
-
+	'''Main class for  combining submodules
+	'''
 	def __init__(self):
+		'''initialize data reader and writer
+		Also set global diminsion
+		'''
 		self.dimension = 3
 		self.Physics = Physics()
 		self.reader = Data_IO.Reader()
 		self.writer = Data_IO.Writer()
-		##
-		#@brief init
-		# initial vector dimension set to 3
+
 
 	def set_dimension(self, dim):
+		'''Set global dimnsion
+		
+
+		Dimension is defaulted to 3, but can be overriden here
+
+		Args:
+			arg1 (int): The diminsion of the 
+		'''
 		self.Physics.dimension = dim
 		self.reader.dimension = dim
-		##
-		#@brief override vector dimsion 
-		#changes the vector dimsion for the csv reader parser
-		#@see Data_IO.Reader
+
 
 
 	def read_file(self, file_name):
+		''' Use to load a set of particels from a CSV file
+		
+		Use to load a set of particles from a CSV data file, 
+		 The particles are then loaded into the objects list
+		 under Physics.objects.
+		 
+		:param: (string)file_name Name of data file to be read
+		
+
+		:py:func:'PyGravity.set_dimension'
+		
+		.. note::
+			the dimension of the PyGravity.dimension must match the 
+			the dimension of the particles in the CSV file.
+			
+		see :py:class:'PyGravity.Data_IO'
+		
+		'''
 		self.reader.read_file(file_name)
 		self.Physics.objects = self.reader.objects
-		##
-		#@brief use to load a set of particels from a CSV file
-		# @param file_name
-		# Use to load a set of particles from a CSV data file. 
-		# The particles are then loaded into the objects list
-		# under Physics.objects.
-		#@see PyGravity.dimension
-		#
-		#@note the dimension of the PyGravity.dimension must match the 
-		#dimension f the particles in the CSV file
-		#@see Data_IO.Reader.dimension
+
 
 	def write_file(self, file_name):
 		self.writer.objects = self.Physics.objects
