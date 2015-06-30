@@ -39,8 +39,8 @@ class PyGravity():
 		# under Physics.objects.
 		#@see PyGravity.dimension
 		#
-		#@note the dimension of the PyGravity must match the dimension
-		#of the particles in the CSV file
+		#@note the dimension of the PyGravity.dimension must match the 
+		#dimension f the particles in the CSV file
 		#@see Data_IO.Reader.dimension
 
 	def write_file(self, file_name):
