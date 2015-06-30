@@ -1,43 +1,29 @@
 from decimal import *
 from Particle import Particle
 from Vector import Vector
-"""
+'''
 .. module:: Physics
-##
-#@file ./PyGravity/Physics.py
-#@author Russell Loewe russloewe@gmail.com
-#@date 6-29-2015
-#
-#@brief Main Physics engine for calculating forces
-#todo remove Physics.objects to seperate class
-#
-#The Physics class contains methods for finding the force of 
-#gravity between two objects, or between an array of objects. 
-#For finding acceleration due to gravity between two objects, 
-#or between an array of objects.
-#For calculating the escape velocity between two objects or 
-#an array of objects.
-#And for applying and stepping all particles in the objects list
-#@todo Remove need to creat class instance. move and object list to 
-#
-"""
-class Physics(object):
-	"""
-	Physics class
-	"""
-	##
-	#@brief Physics Class.
-	#This class defines the Physics object.
-	#Creating a physics object to hold physics attributes and object list
+   :platform: Unix
+   :synopsis: Main Physics Function Bundle.
 
-	#seperate object.
-	#
-	 
+.. moduleauthor:: Russell Loewe <russloewe@gmail.com>
+.. todo:: 
+	Create a seperate object to hold particle list, vector deminsion
+	and time step and time counter
+'''
+class Physics(object):
+	"""Physics class
+	This class holds the particle object and varies atributes for the 
+	system
+	
+	.. todo:: make static module, out attributes and paticle list into 
+	seperate container
+	
+	"""
+
 	def __init__(self):
-		"""
-		##
-		#@brief inits with default values and empty lists
-		"""
+		'''inits with default values and empty lists
+		'''
 		self.objects = []
 		self.timestep = 1
 		self.total_steps = 0
@@ -47,16 +33,16 @@ class Physics(object):
 
 
 	def set_prec(self, a):
-		"""
-		Args:
-			a, precision
-			
+		'''
+		:param: (int) precision value for vectors
+		
 		set precision for vectors
-		"""
+		
+		.. todo:: move to outside container
+		
+		'''
 		getcontext().prec = a
-		##
-		#@brief change default precision for Vector
-		#
+
 
 
 	def Fg(self, A, B):
