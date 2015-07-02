@@ -13,6 +13,9 @@ class Global_Container(object):
 	as well as the time increment, the total time elapsed, the 
 	spatial demisnion for the simulation, and the precision for the 
 	vectors. 
+	
+	.. todo:: incorperate Global_Container into rest of module
+	
 	'''
 	
 	def __init__(self):
