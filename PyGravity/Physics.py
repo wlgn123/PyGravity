@@ -17,12 +17,13 @@ class Physics(object):
 	system
 	
 	.. todo:: make static module, out attributes and paticle list into 
-	seperate container
+		seperate container
 	
 	"""
 
 	def __init__(self):
-		'''inits with default values and empty lists
+		'''
+		inits with default values and empty lists
 		'''
 		self.objects = []
 		self.timestep = 1
@@ -35,8 +36,7 @@ class Physics(object):
 	def set_prec(self, a):
 		'''
 		:param: (int) precision value for vectors
-		
-		set precision for vectors
+			set precision for vectors
 		
 		.. todo:: move to outside container
 		
@@ -46,26 +46,27 @@ class Physics(object):
 
 
 	def Fg(self, A, B):
+		'''
+		Calculates the force of gravity between two particles. Uses Newton's 
+		Law of Gravity. Gravitational constant is in standtard metric units.
+		
+		:param: A(Particle): First particle
+		
+		:param: B(Particle): Second Particle
+		
+		:returns: Force(Vector): Force acting on particle A as a Vector.
+		
+		.. todo:: abstract gravitational constant to Global Cantainer, 
+			add parser to PyGravity to smartly determin working units.
+		
+		'''
 		G = Decimal('6.67384e-11')
 		r =  A.P - B.P   #vector between two particles
 		r_squared = r.magnitude() ** 2  # dist between A, B squared
 		f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
 		f_vec = r.unit() * f_mag
 		return f_vec
-		##
-		#@brief calculate force of gravity between two particles
-		#@param A first PyGravity.Particle.Particle object
-		#@param B second PyGravity.Particle.Particle object
-		#@see PyGravity.Particle.Particle
-		#@returns Force of gravity as a vector
-		#@see PyGravity.Vector.Vector
-		#
-		#This method takes two Particle Objects and calculates the 
-		#force of gravity between the two of them using Newtons 
-		#classical law of gravity.
-		#@see PyGravity.Vector.Vector.__sub__() , 
-		#PyGravity.Vector.Vector.magnitude()
-		#
+
 
 	def sum_Fg_one_particle(self, A):
 		force_list = []
