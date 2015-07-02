@@ -44,7 +44,7 @@ Physics
 This is something I want to say that is not in the docstring.
 
       
-.. autoclass:: PyGravity.Physics
+.. automodule:: PyGravity.Physics
 	:members: 
 
 Data Input Ouptut
