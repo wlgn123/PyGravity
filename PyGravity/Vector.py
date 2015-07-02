@@ -169,7 +169,7 @@ class Vector(object):
 
 	def magnitude(self):
 		'''
-		Find the magnitude of the current vector using Pathagreayna formula.
+		Find the magnitude of the current vector using Pythagorean theorem.
 		This is independant of the dimension of the vector and will find the 
 		megnitude for any vector.
 		
