@@ -22,15 +22,10 @@ Indices and tables
 
 PyGravity 
 =========================
+The PyGravity module is the top layer that wraps the project
 
-This is something I want to say that is not in the docstring.
-
-.. automodule:: PyGravity
+.. automodule:: PyGravity.PyGravity
     :members:
-
-.. autoclass:: PyGravity.PyGravity
-    :members: 
-    
 
 Physics
 =========================
@@ -46,9 +41,23 @@ Data Input Ouptut
 
 .. automodule:: PyGravity.Data_IO
     :members:
-    
 
+
+Vectors
+========================
+
+.. automodule:: PyGravity.Vector
+    :members:
+    
+Particles
+========================
+
+.. automodule:: PyGravity.Particle
+    :members:
+    
+    
 ToDo
 ========================
+
 
 .. todolist::
