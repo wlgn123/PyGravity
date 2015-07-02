@@ -99,6 +99,16 @@ class Particle(object):
 		Vector.round()
 		
 		:param: n(int): Sig digits to round by.
+		:returns: New particle with rounded attributes.
+		
+		.. code-block:: python
+		
+			>>> A = Particle('A', Vector([1.01]), Vector([1.02]), Vector([1.03]))
+			>>> print A
+			A: Position: (1.01), Velocity: (1.02), Mass: (1.03)
+			>>> print A.round(1)
+			A: Position: (1.0), Velocity: (1.0), Mass: (1.0)
+		
 		'''
 		particle_str = self.name + ': Position: ' + str(self.P.round(n)) + ', Velocity: ' + str(self.V.round(n)) + ', Mass: ' + str(self.m.round(n))
 		return particle_str
