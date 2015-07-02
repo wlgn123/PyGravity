@@ -27,6 +27,17 @@ The PyGravity module is the top layer that wraps the project
 .. automodule:: PyGravity.PyGravity
     :members:
 
+Global Container
+=========================
+
+This is where the global values are stored that will be passed to the 
+rest of the simulator.
+
+      
+.. automodule:: PyGravity.Global_Container
+	:members: 
+
+
 Physics
 =========================
 
