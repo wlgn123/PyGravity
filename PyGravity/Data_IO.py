@@ -11,6 +11,13 @@ from Vector import Vector
 '''
 class Reader(object):
 	'''Data reading and writing class.
+	
+	.. todo:: Add smarter parser for determining vector dimensions. 
+	
+	.. todo:: Add xml parser
+	
+	.. todo:: Change date formate for easy continuation of simulations. 
+		add timestamp along with other particle attribute.
 
 	'''
 	def __init__(self):
