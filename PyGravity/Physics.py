@@ -1,6 +1,6 @@
 from decimal import *
-from Particle import Particle
-from Vector import Vector
+import Particle
+import Vector
 '''
 .. module:: Physics
    :platform: Unix

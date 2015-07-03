@@ -80,6 +80,9 @@ class Vector(object):
 		return Vector(new_array)
 
 	def __radd__(self, other_vector):
+		if self.array_mismatch(other_vector):
+			raise ValueError('vector dimension doesnt match')
+			
 		new_array = []
 		for index, val in enumerate(self.vector):
 			new_array.append(val + other_vector.vector[index])
@@ -99,7 +102,8 @@ class Vector(object):
 		return Vector(new_array)
 
 	def __eq__(self, other_vector):
-		i=0
+		if self.array_mismatch(other_vector):
+			raise ValueError('vector dimension doesnt match')
 		for element in self.vector:
 			try:
 				if element != other_vector.vector[i]:
