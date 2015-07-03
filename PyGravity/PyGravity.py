@@ -1,4 +1,4 @@
-from Physics import Physics
+import Physics
 import Data_IO
 '''
 .. module:: PyGravity
