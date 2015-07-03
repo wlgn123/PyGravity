@@ -69,6 +69,19 @@ class Physics(object):
 
 
 	def sum_Fg_one_particle(self, A):
+		'''
+		Finds the the total force of gravity acting on one particle. 
+		The force of gravity acting on the supplied particle is claculated 
+		for every particle in the global particle list. The result is then 
+		summed and returned.
+		
+		:param: A(Particle): Particle for which the force of gravity is 
+			being calculated.
+		
+		:returns: Force of gravity as a Vector Object.
+		
+		.. todo:: fix stupid method name
+		'''
 		force_list = []
 		for particle in self.objects:
 			if particle != A:
@@ -76,19 +89,17 @@ class Physics(object):
 		f = lambda a,b: a+b
 		total_force = reduce(f, force_list)
 		return total_force
-		##
-		#@brief Calculates the total force of gravity in the entire
-		#system acting on one particle.
-		#@param A PyGravity.Particle.Particle object
-		#@return total_force, as a Vector
-		#
-		#This function takes a single Particle object and iterates through
-		# the whole object list using
-		#Physics.Fg() function to find the total force 
-		#acting on a single Particle.
 
 	#find acceleration from total force, apply using Particle.accelerate()
 	def apply_gravitational_acceleration(self, A):
+		'''
+		Calculates the acceleration action on a particle using the 
+		sum_fg_one_particle() method and f=ma then applies the acceleration 
+		to the particle using the Particle.accelerate() method
+		
+		:param: A(Particle): Particle to apply acceleration to
+		
+		'''
 		total_Fg_A = self.sum_Fg_one_particle(A)
 		acceleration = total_Fg_A * (1/A.m.magnitude())
 		A.accelerate(acceleration,self.timestep)
