@@ -1,19 +1,21 @@
 from distutils.core import setup
 from distutils.cmd import Command
 from tests import test
+import os
 
 
 class TestCommand(Command):
-    user_options = []
+	user_options = []
 
-    def initialize_options(self):
-        pass
+	def initialize_options(self):
+		pass
 
-    def finalize_options(self):
-        pass
+	def finalize_options(self):
+		pass
 
-    def run(self):
-        test.main()
+	def run(self):
+		os.chdir('./tests')
+		test.main()
 
 setup(name='PyGravity',
 	version='1.01',
