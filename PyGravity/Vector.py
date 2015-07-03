@@ -80,7 +80,7 @@ class Vector(object):
 		return Vector(new_array)
 
 	def __radd__(self, other_vector):
-		new_vector = []
+		new_array = []
 		for index, val in enumerate(self.vector):
 			new_array.append(val + other_vector.vector[index])
 
