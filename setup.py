@@ -15,8 +15,8 @@ class TestCommand(Command):
 
 	def run(self):
 		os.chdir('./tests')
-		test.main()
-		
+		test.run_test()
+
 setup(name='PyGravity',
 	version='1.01',
 	description='High Precision Gravity Simulator',
