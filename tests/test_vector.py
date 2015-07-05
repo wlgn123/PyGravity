@@ -42,11 +42,13 @@ class Vector_Class_Tests(unittest.TestCase):
 
 	def test_equality_precise(self):
 		self.failUnless(self.E == self.E)
-		self.failIf(self.E == self.A)
 		self.failIf(( self.E- self.F) == self.Z)
 		self.failUnless(self.I - self.I  == self.Z)
 		self.failIf(self.H + self.H == self.H + self.I)
 
+	def test_array_match(self):
+		self.assertRaises(ValueError, self.A.__eq__, self.E )
+		
 	def test_scalar_mul(self):
 		new_vec = self.L * 1.111111122
 		self.failUnless(new_vec.round(10) == self.M.round(10))
