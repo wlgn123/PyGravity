@@ -3,6 +3,7 @@
 
 
     sudo python setup.py install
+    python setup.py test            # run unit tests
 
 ## About
 #### What is it
