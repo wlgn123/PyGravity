@@ -1,5 +1,6 @@
 from decimal import *
 import Particle
+import Global_Container
 import Vector
 '''
 .. module:: Physics
@@ -22,30 +23,11 @@ class Physics(object):
 	"""
 
 	def __init__(self):
-		'''
-		inits with default values and empty lists
-		'''
-		self.objects = []
-		self.timestep = 1
-		self.total_steps = 0
-		self.dimension = 3
-		self.set_prec(100)
-		self.fast = True
+		pass
 
 
-	def set_prec(self, a):
-		'''
-		:param: (int) precision value for vectors
-			set precision for vectors
-		
-		.. todo:: move to outside container
-		
-		'''
-		getcontext().prec = a
-
-
-
-	def Fg(self, A, B):
+	@staticmethod
+	def Grav_Force(A, B):
 		'''
 		Calculates the force of gravity between two particles. Uses Newton's 
 		Law of Gravity. Gravitational constant is in standtard metric units.
@@ -67,74 +49,55 @@ class Physics(object):
 		f_vec = r.unit() * f_mag
 		return f_vec
 
-
-	def sum_Fg_one_particle(self, A):
+	@staticmethod
+	def Total_Grav_Force(particle_list, particle):
 		'''
 		Finds the the total force of gravity acting on one particle. 
 		The force of gravity acting on the supplied particle is claculated 
 		for every particle in the global particle list. The result is then 
 		summed and returned.
 		
-		:param: A(Particle): Particle for which the force of gravity is 
+		:para: particle_list(list): List of particle objects
+		
+		:param: parrticle(Particle): Particle for which the force of gravity is 
 			being calculated.
 		
 		:returns: Force of gravity as a Vector Object.
 		
-		.. todo:: fix stupid method name
 		'''
 		force_list = []
-		for particle in self.objects:
-			if particle != A:
-				force_list.append(self.Fg(particle, A))
+		for _particle in particle_list:
+			if _particle != particle:
+				force_list.append(self.Grav_Force(_particle, particle))
 		f = lambda a,b: a+b
 		total_force = reduce(f, force_list)
 		return total_force
 
 	#find acceleration from total force, apply using Particle.accelerate()
-	def apply_gravitational_acceleration(self, A):
-		'''
-		Calculates the acceleration action on a particle using the 
-		sum_fg_one_particle() method and f=ma then applies the acceleration 
-		to the particle using the Particle.accelerate() method
-		
-		:param: A(Particle): Particle to apply acceleration to
-		
-		'''
-		total_Fg_A = self.sum_Fg_one_particle(A)
-		acceleration = total_Fg_A * (1/A.m.magnitude())
-		A.accelerate(acceleration,self.timestep)
-		##
-		#@brief Accelerate a Particle .
-		#@param A PyGravity.Particle.Particle
-		#@return null
-		#
-		#Takes a Particle object and uses Physics.sum_Fg_one_particle()
-		#to find the force on the particle. Then uses's Netown's 
-		#F=ma to find the acceleration acting on the particle. Then 
-		#calls the Particle.accelerate() method to apply the acceleration 
-		#to the particle
-		#
+
 
     # more direct way to find acceleration, skipping some steps
-	def calculate_acc(self,A, B):
+	@staticmethod
+	def Grav_Accel(A, B):
+		'''
+		Calculate the acceleration between particle A and B due to 
+		gravity. Uses math shortcuts to reduce total number of calculations
+		as apposed to using Grav_Force / mass to find acceleration.
+		
+		:param: A(Vector): The first vector.
+		:param: B(Vector): The second vector.
+		
+		:returns: The acceleration as a Vector Object.
+		
+		.. todo:: Add formated math example
+		
+		.. todo:: double check math on the return vector, see comment.
+		'''
 		G = Decimal('6.67384e-11')
 		r =  A.P - B.P   #vector between two particles
 		r_cube = r.magnitude() ** 3  # dist between A, B cubed
 		acc = G * B.m[0] / r_cube
 		return r * acc #r.unit()?
-		##
-		#@brief Directly find acceleration from gravity between two particles.
-		#@param A PyGravity.Vector.Vector object
-		#@param B PyGravity.Vector.Vector object
-		#@return Acceleration Vector
-		#@see PyGravity.Vector.Vector
-		#@todo displacement vector times accelerating magnitude needs to
-		#be the unit displacment vector time acceleration magnitued 
-		#r -> r.unit()
-		#
-		#This function calculates the force of gravity between two particles
-		#directly, skipping the uneeded math steps such as needing to 
-		#find the force of gravity.
 
     #adding all acceleration vectors and using Particle.accelerate()
 	def fast_accelerate(self, A):
