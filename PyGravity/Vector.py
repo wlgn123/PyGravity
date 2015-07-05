@@ -104,6 +104,7 @@ class Vector(object):
 	def __eq__(self, other_vector):
 		if self.array_mismatch(other_vector):
 			raise ValueError('vector dimension doesnt match')
+		i = 0
 		for element in self.vector:
 			try:
 				if element != other_vector.vector[i]:
