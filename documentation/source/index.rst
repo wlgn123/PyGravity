@@ -9,9 +9,9 @@ Welcome to PyGravity's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
-
+full source http://github.com/russloewe/PyGravity
 
 Indices and tables
 ==================
