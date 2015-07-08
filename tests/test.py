@@ -1,5 +1,5 @@
 import unittest
-from PyGravity import round_sig, Vector, Particle, Physics, Data_IO
+from PyGravity import PyGravity,round_sig, Vector, Particle, Physics, Data_IO
 from decimal import *
 
 
@@ -12,11 +12,12 @@ class Round_test(unittest.TestCase):
 		self.failUnless(round_sig(a, 1) == 0)
 
 	def test_neg_numbers(self):
-		a = -1.2
+		a = -1.20
 		self.failUnless(round_sig(a,2) == -1.2)
 
 class Vector_Class_Tests(unittest.TestCase):
 	def setUp(self):
+		getcontext().prec = 400
 		self.A = Vector([1,2,3])
 		self.B = Vector([1,1,1])
 		self.C = Vector([2.334e+20, 3.123456e+20])
@@ -132,34 +133,16 @@ class Physics_Class_Tests(unittest.TestCase):
 
 
 
-	def _test_physics_particil_add(self):
-		base = Physics()
-		base.add_obj(self.part1)
-		base.add_obj(self.part2)
-		self.failUnless(np.allclose(self.part1, base.objects[0]) )
-		self.failUnless(np.allclose(self.part2, base.objects[1]) )
-
 	def test_Physics_Force_of_Gravity(self):
 		part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
 		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
 		answer = Vector([-6.42e-10, -6.42e-10,-6.42e-10 ])
 		wrong_ans = Vector([1, 1, 1])
-		base = Physics()
-		force_vec = base.Fg(part1, part2)
+		force_vec = Physics.Grav_Force(part1, part2)
 		self.failUnless(answer.round(2) == force_vec.round(2) )
 
 
 	def _test_Physics_force_gravity_summation_for_one_particle(self):
-		A = Particle('A',Vector(1.00,1.00,1.00), Vector(0,0,0), 10)
-		B = Particle('B',Vector(2.00,2.00,2.00), Vector(0,0,0), 10)
-		C = Particle('C',Vector(3.00,3.00,3.00), Vector(0,0,0), 10)
-		D = Particle('D',Vector(4.00,4.00,4.00), Vector(0,0,0), 10)
-		base = Physics()
-		base.add_obj(A)
-		base.add_obj(B)
-		base.add_obj(C)
-		base.add_obj(D)
-
 		f = base.sum_Fg_one_particle(base.objects[0])
 		self.failUnless(round_sig(f.x, 3 ) == round_sig(1.75*10**(-9), 3))
 		self.failUnless(round_sig(f.y, 3 ) == round_sig(1.75*10**(-9), 3))
