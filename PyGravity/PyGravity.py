@@ -1,6 +1,7 @@
 import Physics
 import Global_Container
 import Data_IO
+import decimal
 '''
 .. module:: PyGravity
    :platform: Unix
@@ -35,6 +36,14 @@ class PyGravity():
 		'''
 		self.values.set_prec()
 
+	def set_precision(self, prec):
+		'''
+		Set the global precision. Default is 200.
+		
+		:param: prec(int) New global precision
+		'''
+		self.values.precision = prec
+		decimal.getcontext().prec = self.values.precision
 
 
 
