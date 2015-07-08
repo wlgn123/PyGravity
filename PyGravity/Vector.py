@@ -29,7 +29,7 @@ class Vector(object):
 	.. note:: The scalar multiplication is supported by A*2, however
 		2*A is not supported.
 	'''
-	def __init__(self, array):
+	def __init__(self,  array):
 		'''
 		The vector object is intialized with an array 
 		containing the values for the vector. The length of the 
