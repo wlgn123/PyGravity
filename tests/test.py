@@ -1,7 +1,15 @@
 import unittest
 from PyGravity import PyGravity,round_sig, Vector, Particle, Physics, Data_IO
 from decimal import *
+'''
+Unit Tests for PyGravity. These Unit tests will run tests against the 
+installed PyGravity module and not against the source files in this 
+package. So if you modify source, you need to re-install with 
+.. code-block:: python
 
+	python setup.py install --force
+	
+'''
 
 class Round_test(unittest.TestCase):
 	def setUp(self):
