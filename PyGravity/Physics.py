@@ -50,7 +50,7 @@ class Physics(object):
 		return f_vec
 
 	@staticmethod
-	def Total_Grav_Force(particle_list, particle):
+	def Total_Grav_Force(global_container, particle):
 		'''
 		Finds the the total force of gravity acting on one particle. 
 		The force of gravity acting on the supplied particle is claculated 
@@ -66,7 +66,7 @@ class Physics(object):
 		
 		'''
 		force_list = []
-		for _particle in particle_list:
+		for _particle in global_container.particle_list:
 			if _particle != particle:
 				force_list.append(self.Grav_Force(_particle, particle))
 		f = lambda a,b: a+b
@@ -99,72 +99,77 @@ class Physics(object):
 		acc = G * B.m[0] / r_cube
 		return r * acc #r.unit()?
 
-    #adding all acceleration vectors and using Particle.accelerate()
-	def fast_accelerate(self, A):
+	@staticmethod
+	def Sum_Grav_Accel(global_container, A):
+		'''
+		Sum the total acceleration acting on a particle by using the 
+		Grav_Accel function and iterating through the particle list
+		
+		:param: global_container(Global_Container): List of particles 
+			to iteratethrough.
+		
+		:param: A(Vector): Vector to calculate acceleration for.
+		
+		:returns: Acceleraton as a Vector Object
+		'''
 		acc_list = []
-		for particle in self.objects:
+		for particle in global_container.particle_list:
 			if particle != A:
-				acc_list.append(self.calculate_acc(particle, A))
+				acc_list.append(Grav_Accel(particle, A))
 		total_acc = reduce(lambda a,b:a+b, acc_list)
-		A.accelerate(total_acc, self.timestep)
-		##
-		#@brief Takes a particle and calculates the net acceleration
-		#@param A PyGravity.Particle.Particle
-		#@return Acceleration Vector
-		#@see PyGravity.Vector.Vector
-		# Uses Physics.calculate_acc() and sums over all objects in 
-		#the object list to produce the net accleration on Particle A
-		#
+		return total_acc
 
-    #find escape velocity between 2 objects
-	def escape_v(self, A, B):
+
+	@staticmethod
+	def Escape_Volecity(A, B):
+		'''
+		Calculate the escape velocity between two objects. 
+		
+		:param: A(Particle): First particle.
+		
+		:param: B(Particle): Second particle.
+		
+		:returns: Escape velocity as a Vector Object.
+		'''
 		G = Decimal('6.67384e-11')
 		r = (A.P-B.P).magnitude() #distance between A and B
 		esc = ((G*B.m[0])/r).sqrt() # formula for escape velocity
 		return esc
-		##
-		#@brief Find the Gravitational Escape Velocity
-		#@param A PyGravity.Particle.Particle 
-		#@param B PyGravity.Particle.Particle
-		#@return escape velocity for particle A to escape from Particle B
-		#
-		#Calculates the escape velocity required for object A to escape 
-		#from object B
 
-	def total_escape_v(self, A):
+	@staticmethod
+	def Total_Escape_Velocity(global_container, A):
+		'''
+		Find the total escape velocity acting on a particle with repect 
+		to the rest of the active particles in the simulation.
+		
+		:param: global_containter(Global_Container): Attribute container.
+		
+		:param: A(Vector): Particle to find escape velocity for.
+		
+		'''
 		esc_list = []
-		for item in self.objects:
+		for item in global_container.particle_list:
 			if A != item:
 				esc_list.append(self.escape_v(A, item))
 		return reduce(lambda a,b: a+b, esc_list)
-		##
-		#@brief Find escape velocity for particle A
-		#@param A PyGravity.Particle.Particle
-		#@return escape velocity as vector object
-		#
-		#Takes a particle and claculates the escape velocity required to 
-		#escape all object in the object list.
-		#@see Physics.escape_v()
-
-	def escaping(self):
+		
+	@staticmethod
+	def escaping(global_container):
+		'''
+		Find all the particles in the currant system that are exceeding 
+		the escape velocity for said system of particles
+		
+		:param: global_container(Global_Container): Container object for 
+			particles.
+		
+		:returns: List of particles exceeding escape velocity.
+		'''
 		escaping = []
-		for item in self.objects:
-			total_esc = self.total_escape_v(item)
+		for item in global_container.perticle_list:
+			total_esc = self.Total_Escape_Velocity(item)
 			if total_esc <= item.V.magnitude():
 				escaping.append(item.name)
 		return escaping
-		##
-		#@brief Find all objects going fast enough to escape the system
-		#@return list of all objects escaping the system
-		#
-		#This function when invoked will iterate through all Particle
-		#objects in the objects list, calculate the escape velocity 
-		#required for that particle to escape the system, then adds 
-		#that particle to a list if it is going faster than the escape
-		#veloctity. After iterating through all objects, a list is 
-		#returned wich lists all objects that are escaping from the 
-		#system of particles
-		#
 
 
 	def step_all(self):
