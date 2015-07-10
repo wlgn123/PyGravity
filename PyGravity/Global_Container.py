@@ -16,6 +16,8 @@ class Global_Container(object):
 	
 	.. todo:: incorperate Global_Container into rest of module
 	
+	.. todo:: move Global_container in PyGravity base classe. It is 
+		reduntant and doesnt offer any extra abstraction here.
 	'''
 	
 	def __init__(self):
