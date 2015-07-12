@@ -22,7 +22,8 @@ Indices and tables
 
 PyGravity 
 =========================
-The PyGravity module is the top layer that wraps the project
+The PyGravity module is the top layer that wraps the project. 
+Contains global values for maintaining the state of the system.
 
 .. automodule:: PyGravity.PyGravity
     :members:
@@ -30,18 +31,19 @@ The PyGravity module is the top layer that wraps the project
 Global Container
 =========================
 
-This is where the global values are stored that will be passed to the 
-rest of the simulator.
+Currantly being removed and joined into PyGravity/PyGravity.py
 
-      
-.. automodule:: PyGravity.Global_Container
-	:members: 
+
 
 
 Physics
 =========================
 
-This is something I want to say that is not in the docstring.
+Performs physics related computations. All calculations that involve 
+anythng that is purly physics is contained here. For example, force 
+calculations, acceleration caculations. Straight vector math is included 
+in the vector module. So this module does not deal with vector lengths,
+unit vectors or anything else like that.
 
       
 .. automodule:: PyGravity.Physics
@@ -49,6 +51,11 @@ This is something I want to say that is not in the docstring.
 
 Data Input Ouptut
 ========================
+This module handles reading and writing the simulation state to disk.
+Here we can load or save the current list of particles. 
+
+.. todo:: Complete state saving using xml so computations can be easily
+	continued by without prior knowledge of the system parameters.
 
 .. automodule:: PyGravity.Data_IO
     :members:
@@ -56,12 +63,16 @@ Data Input Ouptut
 
 Vectors
 ========================
+He is vector math. Adding, scalar multiplication, vector length, norming 
+vectors, and comparing vector dimension or values. All abstracted for 
+vectors of any length.
 
 .. automodule:: PyGravity.Vector
     :members:
     
 Particles
 ========================
+Particle objects. Depends heavily on vector. 
 
 .. automodule:: PyGravity.Particle
     :members:
