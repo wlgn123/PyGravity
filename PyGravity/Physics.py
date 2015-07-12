@@ -16,12 +16,6 @@ class Physics(object):
 	"""Physics class
 	This class holds the particle object and varies atributes for the
 	system
-
-	.. todo:: make static module, out attributes and paticle list into
-		seperate container
-
-	.. todo:: add global container to PyGRavity.py
-
 	"""
 
 	def __init__(self):
@@ -40,7 +34,7 @@ class Physics(object):
 
 		:returns: Force(Vector): Force acting on particle A as a Vector.
 
-		.. todo:: abstract gravitational constant to Global Cantainer,
+		.. todo:: abstract gravitational constant to PyGravity.py,
 			add parser to PyGravity to smartly determin working units.
 
 		'''
@@ -52,7 +46,7 @@ class Physics(object):
 		return f_vec
 
 	@staticmethod
-	def Total_Grav_Force(global_container, particle):
+	def Total_Grav_Force(particle_list, particle):
 		'''
 		Finds the the total force of gravity acting on one particle.
 		The force of gravity acting on the supplied particle is claculated
@@ -68,7 +62,7 @@ class Physics(object):
 
 		'''
 		force_list = []
-		for _particle in global_container.particle_list:
+		for _particle in particle_list:
 			if _particle != particle:
 				force_list.append(self.Grav_Force(_particle, particle))
 		f = lambda a,b: a+b
@@ -102,7 +96,7 @@ class Physics(object):
 		return r * acc #r.unit()?
 
 	@staticmethod
-	def Sum_Grav_Accel(global_container, A):
+	def Sum_Grav_Accel(particle_list, A):
 		'''
 		Sum the total acceleration acting on a particle by using the
 		Grav_Accel function and iterating through the particle list
@@ -115,7 +109,7 @@ class Physics(object):
 		:returns: Acceleraton as a Vector Object
 		'''
 		acc_list = []
-		for particle in global_container.particle_list:
+		for particle in particle_list:
 			if particle != A:
 				acc_list.append(Grav_Accel(particle, A))
 		total_acc = reduce(lambda a,b:a+b, acc_list)
@@ -139,7 +133,7 @@ class Physics(object):
 		return esc
 
 	@staticmethod
-	def Total_Escape_Velocity(global_container, A):
+	def Total_Escape_Velocity(particle_list, A):
 		'''
 		Find the total escape velocity acting on a particle with repect
 		to the rest of the active particles in the simulation.
@@ -150,13 +144,13 @@ class Physics(object):
 
 		'''
 		esc_list = []
-		for item in global_container.particle_list:
+		for item in particle_list:
 			if A != item:
 				esc_list.append(self.escape_v(A, item))
 		return reduce(lambda a,b: a+b, esc_list)
 
 	@staticmethod
-	def escaping(global_container):
+	def escaping(particle_list):
 		'''
 		Find all the particles in the currant system that are exceeding
 		the escape velocity for said system of particles
@@ -167,7 +161,7 @@ class Physics(object):
 		:returns: List of particles exceeding escape velocity.
 		'''
 		escaping = []
-		for item in global_container.perticle_list:
+		for item in particle_list:
 			total_esc = self.Total_Escape_Velocity(item)
 			if total_esc <= item.V.magnitude():
 				escaping.append(item.name)

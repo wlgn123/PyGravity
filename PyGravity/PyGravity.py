@@ -44,6 +44,15 @@ class PyGravity():
 		'''
 		self.dimension = dim
 
+	def set_time_interval(self, interval):
+		'''
+		Adjust the time step of the currant simulation. 
+		
+		:param: interval(int): Interval to use
+		
+		'''
+		self.time_interval = interval
+
 	def set_precision(self, prec):
 		'''
 		Set the global precision. Default is 200.
@@ -53,6 +62,25 @@ class PyGravity():
 		self.precision = prec
 		decimal.getcontext().prec = self.values.precision
 
+	def add_particle(self, particle):
+		'''
+		add a particle to the list of active particles. The particles
+		is compared to existing particles. If a particle name is already 
+		used the addition will be deined. 
+		
+		:param: particle(Particle Object): particle to add.
+		
+		:returns: none
+		
+		:raises: ValueError if particle name already exists in 
+			particle_list.
+		
+		'''
+		for item in self.particle_list:
+			if item.name == particle.name:
+				raise ValueError('particle already present')
+			else:
+				self.particle_list.append(particle)
 
 
 	def read_file(self, file_name):
