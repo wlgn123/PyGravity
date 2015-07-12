@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 
 import PyGravity
 
-base = PyGravity.PyGravity()
-base.dimension = 3
+base = PyGravity.PyGravity()    # start by making base instance 
+base.set_dimension(3)           # not needed for dim 3, but here it is
 
 
 base.read_file('example_data.csv')
 
-base.Physics.timestep = 60
-base.Physics.prec = 100
+base.set_time_interval(60)
+base.set_precision(200)
 
 ax = []
 ay = []
