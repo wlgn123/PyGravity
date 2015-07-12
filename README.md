@@ -4,6 +4,8 @@
 
     sudo python setup.py install
     python setup.py test            # run unit tests
+    
+Note: The unit tests run against the installed module, not the source.
 
 ## About
 #### What is it
