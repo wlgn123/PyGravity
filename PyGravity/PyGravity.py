@@ -16,7 +16,6 @@ class PyGravity():
 		'''initialize data reader and writer
 		Also set global diminsion
 		''' 
-		self.values = Global_Container.Global_Container()
 		self.reader = Data_IO.Reader()
 		self.writer = Data_IO.Writer()
 		#particels in active simulation
