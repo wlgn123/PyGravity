@@ -1,5 +1,4 @@
 import Physics
-import Global_Container
 import Data_IO
 import decimal
 '''
@@ -16,10 +15,20 @@ class PyGravity():
 	def __init__(self):
 		'''initialize data reader and writer
 		Also set global diminsion
-		'''
+		''' 
 		self.values = Global_Container.Global_Container()
 		self.reader = Data_IO.Reader()
 		self.writer = Data_IO.Writer()
+		#particels in active simulation
+		self.particle_list = []
+		#time stuff
+		self.time_interval = 1
+		self.initial_time = 0
+		self.elapsed_time = 0
+		#vector precision
+		self.precision = 200
+		#vector dimensions
+		self.dimension = 3
 
 
 	def set_dimension(self, dim):
@@ -34,7 +43,7 @@ class PyGravity():
 		:param: (int) The diminsion of the vectors
 
 		'''
-		self.values.set_prec()
+		self.dimension = dim
 
 	def set_precision(self, prec):
 		'''
@@ -42,7 +51,7 @@ class PyGravity():
 		
 		:param: prec(int) New global precision
 		'''
-		self.values.precision = prec
+		self.precision = prec
 		decimal.getcontext().prec = self.values.precision
 
 
@@ -78,6 +87,6 @@ class PyGravity():
 			dataset
 		
 		'''
-		self.writer.objects = self.values.particle_list
+		self.writer.objects = self.particle_list
 		self.writer.write_file(file_name)
 
