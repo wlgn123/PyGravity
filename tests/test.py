@@ -226,7 +226,9 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		
 		self.failUnless(base.particle_list[1].P == Vector(['2.91442500000000', '1.00000000000000']))
 		self.failUnless(base.particle_list[1].V == Vector(['-2.08557500000000', '0E-14']))
-
+		
+		self.failIf(base.particle_list[0].P == Vector(['2.91442500000000', '1.00000000000000']))
+		self.failIf(base.particle_list[0].V == Vector(['-2.08557500000000', '0E-14']))
 
 
 
