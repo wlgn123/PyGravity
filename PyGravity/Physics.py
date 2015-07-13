@@ -12,173 +12,153 @@ import Vector
 	Create a seperate object to hold particle list, vector deminsion
 	and time step and time counter
 '''
-class Physics(object):
-	"""Physics class
-	This class holds the particle object and varies atributes for the
-	system
-	"""
-
-	def __init__(self):
-		pass
 
 
-	@staticmethod
-	def Grav_Force(A, B):
-		'''
-		Calculates the force of gravity between two particles. Uses Newton's
-		Law of Gravity. Gravitational constant is in standtard metric units.
+def Grav_Force(A, B):
+	'''
+	Calculates the force of gravity between two particles. Uses Newton's
+	Law of Gravity. Gravitational constant is in standtard metric units.
 
-		:param: A(Particle): First particle
+	:param: A(Particle): First particle
 
-		:param: B(Particle): Second Particle
+	:param: B(Particle): Second Particle
 
-		:returns: Force(Vector): Force acting on particle A as a Vector.
+	:returns: Force(Vector): Force acting on particle A as a Vector.
 
-		.. todo:: abstract gravitational constant to PyGravity.py,
-			add parser to PyGravity to smartly determin working units.
+	.. todo:: abstract gravitational constant to PyGravity.py,
+		add parser to PyGravity to smartly determin working units.
 
-		'''
-		G = Decimal('6.67384e-11')
-		r =  A.P - B.P   #vector between two particles
-		r_squared = r.magnitude() ** 2  # dist between A, B squared
-		f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
-		f_vec = r.unit() * f_mag
-		return f_vec
-
-	@staticmethod
-	def Total_Grav_Force(particle_list, particle):
-		'''
-		Finds the the total force of gravity acting on one particle.
-		The force of gravity acting on the supplied particle is claculated
-		for every particle in the global particle list. The result is then
-		summed and returned.
-
-		:para: particle_list(list): List of particle objects
-
-		:param: parrticle(Particle): Particle for which the force of gravity is
-			being calculated.
-
-		:returns: Force of gravity as a Vector Object.
-
-		'''
-		force_list = []
-		for _particle in particle_list:
-			if _particle != particle:
-				force_list.append(self.Grav_Force(_particle, particle))
-		f = lambda a,b: a+b
-		total_force = reduce(f, force_list)
-		return total_force
-
-	#find acceleration from total force, apply using Particle.accelerate()
+	'''
+	G = Decimal('6.67384e-11')
+	r =  A.P - B.P   #vector between two particles
+	r_squared = r.magnitude() ** 2  # dist between A, B squared
+	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
+	f_vec = r.unit() * f_mag
+	return f_vec
 
 
-    # more direct way to find acceleration, skipping some steps
-	@staticmethod
-	def Grav_Accel(A, B):
-		'''
-		Calculate the acceleration between particle A and B due to
-		gravity. Uses math shortcuts to reduce total number of calculations
-		as apposed to using Grav_Force / mass to find acceleration.
+def Total_Grav_Force(particle_list, particle):
+	'''
+	Finds the the total force of gravity acting on one particle.
+	The force of gravity acting on the supplied particle is claculated
+	for every particle in the global particle list. The result is then
+	summed and returned.
 
-		:param: A(Vector): The first vector.
-		:param: B(Vector): The second vector.
+	:para: particle_list(list): List of particle objects
 
-		:returns: The acceleration as a Vector Object.
+	:param: parrticle(Particle): Particle for which the force of gravity is
+		being calculated.
 
-		.. todo:: Add formated math example
+	:returns: Force of gravity as a Vector Object.
 
-		.. todo:: double check math on the return vector, see comment.
-		'''
-		G = Decimal('6.67384e-11')
-		r =  A.P - B.P   #vector between two particles
-		r_cube = r.magnitude() ** 3  # dist between A, B cubed
-		acc = G * B.m[0] / r_cube
-		return r * acc #r.unit()?
+	'''
+	force_list = []
+	for _particle in particle_list:
+		if _particle != particle:
+			force_list.append(self.Grav_Force(_particle, particle))
+	f = lambda a,b: a+b
+	total_force = reduce(f, force_list)
+	return total_force
 
-	@staticmethod
-	def Sum_Grav_Accel(particle_list, A):
-		'''
-		Sum the total acceleration acting on a particle by using the
-		Grav_Accel function and iterating through the particle list
-
-		:param: global_container(Global_Container): List of particles
-			to iteratethrough.
-
-		:param: A(Vector): Vector to calculate acceleration for.
-
-		:returns: Acceleraton as a Vector Object
-		'''
-		acc_list = []
-		for particle in particle_list:
-			if particle != A:
-				acc_list.append(Grav_Accel(particle, A))
-		total_acc = reduce(lambda a,b:a+b, acc_list)
-		return total_acc
+#find acceleration from total force, apply using Particle.accelerate()
 
 
-	@staticmethod
-	def Escape_Volecity(A, B):
-		'''
-		Calculate the escape velocity between two objects.
+# more direct way to find acceleration, skipping some steps
 
-		:param: A(Particle): First particle.
+def Grav_Accel(A, B):
+	'''
+	Calculate the acceleration between particle A and B due to
+	gravity. Uses math shortcuts to reduce total number of calculations
+	as apposed to using Grav_Force / mass to find acceleration.
 
-		:param: B(Particle): Second particle.
+	:param: A(Vector): The first vector.
+	:param: B(Vector): The second vector.
 
-		:returns: Escape velocity as a Vector Object.
-		'''
-		G = Decimal('6.67384e-11')
-		r = (A.P-B.P).magnitude() #distance between A and B
-		esc = ((G*B.m[0])/r).sqrt() # formula for escape velocity
-		return esc
+	:returns: The acceleration as a Vector Object.
 
-	@staticmethod
-	def Total_Escape_Velocity(particle_list, A):
-		'''
-		Find the total escape velocity acting on a particle with repect
-		to the rest of the active particles in the simulation.
+	.. todo:: Add formated math example
 
-		:param: global_containter(Global_Container): Attribute container.
-
-		:param: A(Vector): Particle to find escape velocity for.
-
-		'''
-		esc_list = []
-		for item in particle_list:
-			if A != item:
-				esc_list.append(self.escape_v(A, item))
-		return reduce(lambda a,b: a+b, esc_list)
-
-	@staticmethod
-	def escaping(particle_list):
-		'''
-		Find all the particles in the currant system that are exceeding
-		the escape velocity for said system of particles
-
-		:param: global_container(Global_Container): Container object for
-			particles.
-
-		:returns: List of particles exceeding escape velocity.
-		'''
-		escaping = []
-		for item in particle_list:
-			total_esc = self.Total_Escape_Velocity(item)
-			if total_esc <= item.V.magnitude():
-				escaping.append(item.name)
-		return escaping
+	.. todo:: double check math on the return vector, see comment.
+	'''
+	G = Decimal('6.67384e-11')
+	r =  A.P - B.P   #vector between two particles
+	r_cube = r.magnitude() ** 3  # dist between A, B cubed
+	acc = G * B.m[0] / r_cube
+	return r * acc #r.unit()?
 
 
-	def step_all(self):
-		for item in self.objects:
-			if self.fast == True:
-				self.fast_accelerate(item)
-			else:
-				self.apply_gravitational_acceleration(item)
-		for item in self.objects:
-			item.move(self.timestep)
-		self.total_steps += 1
-		##
-		#@brief apply the force of gravity to all objects in the system
+def Sum_Grav_Accel(particle_list, A):
+	'''
+	Sum the total acceleration acting on a particle by using the
+	Grav_Accel function and iterating through the particle list
+
+	:param: global_container(Global_Container): List of particles
+		to iteratethrough.
+
+	:param: A(Vector): Vector to calculate acceleration for.
+
+	:returns: Acceleraton as a Vector Object
+	'''
+	acc_list = []
+	for particle in particle_list:
+		if particle != A:
+			acc_list.append(Grav_Accel(particle, A))
+	total_acc = reduce(lambda a,b:a+b, acc_list)
+	return total_acc
+
+
+def Escape_Velocity(A, B):
+	'''
+	Calculate the escape velocity between two objects.
+
+	:param: A(Particle): First particle.
+
+	:param: B(Particle): Second particle.
+
+	:returns: Escape velocity as a Vector Object.
+	'''
+	G = Decimal('6.67384e-11')
+	r = (A.P-B.P).magnitude() #distance between A and B
+	esc = ((G*B.m[0])/r).sqrt() # formula for escape velocity
+	return esc
+
+
+def Total_Escape_Velocity(particle_list, A):
+	'''
+	Find the total escape velocity acting on a particle with repect
+	to the rest of the active particles in the simulation.
+
+	:param: global_containter(Global_Container): Attribute container.
+
+	:param: A(Vector): Particle to find escape velocity for.
+
+	'''
+	esc_list = []
+	for item in particle_list:
+		if A != item:
+			esc_list.append(self.escape_v(A, item))
+	return reduce(lambda a,b: a+b, esc_list)
+
+
+def escaping(particle_list):
+	'''
+	Find all the particles in the currant system that are exceeding
+	the escape velocity for said system of particles
+
+	:param: global_container(Global_Container): Container object for
+		particles.
+
+	:returns: List of particles exceeding escape velocity.
+	'''
+	escaping = []
+	for item in particle_list:
+		total_esc = self.Total_Escape_Velocity(item)
+		if total_esc <= item.V.magnitude():
+			escaping.append(item.name)
+	return escaping
+
+
+
 
 
 
