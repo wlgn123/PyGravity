@@ -28,12 +28,6 @@ Contains global values for maintaining the state of the system.
 .. automodule:: PyGravity.PyGravity
     :members:
 
-Global Container
-=========================
-
-Currantly being removed and joined into PyGravity/PyGravity.py
-
-
 
 
 Physics
