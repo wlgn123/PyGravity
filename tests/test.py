@@ -159,6 +159,13 @@ class Physics_Class_Tests(unittest.TestCase):
 		self.failUnless(Acc_Vector_one == Acceleration_answer)
 		self.failUnless(Acc_Vector_two == Acceleration_answer)
 		self.failUnless(Acc_Vector_one == Acc_Vector_one)
+		
+	def test_Total_Escape_Velocity(self):
+		base = PyGravity()
+		base.read_file('test_data.csv')
+		escape_answer = 0.00003149801963613010526842131136
+		escape = Physics.Total_Escape_Velocity(base.particle_list, base.particle_list[0])
+		self.failUnless(round(escape,20) == round(escape_answer, 20))
 
 	def _test_Physics_force_gravity_summation_for_one_particle(self):
 		f = base.sum_Fg_one_particle(base.objects[0])
