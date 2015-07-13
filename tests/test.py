@@ -192,6 +192,18 @@ class Data_io_Class_Tests(unittest.TestCase):
 		self.failUnless(base.objects[0].V == a.V)
 		self.failUnless(base.objects[0].m == a.m)
 
+class PyGravity_Class_Tests(unittest.TestCase):
+	def setUp(self):
+		self.A = Particle('A', Vector(['1']), Vector(['1']), Vector(['1']))
+		self.B = Particle('B', Vector(['1']), Vector(['1']), Vector(['1']))
+	
+	def test_particle_add(self):
+		base = PyGravity()
+		base.add_particle(self.A)
+		base.add_particle(self.B)
+		self.failUnless(self.A.name == base.particle_list[0].name)
+		self.failUnless(self.B.name == base.particle_list[1].name)
+
 
 
 def run_test():
