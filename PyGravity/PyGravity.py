@@ -23,7 +23,7 @@ class PyGravity():
 		#time stuff
 		self.time_interval = 1
 		self.initial_time = 0
-		self.elapsed_time = 0
+		self.currant_time = 0
 		#vector precision
 		self.precision = 200
 		#vector dimensions
@@ -122,3 +122,26 @@ class PyGravity():
 		self.writer.objects = self.particle_list
 		self.writer.write_file(file_name)
 
+	def step_all(self):
+		'''
+		Iterates through all the particles in self.particle_list and
+		runs the Physics.Sum_Grav_Accel() function, and applies the 
+		acceleration to update each particle's velocity vector, then 
+		finally iterates through each particle and moves that particle
+		moving the new velocity.
+		
+		.. note:: The acceleration is applied to the velocity using the
+			time interval. Thus the new velocity equals the currant
+			velocity plus the acceleration times the time_interval. 
+			The same procedure produces the new position using the same 
+			time_interval.
+			
+		'''
+		for item in self.particle_list:
+			#calculate the acceleration vector
+			acceleration = Physics.Sum_Grav_Accel(self.particle_list, item)
+			# Call particle.accelerate() to apply above vector
+			item.accelerate(acceleration, self.time_interval)
+		for item in self.particle_list:
+			item.move(self.time_interval)
+		self.currant_time += 1
