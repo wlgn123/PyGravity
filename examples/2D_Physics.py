@@ -22,19 +22,19 @@ dx = []
 dy = []
 for i in range(90):
     if i % 1 == 0:
-        print base.Physics.objects[1].round(2)
-    ax.append(base.Physics.objects[0].P[0])
-    ay.append(base.Physics.objects[0].P[1])
-    bx.append(base.Physics.objects[1].P[0])
-    by.append(base.Physics.objects[1].P[1])
-    cx.append(base.Physics.objects[2].P[0])
-    cy.append(base.Physics.objects[2].P[1])
-    dx.append(base.Physics.objects[3].P[0])
-    dy.append(base.Physics.objects[3].P[1])
+        print base.particle_list[0].round(2)
+    ax.append(base.particle_list[0].P[0])
+    ay.append(base.particle_list[0].P[1])
+    bx.append(base.particle_list[1].P[0])
+    by.append(base.particle_list[1].P[1])
+    cx.append(base.particle_list[2].P[0])
+    cy.append(base.particle_list[2].P[1])
+    dx.append(base.particle_list[3].P[0])
+    dy.append(base.particle_list[3].P[1])
 
-    base.Physics.step_all()
+    base.step_all()
     
-print 'Time: ', (base.Physics.total_steps), 'mins'
+print 'Time: ', (base.currant_time), 'mins'
 plt.scatter(ax, ay, s=10, c='b', alpha=0.5)
 plt.scatter(bx, by, s=10, c='r', alpha=0.5)
 plt.scatter(cx, cy, s=10, c='g', alpha=0.5)
