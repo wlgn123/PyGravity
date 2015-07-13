@@ -213,6 +213,19 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		self.failUnless(base.particle_list[0].P == a.P)
 		self.failUnless(base.particle_list[0].V == a.V)
 		self.failUnless(base.particle_list[0].m == a.m)
+		
+	def test_step_all(self):
+		A = Particle('A', Vector(['1.0', '1.0']), Vector(['0', '0']), Vector(['500000000000']))
+		B = Particle('B', Vector(['5.0', '1.0']), Vector(['0', '0']), Vector(['500000000000']))
+		base = PyGravity()
+		base.add_particle(A)
+		base.add_particle(B)
+		base.step_all()
+		self.failUnless(base.particle_list[0].P == Vector(['3.08557500000000','1.00000000000000']))
+		self.failUnless(base.particle_list[0].V == Vector(['2.08557500000000','0E-14']))
+		
+		self.failUnless(base.particle_list[1].P == Vector(['2.91442500000000', '1.00000000000000']))
+		self.failUnless(base.particle_list[1].V == Vector(['-2.08557500000000', '0E-14']))
 
 
 
