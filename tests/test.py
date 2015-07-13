@@ -203,6 +203,17 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		base.add_particle(self.B)
 		self.failUnless(self.A.name == base.particle_list[0].name)
 		self.failUnless(self.B.name == base.particle_list[1].name)
+		
+	def test_read_csv(self):
+		a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
+		d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
+		base = PyGravity()
+		base.read_file('./test_data.csv')
+		self.failUnless(base.particle_list[0].name == a.name)
+		self.failUnless(base.particle_list[0].P == a.P)
+		self.failUnless(base.particle_list[0].V == a.V)
+		self.failUnless(base.particle_list[0].m == a.m)
+
 
 
 
