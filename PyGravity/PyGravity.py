@@ -55,12 +55,12 @@ class PyGravity():
 
 	def set_precision(self, prec):
 		'''
-		Set the global precision. Default is 200.
+		Set the precision for this currant instance. Default is 200.
 		
 		:param: prec(int) New global precision
 		'''
 		self.precision = prec
-		decimal.getcontext().prec = self.values.precision
+		decimal.getcontext().prec = self.precision
 
 	def add_particle(self, particle):
 		'''
@@ -75,12 +75,17 @@ class PyGravity():
 		:raises: ValueError if particle name already exists in 
 			particle_list.
 		
+		.. todo:: unit test add_particle
 		'''
-		for item in self.particle_list:
-			if item.name == particle.name:
-				raise ValueError('particle already present')
-			else:
+		if len(self.particle_list) == 0:
+			self.particle_list.append(particle)
+		else:
+			for item in self.particle_list:
+				if item.name == particle.name:
+					raise ValueError('particle name already present')
 				self.particle_list.append(particle)
+				break
+
 
 
 	def read_file(self, file_name):
@@ -103,7 +108,7 @@ class PyGravity():
 		'''
 		self.reader.read_file(file_name)
 		for item in self.reader.objects:
-			self.values.add_particle(item)
+			self.add_particle(item)
 
 
 	def write_file(self, file_name):
