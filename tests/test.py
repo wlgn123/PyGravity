@@ -23,6 +23,7 @@ class Round_test(unittest.TestCase):
 		a = -1.20
 		self.failUnless(round_sig(a,2) == -1.2)
 
+
 class Vector_Class_Tests(unittest.TestCase):
 	def setUp(self):
 		getcontext().prec = 400
@@ -141,7 +142,7 @@ class Physics_Class_Tests(unittest.TestCase):
 
 
 
-	def test_Physics_Force_of_Gravity(self):
+	def test_Physics_Grav_Force(self):
 		part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
 		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
 		answer = Vector([-6.42e-10, -6.42e-10,-6.42e-10 ])
@@ -149,6 +150,15 @@ class Physics_Class_Tests(unittest.TestCase):
 		force_vec = Physics.Grav_Force(part1, part2)
 		self.failUnless(answer.round(2) == force_vec.round(2) )
 
+	def test_Grav_Accel(self):
+		part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
+		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
+		Acceleration_answer = Vector([-6.42e-10, -6.42e-10,-6.42e-10 ]) * (1/part1.m[0])
+		Acc_Vector_one = (Physics.Grav_Force(part1, part2) * (1/part1.m[0])).round(4)
+		Acc_Vector_two = Physics.Grav_Accel(part1, part2).round(4)
+		self.failUnless(Acc_Vector_one == Acceleration_answer)
+		self.failUnless(Acc_Vector_two == Acceleration_answer)
+		self.failUnless(Acc_Vector_one == Acc_Vector_one)
 
 	def _test_Physics_force_gravity_summation_for_one_particle(self):
 		f = base.sum_Fg_one_particle(base.objects[0])
