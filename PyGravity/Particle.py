@@ -1,4 +1,4 @@
-import Vector
+from Vector import Vector
 '''
 .. module:: Particle
    :platform: Unix
