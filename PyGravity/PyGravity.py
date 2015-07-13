@@ -74,8 +74,6 @@ class PyGravity():
 		
 		:raises: ValueError if particle name already exists in 
 			particle_list.
-		
-		.. todo:: unit test add_particle
 		'''
 		if len(self.particle_list) == 0:
 			self.particle_list.append(particle)
