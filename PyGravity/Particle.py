@@ -44,13 +44,13 @@ class Particle(object):
 		
 		.. code-block:: python
 		
-			>>>A_pos = Vector(['1', '1'])
-			>>>A_veloc = Vector(['1', '2'])
-			>>>A_mass = Vector(['1'])
-			>>>A = Particle('A', A_pos, A_veloc, A_mass)
-			>>>print A
+			>>> A_pos = Vector(['1', '1'])
+			>>> A_veloc = Vector(['1', '2'])
+			>>> A_mass = Vector(['1'])
+			>>> A = Particle('A', A_pos, A_veloc, A_mass)
+			>>> print A
 			A: Position: (1,1), Velocity: (1,2), Mass: (1)
-			>>>A.move(1)
+			>>> A.move(1)
 			>>> print A
 			A: Position: (2,3), Velocity: (1,2), Mass: (1)
 			>>> A.move(2)
@@ -70,13 +70,13 @@ class Particle(object):
 		
 		.. code-block:: python
 		
-			>>>print A
+			>>> print A
 			A: Position: (1,1), Velocity: (1,2), Mass: (1)
-			>>>A_acc = Vector(['1', '1'])
-			>>>A.accelerate(A_acc, 1)
-			>>>print A
+			>>> A_acc = Vector(['1', '1'])
+			>>> A.accelerate(A_acc, 1)
+			>>> print A
 			A: Position: (1,1), Velocity: (2,3), Mass: (1)
-			>>>A.accelerate(A_acc, 2)
+			>>> A.accelerate(A_acc, 2)
 			A: Position: (1,1), Velocity: (4,5), Mass: (1)
 		
 		.. note:: The intention is that the timestep argument is defined

@@ -43,17 +43,6 @@ unit vectors or anything else like that.
 .. automodule:: PyGravity.Physics
 	:members: 
 
-Data Input Ouptut
-========================
-This module handles reading and writing the simulation state to disk.
-Here we can load or save the current list of particles. 
-
-.. todo:: Complete state saving using xml so computations can be easily
-	continued by without prior knowledge of the system parameters.
-
-.. automodule:: PyGravity.Data_IO
-    :members:
-
 
 Vectors
 ========================
@@ -71,7 +60,18 @@ Particle objects. Depends heavily on vector.
 .. automodule:: PyGravity.Particle
     :members:
     
-    
+Data Input Ouptut
+========================
+This module handles reading and writing the simulation state to disk.
+Here we can load or save the current list of particles. 
+
+.. todo:: Complete state saving using xml so computations can be easily
+	continued by without prior knowledge of the system parameters.
+
+.. automodule:: PyGravity.Data_IO
+    :members:
+
+
 ToDo
 ========================
 

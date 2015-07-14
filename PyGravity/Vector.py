@@ -128,13 +128,13 @@ class Vector(object):
 		
 		.. code-block:: python
 		
-			>>>A = Vector(['1','2'])
-			>>>B = Vector(['3', '4', '5'])
-			>>>C = Vector(['9', '7'])
+			>>> A = Vector(['1','2'])
+			>>> B = Vector(['3', '4', '5'])
+			>>> C = Vector(['9', '7'])
 			
-			>>>A.array_mismatch(B)
+			>>> A.array_mismatch(B)
 			True
-			>>>A.array_mistmatch(C)
+			>>> A.array_mistmatch(C)
 			False
 		
 		:returns: True if the two Vectors are of different size, False 

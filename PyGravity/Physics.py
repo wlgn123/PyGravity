@@ -136,7 +136,7 @@ def Total_Escape_Velocity(particle_list, A):
 	esc_list = []
 	for item in particle_list:
 		if A != item:
-			esc_list.append(self.escape_v(A, item))
+			esc_list.append(Escape_Velocity(A, item))
 	return reduce(lambda a,b: a+b, esc_list)
 
 
