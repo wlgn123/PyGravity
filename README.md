@@ -25,6 +25,10 @@ them yourself by running
 in ./documentation folder
 
 ##### example
+There are serveral examples that demsonstrate PyGravity in the ./examples folder. So for there is one 
+main file called 2D_Physics.py which demonstrates several key feature. There are also a collection of 
+ipython notebooks. 
+
 Documentation illustrating an example usage can be found under ./docs/PyGravity_doc.tex. The 
 tex file can be compiled into a PDF with 
 
