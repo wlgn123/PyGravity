@@ -1,4 +1,5 @@
 import csv
+import xml.etree.ElementTree as ET
 from Particle import Particle
 from Vector import Vector
 '''
@@ -12,12 +13,11 @@ from Vector import Vector
 class Reader(object):
 	'''Data reading and writing class.
 	
-	.. todo:: Add smarter parser for determining vector dimensions. 
 	
-	.. todo:: Add xml parser
-	
-	.. todo:: Change date formate for easy continuation of simulations. 
+	.. todo:: Change date format for easy continuation of simulations. 
 		add timestamp along with other particle attribute.
+		
+	.. todo:: XML writer
 
 	'''
 	def __init__(self):
@@ -36,12 +36,12 @@ class Reader(object):
 	def read_file(self, path):
 		'''
 		Read a dataset from a file. Will detect the format 
-		of the data file. Currently only CSV is supported, so only
-		.csv files are execpted. Later when other formates are included
+		of the data file. Currently only CSV and XML is supported, so only
+		.csv or .xml files are execpted. Later when other formates are included
 		this will be where the correct parser is chosen.
 		
 		:param: path(string) File name and path of data file. Example, 
-			'./data.csv', or '/home/russ/data/set1.csv'
+			'./data.csv', or '/home/russ/data/set1.xml'
 		
 		:raises: ValueError for incompatible file types
 		'''
@@ -49,6 +49,8 @@ class Reader(object):
 		
 		if file_type == 'csv':
 			self.CSV_Reader(path)
+		elif file_type == 'xml':
+			self.XML_Reader(path)
 		else:
 			raise ValueError('File type not supported')
 			return
@@ -60,6 +62,8 @@ class Reader(object):
 		
 		:param: path(string) Name and path to the data file. Either 
 			relative or absolute path
+			
+		.. note:: Vector dimension needs to be given to the reader beforehand.
 		
 		'''
 		with open(path, 'rb') as csvfile:
@@ -67,12 +71,53 @@ class Reader(object):
 			for row in spamreader:
 				try:
 					if self.dimension == 3:
-						self.add_obj(Particle(row[0], Vector(row[1:4]), Vector(row[4:7]), Vector(row[7:]) ) )
+						self.add_obj(Particle(row[0],
+									 Vector(row[1:4]),
+									 Vector(row[4:7]),
+									 Vector(row[7:]) ) )
 					elif self.dimension == 2:
-						self.add_obj(Particle(row[0], Vector(row[1:3]), Vector(row[3:5]), Vector(row[5:]) ) )
+						self.add_obj(Particle(row[0],
+									 Vector(row[1:3]),
+									 Vector(row[3:5]),
+									 Vector(row[5:]) ) )
 				except ValueError as e:
 					print e
 					
+	def XML_Reader(self, path):
+		'''
+		XML Reader. Will read an xml data file and load the particles
+		into the self.objects list for the PyGravity base to later 
+		unload.
+		
+		:param: path(string): Path to xml file. 
+		
+		.. note:: This parser does not need to know the dimension for the
+			vectors. It passes the vector strings straight into the Vector
+			object as-is.
+			
+		.. todo:: Error handling for parser
+		
+		.. todo:: Unit tests
+		'''
+		tree = ET.parse(path)
+		root = tree.getroot()
+		for particle in root.iter('particle'):
+			name,position,velocity,mass = '','','',''
+			for item in particle:
+				if item.tag == 'name':
+					name = item.text
+				if item.tag == 'position':
+					position = item.text
+				if item.tag == 'velocity':
+					velocity = item.text
+				if item.tag == 'mass':
+					mass = item.text
+			new_part = Particle(name, 
+								Vector(position.split(';')),
+								Vector(velocity.split(';')), 
+								Vector(mass) )
+			self.add_obj(new_part)
+
 	def add_obj(self, obj):
 		'''
 		Once a line from the data file is parsed and loaded into a 
@@ -88,6 +133,7 @@ class Reader(object):
 				raise ValueError("duplicate name found, not adding last entry")
 				return
 		self.objects.append(obj)
+
 
 class Writer(object):
 	'''
