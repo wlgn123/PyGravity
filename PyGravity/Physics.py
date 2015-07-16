@@ -2,7 +2,7 @@ from decimal import *
 import Particle
 import Global_Container
 import Vector
-#from vector_math import grav_accel
+import vector_math
 '''
 .. module:: Physics
    :platform: Unix
@@ -94,7 +94,7 @@ def C_Grav_Accel(A, B):
 	
 	... todo:: finsh this
 	'''
-	pass
+	grav_accel()
 	
 def Sum_Grav_Accel(particle_list, A):
 	'''
