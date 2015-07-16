@@ -84,7 +84,7 @@ def Grav_Accel(A, B):
 	r =  A.P - B.P   #vector between two particles
 	r_cube = r.magnitude() ** 3  # dist between A, B cubed
 	acc = G * B.m[0] / r_cube
-	return r * acc #r.unit()?
+	return r * acc # the normilizer, r.unit, is hidden in r_cube
 
 
 def Sum_Grav_Accel(particle_list, A):
