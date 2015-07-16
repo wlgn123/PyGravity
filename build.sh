@@ -1,22 +1,32 @@
  #!/bin/bash
- cd src
- if python setup.py build; then
-	cd ..
-	mv ./src/build/lib.linux-x86_64-2.7/vector_math.so ./PyGravity/
-	rm -r ./src/build
-else
-	 echo "SRC BUILD FAILED!" 
+
+cd ./src
+if ! python setup.py build ; then
+	 echo "VECTOR_MATH SOURCE BUILD FAILED" 
  	 exit 1
 fi
 
- sudo python setup.py install --force
- if python setup.py test ; then
- 	  cd ./documentation
- 	  make html
+
+if ! sudo python setup.py install --force ; then
+	 echo "VECTOR_MATH INSTALL FAILED" 
+ 	 exit 1
+fi
+ cd ..
+
+if ! sudo python setup.py install --force ;then
+	 echo "PYGRAVITY INSTALL FAILED" 
+ 	 exit 1
+fi
+
+if ! python setup.py test ; then
+	 echo "Unititest Faild!" 
+ 	 exit 1
+fi
+
+cd ./documentation
+if  make html ; then
  	  cd ..
- else
- 	 echo "Unititest Faild!" 
+else
+ 	 echo "SPHINX BUILD FAILD" 
  	 exit 1
 fi
-
-

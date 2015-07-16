@@ -1,4 +1,4 @@
-from distutils.core import setup
+from distutils.core import setup, Extension
 from distutils.cmd import Command
 from tests import test
 import os
@@ -16,6 +16,7 @@ class TestCommand(Command):
 	def run(self):
 		os.chdir('./tests')
 		test.run_test()
+
 
 setup(name='PyGravity',
 	version='1.01',
