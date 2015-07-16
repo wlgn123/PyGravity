@@ -2,6 +2,7 @@ from decimal import *
 import Particle
 import Global_Container
 import Vector
+#from vector_math import grav_accel
 '''
 .. module:: Physics
    :platform: Unix
@@ -29,7 +30,7 @@ def Grav_Force(A, B):
 		add parser to PyGravity to smartly determin working units.
 
 	'''
-	G = Decimal('6.67384e-11')
+	G = Decimal('6.67191e-11')
 	r =  A.P - B.P   #vector between two particles
 	r_squared = r.magnitude() ** 2  # dist between A, B squared
 	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
@@ -86,7 +87,15 @@ def Grav_Accel(A, B):
 	acc = G * B.m[0] / r_cube
 	return r * acc # the normilizer, r.unit, is hidden in r_cube
 
-
+def C_Grav_Accel(A, B):
+	'''
+	Where the new grav_accel function will be used. grav_accel
+	is imported from the vector_math.so module
+	
+	... todo:: finsh this
+	'''
+	pass
+	
 def Sum_Grav_Accel(particle_list, A):
 	'''
 	Sum the total acceleration acting on a particle by using the
