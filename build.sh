@@ -30,3 +30,7 @@ else
  	 echo "SPHINX BUILD FAILD" 
  	 exit 1
 fi
+
+#clean
+rm -r ./src/build
+#rm -r ./git/documentation/build

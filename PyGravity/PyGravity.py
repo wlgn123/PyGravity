@@ -29,7 +29,21 @@ class PyGravity():
 		self.set_precision(200)
 		#vector dimensions
 		self.dimension = 3
-
+		#use faster extension, 1 - true, 0 - false
+		self.fast =  0
+		
+	def set_fast():
+		'''
+		Sets falg so the faster grav_accel function is used
+		'''
+		self.fast =  1
+		
+	def set_no_fast():
+		'''
+		Set flag so slower, pure python, function for grav_accel function
+		is used
+		'''
+		self.fast =  0
 
 	def set_dimension(self, dim):
 		'''Set global dimension
@@ -135,10 +149,11 @@ class PyGravity():
 			The same procedure produces the new position using the same 
 			time_interval.
 			
+		
 		'''
 		for item in self.particle_list:
 			#calculate the acceleration vector
-			acceleration = Physics.Sum_Grav_Accel(self.particle_list, item)
+			acceleration = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
 			# Call particle.accelerate() to apply above vector
 			item.accelerate(acceleration, self.time_interval)
 		for item in self.particle_list:

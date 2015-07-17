@@ -2,7 +2,7 @@ from decimal import *
 import Particle
 import Global_Container
 import Vector
-import vector_math
+from pygravity_grav_accel import grav_accel
 '''
 .. module:: Physics
    :platform: Unix
@@ -92,11 +92,43 @@ def C_Grav_Accel(A, B):
 	Where the new grav_accel function will be used. grav_accel
 	is imported from the vector_math.so module
 	
+	:param: A(Particle) first particle
+	:param: B(Particle) second particle
+	:returns: Acceleration as a Vector
+	
+	.. note:: This wrapps the c extension: pygravity_grav_accel.grav_accel.
+	
+	The call signature for grav_accel() is as fllows:
+	
+	.. code-block:: python
+	
+		grav_accel( 
+			precision(int),
+			mass(string),
+			A.x(string),
+			A.y(string),
+			A.z(string),
+			B.x(string),
+			B.y(string),
+			B.z(string)
+			)
+		
+	
 	... todo:: finsh this
 	'''
-	grav_accel()
+	acc_string = grav_accel(getcontext().prec ,
+							str(B.m[0]),
+							str(A.P[0]),
+							str(A.P[1]),
+							str(A.P[2]),
+							str(B.P[0]),
+							str(B.P[1]),
+							str(B.P[2])
+							)
+	acc = Vector.Vector(list(acc_string))
+	return acc
 	
-def Sum_Grav_Accel(particle_list, A):
+def Sum_Grav_Accel(particle_list, A, fast_flag):
 	'''
 	Sum the total acceleration acting on a particle by using the
 	Grav_Accel function and iterating through the particle list
@@ -108,12 +140,20 @@ def Sum_Grav_Accel(particle_list, A):
 
 	:returns: Acceleraton as a Vector Object
 	'''
-	acc_list = []
-	for particle in particle_list:
-		if particle != A:
-			acc_list.append(Grav_Accel(particle, A))
-	total_acc = reduce(lambda a,b:a+b, acc_list)
-	return total_acc
+	if(fast_flag):
+		acc_list = []
+		for particle in particle_list:
+			if particle != A:
+				acc_list.append(C_Grav_Accel(particle, A))
+		total_acc = reduce(lambda a,b:a+b, acc_list)
+		return total_acc
+	else:
+		acc_list = []
+		for particle in particle_list:
+			if particle != A:
+				acc_list.append(Grav_Accel(particle, A))
+		total_acc = reduce(lambda a,b:a+b, acc_list)
+		return total_acc
 
 
 def Escape_Velocity(A, B):
