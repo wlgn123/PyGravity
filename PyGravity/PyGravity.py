@@ -26,6 +26,7 @@ class PyGravity():
 		self.currant_time = 0
 		#vector precision
 		self.precision = 200
+		self.set_precision(200)
 		#vector dimensions
 		self.dimension = 3
 
