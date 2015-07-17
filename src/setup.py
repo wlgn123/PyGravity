@@ -1,13 +1,13 @@
 from distutils.core import setup, Extension
 
-module1 = Extension('vector_math',
+module1 = Extension('pygravity_grav_accel',
 					include_dirs = ['/usr/local/include'],
-                    sources = ['vector_math.c'],
+                    sources = ['pygravity_grav_accel.c'],
                     libraries = ['mpfr'],
                     library_dirs = ['/usr/local/lib']
                     )
 
-setup (name = 'PackageName',
+setup (name = 'pygravity_grav_accel',
        version = '1.0',
-       description = 'This is a demo package',
+       description = 'pre-compiled library for speeding up PyGravity.Physics.Grav_Accel',
        ext_modules = [module1])
