@@ -11,3 +11,7 @@ PyGravity.synctex.gz
 PyGravity-blx.bib
 PyGravity.bbl
 PyGravity.blg
+
+#ipython misc files#
+####################
+.ipynb_checkpoints
