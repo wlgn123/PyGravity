@@ -76,10 +76,16 @@ def Grav_Accel(A, B):
 	:param: B(Vector): The second vector.
 
 	:returns: The acceleration as a Vector Object.
-
+	
+	.. note:: Force returned is the force acting on B, the second
+		argument.
+		
+		
 	.. todo:: Add formated math example
-
-	.. todo:: double check math on the return vector, see comment.
+	
+	.. todo:: Maybe switch argument so the first particle is for the 
+		one being accelerated. Need to change alot of other methods for
+		consistancy.
 	'''
 	G = Decimal('6.67191e-11')
 	r =  A.P - B.P   #vector between two particles
@@ -145,14 +151,14 @@ def Sum_Grav_Accel(particle_list, A, fast_flag):
 		acc_list = []
 		for particle in particle_list:
 			if particle != A:
-				acc_list.append(C_Grav_Accel(particle, A))
+				acc_list.append(C_Grav_Accel(A, particle))
 		total_acc = reduce(lambda a,b:a+b, acc_list)
 		return total_acc
 	else:
 		acc_list = []
 		for particle in particle_list:
 			if particle != A:
-				acc_list.append(Grav_Accel(particle, A))
+				acc_list.append(Grav_Accel(A,particle))
 		total_acc = reduce(lambda a,b:a+b, acc_list)
 		return total_acc
 
