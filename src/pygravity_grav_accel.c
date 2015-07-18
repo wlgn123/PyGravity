@@ -78,16 +78,16 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	mpfr_sub (R3, A3, B3, MPFR_RNDD);
 	
 	//find R^2
-	mpfr_pow_ui (R1q, R1, 2, MPFR_RNDN);
-	mpfr_pow_ui (R2q, R2, 2, MPFR_RNDN);
-	mpfr_pow_ui (R3q, R3, 2, MPFR_RNDN);
+	mpfr_pow_si (R1q, R1, 2, MPFR_RNDN);
+	mpfr_pow_si (R2q, R2, 2, MPFR_RNDN);
+	mpfr_pow_si (R3q, R3, 2, MPFR_RNDN);
 	
 	//Find sum of R1q, R2q, R3q
 	mpfr_add (R_tmp, R1q, R2q, MPFR_RNDD);
 	mpfr_add (R_tmp, R_tmp, R3q, MPFR_RNDD);
 	
 	//raise R_temp to 3/2 power
-	mpfr_pow_ui (R_tmp, R_tmp, 3, MPFR_RNDN);
+	mpfr_pow_si (R_tmp, R_tmp, 3, MPFR_RNDN);
 	mpfr_sqrt (R_tmp, R_tmp, MPFR_RNDN);
 	
 	/*multiply by G and mass then divide by R_temp
@@ -96,12 +96,12 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	*/
 	mpfr_div (R_tmp, R_tmp, Mass, MPFR_RNDN);
 	mpfr_div (R_tmp, R_tmp, G, MPFR_RNDN);
-	mpfr_ui_div (R_tmp, 1, R_tmp, MPFR_RNDN);
+	mpfr_si_div (R_tmp, 1, R_tmp, MPFR_RNDN);
 	 
 	 //multiply each R by R_temp, which should equal acceleration vector
-	 mpfr_mul (A1 , A1, R_tmp, MPFR_RNDN);
-	 mpfr_mul (A2 , A2, R_tmp, MPFR_RNDN);
-	 mpfr_mul (A3 , A3, R_tmp, MPFR_RNDN);
+	 mpfr_mul (A1 , R1, R_tmp, MPFR_RNDN);
+	 mpfr_mul (A2 , R2, R_tmp, MPFR_RNDN);
+	 mpfr_mul (A3 , R3, R_tmp, MPFR_RNDN);
 	 
 	//convert A,B,C to string
 	a1 = mpfr_get_str(NULL, &e1,10,0, A1,MPFR_RNDN);
