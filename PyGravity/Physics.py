@@ -81,7 +81,7 @@ def Grav_Accel(A, B):
 
 	.. todo:: double check math on the return vector, see comment.
 	'''
-	G = Decimal('6.67384e-11')
+	G = Decimal('6.67191e-11')
 	r =  A.P - B.P   #vector between two particles
 	r_cube = r.magnitude() ** 3  # dist between A, B cubed
 	acc = G * B.m[0] / r_cube
@@ -89,8 +89,8 @@ def Grav_Accel(A, B):
 
 def C_Grav_Accel(A, B):
 	'''
-	Where the new grav_accel function will be used. grav_accel
-	is imported from the vector_math.so module
+	Wrapper for the pygravity_grav_accel extension. Does same thing as 
+	the Grav_Accel function but in pre-compiled C.
 	
 	:param: A(Particle) first particle
 	:param: B(Particle) second particle
@@ -112,7 +112,8 @@ def C_Grav_Accel(A, B):
 			B.y(string),
 			B.z(string)
 			)
-		
+	
+	.. todo:: unittest
 	
 	... todo:: finsh this
 	'''
