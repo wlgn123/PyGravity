@@ -32,14 +32,14 @@ class PyGravity():
 		#use faster extension, 1 - true, 0 - false
 		self.fast =  False
 		
-	def set_fast():
+	def set_fast(self):
 		'''
 		Sets falg so the faster grav_accel function is used.
 		Just a stand in until new extension is complete and tested.
 		'''
 		self.fast =  True
 		
-	def set_no_fast():
+	def set_no_fast(self):
 		'''
 		Set flag so slower, pure python, function for grav_accel function
 		is used
