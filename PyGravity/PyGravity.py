@@ -30,20 +30,21 @@ class PyGravity():
 		#vector dimensions
 		self.dimension = 3
 		#use faster extension, 1 - true, 0 - false
-		self.fast =  0
+		self.fast =  False
 		
 	def set_fast():
 		'''
-		Sets falg so the faster grav_accel function is used
+		Sets falg so the faster grav_accel function is used.
+		Just a stand in until new extension is complete and tested.
 		'''
-		self.fast =  1
+		self.fast =  True
 		
 	def set_no_fast():
 		'''
 		Set flag so slower, pure python, function for grav_accel function
 		is used
 		'''
-		self.fast =  0
+		self.fast =  False
 
 	def set_dimension(self, dim):
 		'''Set global dimension
