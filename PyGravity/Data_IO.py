@@ -102,7 +102,7 @@ class Reader(object):
 		tree = ET.parse(path)
 		root = tree.getroot()
 		for particle in root.iter('particle'):
-			name,position,velocity,mass = '','','',''
+			
 			for item in particle:
 				if item.tag == 'name':
 					name = item.text
@@ -112,10 +112,11 @@ class Reader(object):
 					velocity = item.text
 				if item.tag == 'mass':
 					mass = item.text
+			print mass
 			new_part = Particle(name, 
 								Vector(position.split(';')),
 								Vector(velocity.split(';')), 
-								Vector(mass) )
+								Vector([str(mass)]) )
 			self.add_obj(new_part)
 
 	def add_obj(self, obj):
