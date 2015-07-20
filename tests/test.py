@@ -255,6 +255,16 @@ class Data_io_Class_Tests(unittest.TestCase):
 		self.failUnless(base.objects[0].V == a.V)
 		self.failUnless(base.objects[0].m == a.m)
 
+	def test_read_xml(self):
+		a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
+		d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
+		base = Data_IO.Reader()
+		base.read_file('./test_data.xml')
+		self.failUnless(base.objects[0].name == a.name)
+		self.failUnless(base.objects[0].P == a.P)
+		self.failUnless(base.objects[0].V == a.V)
+		self.failUnless(base.objects[0].m == a.m)
+
 class PyGravity_Class_Tests(unittest.TestCase):
 	def setUp(self):
 		self.A = Particle('A', Vector(['1']), Vector(['1']), Vector(['1']))
