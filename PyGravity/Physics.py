@@ -119,9 +119,12 @@ def C_Grav_Accel(A, B):
 			B.z(string)
 			)
 	
+	.. note:: The vectors being passed to this function need to be 
+		created with the form Vector(['1.0']) and not Vector(['1'])
+		
 	.. todo:: unittest
 	
-	... todo:: finsh this
+	.. todo:: double check extension math. normailize?
 	'''
 	acc_string = grav_accel(getcontext().prec ,
 							str(B.m[0]),
