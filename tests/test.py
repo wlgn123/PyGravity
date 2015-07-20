@@ -1,5 +1,5 @@
 import unittest
-from PyGravity import PyGravity,round_sig, Vector, Particle, Physics, Data_IO
+from PyGravity import PyGravity, round_sig, Vector, Particle, Physics, Data_IO
 from decimal import *
 '''
 Unit Tests for PyGravity. These Unit tests will run tests against the 
@@ -139,6 +139,13 @@ class Physics_Class_Tests(unittest.TestCase):
 	def setUp(self):
 		self.part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
 		self.part2 = Particle('b',Vector([2*10**42,1*10**42,3*10**42]), Vector([2.3, 1.2, 4.2]), Vector([5*10**6]))
+		part1 = Particle('aa',Vector(['1.00009','1.000009','1.000009']), Vector(['1.09','1.09','1.09']), Vector(['5']))
+		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
+		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), Vector(['1','1','1']), Vector(['5']))
+		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), Vector(['1','1','1']), Vector(['5.8e-100']))
+		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000000000001']), Vector(['1','1','1']), Vector(['5.2']))
+		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), Vector(['1','1','1']), Vector(['5.3e48']))
+		self.part_list = [part1, part2, part3, part4, part5, part6]
 
 
 
@@ -150,15 +157,54 @@ class Physics_Class_Tests(unittest.TestCase):
 		force_vec = Physics.Grav_Force(part1, part2)
 		self.failUnless(answer.round(2) == force_vec.round(2) )
 
+	def test_grav_accel_against_known_answer(self):
+		A = Particle('a',Vector(['1','1','1']), Vector([1,1,1]), Vector(['5']))
+		B = Particle('a',Vector(['2','2','2']), Vector([1,1,1]), Vector(['10']))
+		#the known_answer was calculated by hand and verified w/ wolfram|alpha
+		known_answer = Vector(['-1.28401e-10', '-1.28401e-10', '-1.28401e-10'])
+		self.failUnless(known_answer.round(5) == Physics.Grav_Accel(A,B).round(5))
+		
+		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), Vector(['1','1','1']), Vector(['5.3e20']))
+		known_answer_part_6 = Vector(['4.6299417e8','-2.0371799e9','-2.3149771e9'])
+		#self.failUnless(known_answer_part_6.round(3) == Physics.Grav_Accel(A,part6).round(3))
+		
 	def test_Grav_Accel(self):
 		part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
-		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
+		
 		Acceleration_answer = Vector([-6.42e-10, -6.42e-10,-6.42e-10 ]) * (1/part1.m[0])
-		Acc_Vector_one = (Physics.Grav_Force(part1, part2) * (1/part1.m[0])).round(4)
-		Acc_Vector_two = Physics.Grav_Accel(part1, part2).round(4)
+		Acc_Vector_one = (Physics.Grav_Force(part1, self.part_list[1]) * (1/part1.m[0])).round(4)
+		Acc_Vector_two = Physics.Grav_Accel(part1, self.part_list[1]).round(4)
 		self.failUnless(Acc_Vector_one == Acceleration_answer)
 		self.failUnless(Acc_Vector_two == Acceleration_answer)
-		self.failUnless(Acc_Vector_one == Acc_Vector_one)
+		
+		for i in self.part_list:
+			self.failUnless((Physics.Grav_Force(part1, i) * (1/part1.m[0])).round(4) 
+							 == Physics.Grav_Accel(part1, i).round(4))
+		
+	def test_grav_accel_extension(self):
+		A = Particle('a',Vector(['1','1','1']), Vector([1,1,1]), Vector(['5']))
+		B = Particle('a',Vector(['2','2','2']), Vector([1,1,1]), Vector(['10']))
+		#the known_answer was calculated by hand and verified w/ wolfram|alpha
+		known_answer = Vector(['-1.28401e-10', '-1.28401e-10', '-1.28401e-10'])
+		print Physics.C_Grav_Accel(A, B).round(5)
+		Acc_Vector_one = Physics.C_Grav_Accel(A, B).round(5)
+		self.failUnless(Acc_Vector_one == known_answer.round(5))
+		
+		
+	def test_grav_accel_method_equal(self):
+		part1 = Particle('a',Vector(['1.0','1.0','1.0']), Vector(['1','1','1']), Vector(['5.0']))
+		part2 = Particle('b',Vector(['1.00001','1.0000001','1.00001']), Vector(['1','1','1']), Vector(['5']))
+		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), Vector(['1','1','1']), Vector(['5.0']))
+		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), Vector(['1','1','1']), Vector(['5.8e-100']))
+		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000000000001']), Vector(['1','1','1']), Vector(['5.2']))
+		part6 = Particle('f',Vector(['-1.5','-1.5','-1.5']), Vector(['-1','1','1']), Vector(['5.3e10']))
+		base = PyGravity()
+		base.set_precision(200)
+		self.failUnless(Physics.Grav_Accel(part1,part2).round(5) == Physics.C_Grav_Accel(part1,part2).round(5))
+		self.failUnless(Physics.Grav_Accel(part1,part3).round(5) == Physics.C_Grav_Accel(part1,part3).round(5))
+		#self.failUnless(Physics.Grav_Accel(part1,part4).round(5) == Physics.C_Grav_Accel(part1,part4).round(5))
+		self.failUnless(Physics.Grav_Accel(part1,part5).round(5) == Physics.C_Grav_Accel(part1,part5).round(5))
+		self.failUnless(Physics.Grav_Accel(part1,part6).round(5) == Physics.C_Grav_Accel(part1,part6).round(5))
 		
 	def test_Total_Escape_Velocity(self):
 		base = PyGravity()
@@ -232,20 +278,21 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		self.failUnless(base.particle_list[0].m == a.m)
 		
 	def test_step_all(self):
-		A = Particle('A', Vector(['1.0', '1.0']), Vector(['0', '0']), Vector(['500000000000']))
-		B = Particle('B', Vector(['5.0', '1.0']), Vector(['0', '0']), Vector(['500000000000']))
+		A = Particle('A', Vector(['1.0', '1.0','0']), Vector(['0', '0', '0' ]), Vector(['500000000000']))
+		B = Particle('B', Vector(['5.0', '1.0', '0']), Vector(['0', '0', '0']), Vector(['500000000000']))
 		base = PyGravity()
+		#base.set_fast()
 		base.add_particle(A)
 		base.add_particle(B)
 		base.step_all()
-		self.failUnless(base.particle_list[0].P == Vector(['3.08557500000000','1.00000000000000']))
-		self.failUnless(base.particle_list[0].V == Vector(['2.08557500000000','0E-14']))
+		self.failUnless(base.particle_list[0].P.round(10) == Vector(['-1.084971875','1.0','0']).round(10))
+		self.failUnless(base.particle_list[0].V.round(10) == Vector(['-2.084971875','0','0']).round(10))
+
+		self.failUnless(base.particle_list[1].P.round(10) == Vector(['7.084971875','1.0','0']).round(10))
+		self.failUnless(base.particle_list[1].V.round(10) == Vector(['2.084971875','0','0']).round(10))
 		
-		self.failUnless(base.particle_list[1].P == Vector(['2.91442500000000', '1.00000000000000']))
-		self.failUnless(base.particle_list[1].V == Vector(['-2.08557500000000', '0E-14']))
-		
-		self.failIf(base.particle_list[0].P == Vector(['2.91442500000000', '1.00000000000000']))
-		self.failIf(base.particle_list[0].V == Vector(['-2.08557500000000', '0E-14']))
+		self.failIf(base.particle_list[0].P == Vector(['2.91442500000000', '1.00000000000000', '0']))
+		self.failIf(base.particle_list[0].V == Vector(['-2.08557500000000', '0E-14', '0']))
 
 
 
