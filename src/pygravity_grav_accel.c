@@ -56,7 +56,7 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
    
    //set grav constant
    mpfr_init2 (G, prec);
-   mpfr_set_str (G, "6.67191e-11", 10, ROUND_MODE);
+   mpfr_set_str (G, "-6.67191e-11", 10, ROUND_MODE);
    //set mass
    mpfr_init2 (Mass, prec);
    mpfr_set_str (Mass, mass, 10, ROUND_MODE);
@@ -126,15 +126,21 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	  * mpfr_sub  IS 10X TOO BIG
 	  * OR MY MATH IS FUCKED UP SOMEWHERE
 	  */
+	  mpfr_div_ui(A1, A1, 10, ROUND_MODE);
+	  mpfr_div_ui(A2, A2, 10, ROUND_MODE);
+	  mpfr_div_ui(A3, A3, 10, ROUND_MODE);
+	  
 	if(mpfr_cmp_ui(B1,0) < 0){
-		mpfr_div_ui(A1, A1, 10, ROUND_MODE);
+		mpfr_mul_ui(A1, A1, 10, ROUND_MODE);
 	}
 	if(mpfr_cmp_ui(B2,0) < 0){
-		mpfr_div_ui(A2, A2, 10, ROUND_MODE);
+		mpfr_mul_ui(A2, A2, 10, ROUND_MODE);
 	}
 	if(mpfr_cmp_ui(B3,0) < 0){
-		mpfr_div_ui(A3, A3, 10, ROUND_MODE);
-	}
+		mpfr_mul_ui(A3, A3, 10, ROUND_MODE);
+	}	
+	//HACK OVER
+	
 	//convert A,B,C to string
 	a1 = mpfr_get_str(NULL, &e1,10,0, A1,ROUND_MODE);
 	a2 = mpfr_get_str(NULL, &e2,10,0, A2,ROUND_MODE);
@@ -190,7 +196,7 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	 mpfr_clear (R_tmp);
 	 mpfr_clear (G);
 	 
-   /* Do something interesting here. */
+
    return Py_BuildValue("sss", out1,out2,out3);
 }
 
