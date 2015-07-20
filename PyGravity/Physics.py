@@ -122,7 +122,7 @@ def C_Grav_Accel(A, B):
 	.. note:: The vectors being passed to this function need to be 
 		created with the form Vector(['1.0']) and not Vector(['1'])
 		
-	.. todo:: unittest
+	.. todo:: Fix math error. Component is 10x too big if B is negative
 	
 	.. todo:: double check extension math. normailize?
 	'''
