@@ -29,7 +29,7 @@ class PyGravity():
 		self.set_precision(200)
 		#vector dimensions
 		self.dimension = 3
-		#use faster extension, 1 - true, 0 - false
+		#use faster extension,
 		self.fast =  False
 		
 	def set_fast(self):
