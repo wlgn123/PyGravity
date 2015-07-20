@@ -31,10 +31,14 @@ class Vector_Class_Tests(unittest.TestCase):
 		self.B = Vector([1,1,1])
 		self.C = Vector([2.334e+20, 3.123456e+20])
 		self.D = Vector([4.334e+20, 2.123456e+20])
-		self.E = Vector(['1.2131313131231231231231231231231231231123123123123', '2.213123123123131231231312312312312312123'])
-		self.F = Vector(['1.2131313131231231231231231231231231231123123123121', '2.213123123123131231231312312312312312121'])
-		self.H = Vector(['1.00000000000000000000000000000000000000000000000001','0'])
-		self.I = Vector(['1.00000000000000000000000000000000000000000000000002','0'])
+		self.E = Vector(['1.2131313131231231231231231231231231231123123123123',
+						 '2.213123123123131231231312312312312312123'])
+		self.F = Vector(['1.2131313131231231231231231231231231231123123123121', 
+						 '2.213123123123131231231312312312312312121'])
+		self.H = Vector(['1.00000000000000000000000000000000000000000000000001',
+						 '0'])
+		self.I = Vector(['1.00000000000000000000000000000000000000000000000002',
+						 '0'])
 		self.L = Vector(['1.1111111111111111111111111111111111111222'])
 		self.M = Vector(['1.2345679133333333333333333333333333333456543211084'])
 
@@ -84,16 +88,21 @@ class Vector_Class_Tests(unittest.TestCase):
 		ans_a = Decimal('6')
 		self.failUnless(a.magnitude() == ans_a)
 
-		b = Vector(['2.0000000000000000000000002e+21','4.4444444444444444444444444444e+20','4.111111111111111111111e+20'])
+		b = Vector(['2.0000000000000000000000002e+21',
+					'4.4444444444444444444444444444e+20',
+					'4.111111111111111111111e+20'])
 		ans_b = Decimal('2089627528981311829491.1651755792781224241378604149887198762611497762517918313595066680613531301073141511728460949328602506908336809936538778205045521740966301651816135598736415281509427651835812164324')
-		self.failUnless(round_sig(b.magnitude(),10) == round_sig(ans_b,10))
+		self.failUnless(round_sig(b.magnitude(),10) 
+					    == round_sig(ans_b,10))
 
 		c = Vector(['3','4'])
 		self.failUnless(c.magnitude() == Decimal('5'))
 
 	def test_vector_unit(self):
 		a = Vector(['1.12','2.34','3.45'])
-		ans_a = Vector(['0.259467195511802019559694863263','0.54210110490858636229436248217','0.79925162903189014953656'])
+		ans_a = Vector(['0.259467195511802019559694863263',
+					    '0.54210110490858636229436248217',
+					    '0.79925162903189014953656'])
 		self.failUnless(a.unit().round(10) == ans_a.round(10))
 
 		b = Vector(['2','4','4'])
@@ -105,28 +114,36 @@ class Particle_Class_Tests(unittest.TestCase):
 		pass
 
 	def test_particle_creation(self):
-		a = Particle('a',Vector([1,2,3]), Vector([1,1,1]), Vector([55.5]))
+		a = Particle('a',Vector([1,2,3]),
+						 Vector([1,1,1]), 
+						 Vector([55.5]))
 		self.failUnless(hasattr(a, 'P'))
 		self.failUnless(hasattr(a, 'V'))
 		self.failUnless(hasattr(a, 'm'))
 		self.failUnless(a.name == 'a')
 
 	def test_particle_motion(self):
-		a = Particle('a', Vector(['1','2','3']), Vector(['1','1','1']), Vector(['55.5']))
+		a = Particle('a', Vector(['1','2','3']),
+			              Vector(['1','1','1']), 
+			              Vector(['55.5']))
 		a.move(1)
 		V = Vector([1,1,1])
 		P = Vector([2,3,4])
 		self.failUnless(P== a.P)
 
 	def test_particle_motion2(self):
-		a = Particle('a',Vector([1.1,2.1,3.0]), Vector([1.1,2.1,3.0]), Vector([55.5]))
+		a = Particle('a',Vector([1.1,2.1,3.0]),
+						 Vector([1.1,2.1,3.0]),
+						 Vector([55.5]))
 		Accel = Vector([2,2,-4])
 		Ans = Vector([3.1, 4.1, -1.0])
 		a.accelerate(Accel,1)
 		self.failUnless(Ans == a.V)
 
 	def test_particle_acceleration(self):
-		a = Particle('a',Vector([1, 1, 1]), Vector([1,1,1]), Vector([44]))
+		a = Particle('a',Vector([1, 1, 1]), 
+						 Vector([1,1,1]), 
+						 Vector([44]))
 		Acc = Vector([3, 3, -1])
 		V_ans = Vector([4, 4, 0])
 		P_ans = Vector([5, 5, 1])
@@ -137,41 +154,79 @@ class Particle_Class_Tests(unittest.TestCase):
 
 class Physics_Class_Tests(unittest.TestCase):
 	def setUp(self):
-		self.part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
-		self.part2 = Particle('b',Vector([2*10**42,1*10**42,3*10**42]), Vector([2.3, 1.2, 4.2]), Vector([5*10**6]))
-		part1 = Particle('aa',Vector(['1.00009','1.000009','1.000009']), Vector(['1.09','1.09','1.09']), Vector(['5']))
-		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
-		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), Vector(['1','1','1']), Vector(['5']))
-		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), Vector(['1','1','1']), Vector(['5.8e-100']))
-		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000000000001']), Vector(['1','1','1']), Vector(['5.2']))
-		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), Vector(['1','1','1']), Vector(['5.3e48']))
+		self.part1 = Particle('a',Vector([1,1,1]),
+								  Vector([1,1,1]), 
+								  Vector([5]))
+		self.part2 = Particle('b',Vector([2*10**42,1*10**42,3*10**42]), 
+								  Vector([2.3, 1.2, 4.2]), 
+								  Vector([5*10**6]))
+		part1 = Particle('aa',Vector(['1.00009','1.000009','1.000009']), 
+							  Vector(['1.09','1.09','1.09']), 
+							  Vector(['5']))
+		part2 = Particle('b',Vector([2,2,2]), 
+							 Vector([2.3, 1.2, 4.2]), 
+							 Vector([10]))
+		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), 
+							 Vector(['1','1','1']), 
+							 Vector(['5']))
+		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), 
+						     Vector(['1','1','1']), 
+						     Vector(['5.8e-100']))
+		part5 = Particle('e',Vector(['1.01e10','1.44440000001110',
+									 '1.00000000000001']), 
+						     Vector(['1','1','1']), 
+						     Vector(['5.2']))
+		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), 
+							 Vector(['1','1','1']), 
+							 Vector(['5.3e48']))
 		self.part_list = [part1, part2, part3, part4, part5, part6]
 
 
 
 	def test_Physics_Grav_Force(self):
-		part1 = Particle('a',Vector([1,1,1]), Vector([1,1,1]), Vector([5]))
-		part2 = Particle('b',Vector([2,2,2]), Vector([2.3, 1.2, 4.2]), Vector([10]))
+		part1 = Particle('a',Vector(['1','1','1']), 
+							 Vector(['1','1','1']), 
+							 Vector(['5.0']))
+		part2 = Particle('b',Vector(['2','2','2']), 
+							 Vector(['2.3', '1.2', '4.2']), 
+							 Vector(['10']))
 		answer = Vector(['6.42e-10', '6.42e-10','6.42e-10 '])
-		wrong_ans = Vector([1, 1, 1])
 		force_vec = Physics.Grav_Force(part1, part2)
 		self.failUnless(answer.round(2) == force_vec.round(2) )
+		
+	def test_force_of_gravity_magnitude_against_precomputed_answer(self):
+		part1 = Particle('a',Vector(['1.0','1.0','1.0']), 
+							 Vector(['0','0','0']), 
+							 Vector(['5.0e10']))
+		part2 = Particle('b',Vector(['11.0','1.0','1.0']), 
+							 Vector(['0','0','0']), Vector(['5.0e10']))
+		force_vec = Physics.Grav_Force(part1, part2)
+		self.failUnless(force_vec.magnitude() == 1668460000)
 
 	def test_grav_accel_against_known_answer(self):
-		A = Particle('a',Vector(['1','1','1']), Vector([1,1,1]), Vector(['5']))
-		B = Particle('b',Vector(['2','2','2']), Vector([1,1,1]), Vector(['10']))
+		A = Particle('a',Vector(['1','1','1']), 
+						 Vector([1,1,1]), Vector(['5']))
+		B = Particle('b',Vector(['2','2','2']), 
+						 Vector([1,1,1]), Vector(['10']))
 		#the known_answer was calculated by hand and verified w/ wolfram|alpha
-		known_answer = Vector(['1.28401e-10', '1.28401e-10', '1.28401e-10'])
-		self.failUnless(known_answer.round(5) == Physics.Grav_Accel(A,B).round(5))
+		known_answer = Vector(['1.28438e-10',
+							   '1.28438e-10', '1.28438e-10'])
+		self.failUnless(known_answer.round(5) == 
+						Physics.Grav_Accel(A,B).round(5))
 		
-		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), Vector(['1','1','1']), Vector(['5.3e20']))
-		known_answer_part_6 = Vector(['4.6299417e8','-2.0371799e9','-2.3149771e9'])
+		part6 = Particle('f',Vector(['1.5','-1.2','-1.5']), 
+							 Vector(['1','1','1']), Vector(['5.3e20']))
+		known_answer_part_6 = Vector(['4.6299417e8',
+									  '-2.0371799e9','-2.3149771e9'])
 		#self.failUnless(known_answer_part_6.round(3) == Physics.Grav_Accel(A,part6).round(3))
 		
 	def test_Grav_Accel(self):
-		part1 = Particle('a',Vector(['1.0','1.0','1.0']), Vector([1,1,1]), Vector(['5.0']))
+		part1 = Particle('a',Vector(['1.0','1.0','1.0']), 
+							 Vector([1,1,1]), Vector(['5.0']))
 		
-		Acceleration_answer = Vector(['6.42e-10', '6.42e-10','6.42e-10' ]) * (1/part1.m[0])
+		Acceleration_answer = Vector(['6.42e-10', 
+									  '6.42e-10',
+									  '6.42e-10' ]) * (1/part1.m[0])
 		Acc_Vector_one = (Physics.Grav_Force(part1, self.part_list[1]) * (1/part1.m[0])).round(4)
 		Acc_Vector_two = Physics.Grav_Accel(part1, self.part_list[1]).round(4)
 		self.failUnless(Acc_Vector_one == Acceleration_answer)
@@ -185,7 +240,7 @@ class Physics_Class_Tests(unittest.TestCase):
 		A = Particle('a',Vector(['1.0','1.0','1.0']), Vector([1,1,1]), Vector(['5.0']))
 		B = Particle('b',Vector(['2.0','2.0','2.0']), Vector([1,1,1]), Vector(['10.0']))
 		#the known_answer was calculated by hand and verified w/ wolfram|alpha
-		known_answer = Vector(['1.28401e-10', '1.28401e-10', '1.28401e-10'])
+		known_answer = Vector(['1.28438e-10', '1.28438e-10', '1.28438e-10'])
 		Acc_Vector_one = Physics.C_Grav_Accel(A, B).round(5)
 		self.failUnless(Acc_Vector_one == known_answer.round(5))
 		
@@ -196,11 +251,11 @@ class Physics_Class_Tests(unittest.TestCase):
 		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), Vector(['1','1','1']), Vector(['5.0']))
 		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), Vector(['1','1','1']), Vector(['5.8e-100']))
 		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000000000001']), Vector(['1','1','1']), Vector(['5.2']))
-		part6 = Particle('f',Vector(['-1.5','-1.5','-1.5']), Vector(['-1','1','1']), Vector(['5.3e10']))
+		part6 = Particle('f',Vector(['-1.5','-1.5','-1.5']), Vector(['-1','1','1']), Vector(['5.3e24']))
 		base = PyGravity()
 		base.set_precision(200)
-		print Physics.Grav_Accel(part1,part6).round(5)
-		print  Physics.C_Grav_Accel(part1,part6).round(5)
+		print Physics.Grav_Accel(part1,part2).round(5)
+		print  Physics.C_Grav_Accel(part1,part2).round(5)
 		self.failUnless(Physics.Grav_Accel(part1,part2).round(5) == Physics.C_Grav_Accel(part1,part2).round(5))
 		self.failUnless(Physics.Grav_Accel(part1,part3).round(5) == Physics.C_Grav_Accel(part1,part3).round(5))
 		#self.failUnless(Physics.Grav_Accel(part1,part4).round(5) == Physics.C_Grav_Accel(part1,part4).round(5))
