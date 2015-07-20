@@ -30,7 +30,7 @@ def Grav_Force(A, B):
 		add parser to PyGravity to smartly determin working units.
 
 	'''
-	G = Decimal('6.67191e-11')
+	G = Decimal('-6.67191e-11')
 	r =  A.P - B.P   #vector between two particles
 	r_squared = r.magnitude() ** 2  # dist between A, B squared
 	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
@@ -87,7 +87,7 @@ def Grav_Accel(A, B):
 		one being accelerated. Need to change alot of other methods for
 		consistancy.
 	'''
-	G = Decimal('6.67191e-11')
+	G = Decimal('-6.67191e-11')
 	r =  A.P - B.P   #vector between two particles
 	r_cube = r.magnitude() ** 3  # dist between A, B cubed
 	acc = G * B.m[0] / r_cube
@@ -104,7 +104,7 @@ def C_Grav_Accel(A, B):
 	
 	.. note:: This wrapps the c extension: pygravity_grav_accel.grav_accel.
 	
-	The call signature for grav_accel() is as fllows:
+	The call signature for grav_accel() is as follows:
 	
 	.. code-block:: python
 	
