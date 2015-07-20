@@ -159,4 +159,4 @@ class PyGravity():
 			item.accelerate(acceleration, self.time_interval)
 		for item in self.particle_list:
 			item.move(self.time_interval)
-		self.currant_time += 1
+		self.currant_time += self.time_interval
