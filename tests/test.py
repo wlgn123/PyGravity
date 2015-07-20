@@ -186,7 +186,7 @@ class Physics_Class_Tests(unittest.TestCase):
 		B = Particle('a',Vector(['2','2','2']), Vector([1,1,1]), Vector(['10']))
 		#the known_answer was calculated by hand and verified w/ wolfram|alpha
 		known_answer = Vector(['-1.28401e-10', '-1.28401e-10', '-1.28401e-10'])
-		print Physics.C_Grav_Accel(A, B).round(5)
+		#print Physics.C_Grav_Accel(A, B).round(5)
 		Acc_Vector_one = Physics.C_Grav_Accel(A, B).round(5)
 		self.failUnless(Acc_Vector_one == known_answer.round(5))
 		
@@ -256,8 +256,8 @@ class Data_io_Class_Tests(unittest.TestCase):
 		self.failUnless(base.objects[0].m == a.m)
 
 	def test_read_xml(self):
-		a = Particle('a', Vector(['1.1','1.2','0']), Vector(['0','0','0']), Vector(['50']))
-		d = Particle('d', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
+		a = Particle('A', Vector(['1','1','1']), Vector(['1','0','0']), Vector(['50000000']))
+		d = Particle('D', Vector(['2.1','2.1','0']), Vector(['0','0','0']), Vector(['20']))
 		base = Data_IO.Reader()
 		base.read_file('./test_data.xml')
 		self.failUnless(base.objects[0].name == a.name)
