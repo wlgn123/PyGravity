@@ -97,7 +97,8 @@ class Reader(object):
 			
 		.. todo:: Error handling for parser
 		
-		.. todo:: Unit tests
+		.. todo:: Fix error for decimal points. Get invalid string
+			literial: '.' for <mass>5.0</mass>
 		'''
 		tree = ET.parse(path)
 		root = tree.getroot()
