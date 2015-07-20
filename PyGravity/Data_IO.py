@@ -113,7 +113,6 @@ class Reader(object):
 					velocity = item.text
 				if item.tag == 'mass':
 					mass = item.text
-			print mass
 			new_part = Particle(name, 
 								Vector(position.split(';')),
 								Vector(velocity.split(';')), 
