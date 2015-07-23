@@ -56,7 +56,7 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
    
    //set grav constant
    mpfr_init2 (G, prec);
-   mpfr_set_str (G, "-6.67191e-11", 10, ROUND_MODE);
+   mpfr_set_str (G, "-6.67384e-11", 10, ROUND_MODE);
    //set mass
    mpfr_init2 (Mass, prec);
    mpfr_set_str (Mass, mass, 10, ROUND_MODE);
@@ -126,6 +126,7 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	  * mpfr_sub  IS 10X TOO BIG
 	  * OR MY MATH IS FUCKED UP SOMEWHERE
 	  */
+	  
 	  mpfr_div_ui(A1, A1, 10, ROUND_MODE);
 	  mpfr_div_ui(A2, A2, 10, ROUND_MODE);
 	  mpfr_div_ui(A3, A3, 10, ROUND_MODE);
