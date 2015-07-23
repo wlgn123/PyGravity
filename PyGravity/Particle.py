@@ -62,6 +62,9 @@ class Particle(object):
 		new_pos = self.P + self.V*timestep
 		self.P = new_pos
 
+	def store_acc(self, acc):
+		self.A = acc
+		
 	def accelerate(self, A, timestep):
 		'''
 		Increase velocity by specified acceleration and timestep.
