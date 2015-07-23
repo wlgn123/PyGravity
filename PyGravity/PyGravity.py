@@ -32,19 +32,19 @@ class PyGravity():
 		#use faster extension,
 		self.fast =  False
 		
-	def set_fast(self):
+	def set_fast(self, booln):
 		'''
 		Sets falg so the faster grav_accel function is used.
 		Just a stand in until new extension is complete and tested.
 		'''
-		self.fast =  True
+		if booln == True:
+			self.fast =  True
+		elif booln == False:
+			self.fast = False
+		else:
+			raise TypeError("Only True or False boolean accepted")
 		
-	def set_no_fast(self):
-		'''
-		Set flag so slower, pure python, function for grav_accel function
-		is used
-		'''
-		self.fast =  False
+
 
 	def set_dimension(self, dim):
 		'''Set global dimension
@@ -136,6 +136,32 @@ class PyGravity():
 		self.writer.objects = self.particle_list
 		self.writer.write_file(file_name)
 
+	def step_all_verlet(self):
+		'''
+		Using the Verlet veoloicy method for updating the particles 
+		position
+		
+		.. todo:: iterate through once, update position, iterate a second
+			time to do the velocity
+		
+		.. todo:: new particle method that does not use the time_interval. 
+			it is just uneeded computation when using verlet or rk4 methods.
+			
+		'''
+		
+		for item in self.particle_list:
+			acceleration  = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
+			#print 'Acc: ', acceleration.round(2)
+			new_p = item.P + item.V*self.time_interval + acceleration*(1.0/2.0)*self.time_interval**2
+			item.P = new_p
+			#print 'Pos: ',new_p.round(2)
+			item.store_acc(acceleration)
+		for item in self.particle_list:
+			new_acceleration = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
+			#print 'new acc',new_acceleration.round(2)
+			item.accelerate((item.A + new_acceleration)*(self.time_interval/2.0), 1.0)
+			#item.V = new_v
+	
 	def step_all(self):
 		'''
 		Iterates through all the particles in self.particle_list and
