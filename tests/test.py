@@ -344,6 +344,10 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		self.failUnless(base.particle_list[0].m == a.m)
 		
 	def test_step_all(self):
+		'''
+		.. todo:: Test the steps by comparting several itarations against
+			an exact solution for various intervals and precision
+		'''
 		A = Particle('A', Vector(['1.0', '1.0','0']), Vector(['0', '0', '0' ]), Vector(['500000000000']))
 		B = Particle('B', Vector(['5.0', '1.0', '0']), Vector(['0', '0', '0']), Vector(['500000000000']))
 		base = PyGravity()
