@@ -1,5 +1,5 @@
 from round_sig import round_sig
-from decimal import *
+from math import sqrt
 '''
 .. module:: Vector
    :platform: Unix
@@ -49,13 +49,10 @@ class Vector(object):
 		
 		.. note::
 			To ensure accuracy use strings not floats. As in ['1.1', '2.1'].
-			The vector uses Decimal objects for accuracy. Decimal will
-			convert strings to Decimal objects without loss of accuracy, 
-			but floats will suffer rounding errors before being converted 
-			to Decimal objects.
+			The vector uses floats for compromised accuracy. 
 		
 		'''
-		self.vector = self.makedecimal(array)
+		self.vector = self.make_float(array)
 
 	def __str__(self):
 		string = '('
@@ -114,10 +111,24 @@ class Vector(object):
 			i += 1
 		return True
 
-	def makedecimal(self, array):
+	def make_float(self, array):
+		'''
+		Iterate through incoming array, switching value types to floats
+		when nedded.
+		
+		:raises: TypeError, if input isn't a Float, Int or String.
+		
+		'''
 		new_array = []
 		for val in array:
-			new_array.append(Decimal(str(val)))
+			if isinstance(val, float):
+				new_array.append(val)
+			elif isinstance(val, int):
+				new_array.append(float(val))
+			elif isinstance(val, str):
+				new_array.append(float(val))
+			else:
+				raise TypeError("Vectors can only be initialized with Foats, Ints, or Strings")
 		return new_array
 
 	def array_mismatch(self, other):
@@ -148,7 +159,7 @@ class Vector(object):
 	def __mul__(self, scalar):
 		new_array = []
 		for item in self.vector:
-			new_array.append(item * Decimal(scalar))
+			new_array.append(item * float(scalar))
 		return Vector(new_array)
 
 	def __getitem__(self,index):
@@ -178,13 +189,13 @@ class Vector(object):
 		This is independant of the dimension of the vector and will find the 
 		megnitude for any vector.
 		
-		:returns: magniutude as a Decimal object.
+		:returns: magniutude as a float
 		
 		'''
 		total = 0
 		for item in self.vector:
 			total += item**2
-		return total.sqrt()
+		return sqrt(total)
 
 
 	def unit(self):

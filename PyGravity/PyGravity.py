@@ -1,6 +1,6 @@
 import Physics
 import Data_IO
-import decimal
+
 '''
 .. module:: PyGravity
    :platform: Unix
@@ -24,9 +24,6 @@ class PyGravity():
 		self.time_interval = 1
 		self.initial_time = 0
 		self.currant_time = 0
-		#vector precision
-		self.precision = 200
-		self.set_precision(200)
 		#vector dimensions
 		self.dimension = 3
 		#use faster extension,
@@ -69,14 +66,6 @@ class PyGravity():
 		'''
 		self.time_interval = interval
 
-	def set_precision(self, prec):
-		'''
-		Set the precision for this currant instance. Default is 200.
-		
-		:param: prec(int) New global precision
-		'''
-		self.precision = prec
-		decimal.getcontext().prec = self.precision
 
 	def add_particle(self, particle):
 		'''

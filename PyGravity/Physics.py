@@ -1,7 +1,7 @@
-from decimal import *
 import Particle
 import Global_Container
 import Vector
+from math import sqrt
 from pygravity_grav_accel import grav_accel
 '''
 .. module:: Physics
@@ -30,7 +30,7 @@ def Grav_Force(A, B):
 		add parser to PyGravity to smartly determin working units.
 
 	'''
-	G = Decimal('-6.67384e-11')
+	G = -6.67384e-11
 	r =  A.P - B.P   #vector between two particles
 	r_squared = r.magnitude() ** 2  # dist between A, B squared
 	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
@@ -87,7 +87,7 @@ def Grav_Accel(A, B):
 		one being accelerated. Need to change alot of other methods for
 		consistancy.
 	'''
-	G = Decimal('-6.67384e-11')
+	G = -6.67384e-11
 	r =  A.P - B.P   #vector between two particles
 	r_cube = r.magnitude() ** 3  # dist between A, B cubed
 	acc = G * B.m[0] / r_cube
@@ -126,14 +126,14 @@ def C_Grav_Accel(A, B):
 	
 	.. todo:: double check extension math. normailize?
 	'''
-	acc_string = grav_accel(getcontext().prec ,
-							str(B.m[0]),
-							str(A.P[0]),
-							str(A.P[1]),
-							str(A.P[2]),
-							str(B.P[0]),
-							str(B.P[1]),
-							str(B.P[2])
+	acc_string = grav_accel(
+							B.m[0],
+							A.P[0],
+							A.P[1],
+							A.P[2],
+							B.P[0],
+							B.P[1],
+							B.P[2]
 							)
 	acc = Vector.Vector(list(acc_string))
 	return acc
@@ -176,9 +176,9 @@ def Escape_Velocity(A, B):
 
 	:returns: Escape velocity as a Vector Object.
 	'''
-	G = Decimal('6.67384e-11')
+	G = 6.67384e-11
 	r = (A.P-B.P).magnitude() #distance between A and B
-	esc = ((G*B.m[0])/r).sqrt() # formula for escape velocity
+	esc = sqrt( (G*B.m[0])/r ) # formula for escape velocity
 	return esc
 
 
