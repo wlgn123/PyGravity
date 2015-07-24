@@ -15,3 +15,7 @@ PyGravity.blg
 #ipython misc files#
 ####################
 .ipynb_checkpoints
+
+#build folders
+##################
+build
