@@ -3,7 +3,6 @@ from distutils.core import setup, Extension
 module1 = Extension('pygravity_grav_accel',
 					include_dirs = ['/usr/local/include'],
                     sources = ['pygravity_grav_accel.c'],
-                    libraries = ['mpfr'],
                     library_dirs = ['/usr/local/lib']
                     )
 
