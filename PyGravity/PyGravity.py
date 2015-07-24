@@ -21,7 +21,7 @@ class PyGravity():
 		#particels in active simulation
 		self.particle_list = []
 		#time stuff
-		self.time_interval = 1
+		self.time_interval = 1.0
 		self.initial_time = 0
 		self.currant_time = 0
 		#vector dimensions
@@ -64,7 +64,7 @@ class PyGravity():
 		:param: interval(int): Interval to use
 		
 		'''
-		self.time_interval = interval
+		self.time_interval = float(interval)
 
 
 	def add_particle(self, particle):
