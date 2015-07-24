@@ -7,9 +7,9 @@
 	
 	<particle>
 		<name>A</name>
-		<position>1;1;1</position>
+		<position>1.0;1;1</position>
 		<velocity>1;0;0</velocity>
-		<mass>5000</mass>
+		<mass>50000000</mass>
 	</particle>
 	
 	<particle>
