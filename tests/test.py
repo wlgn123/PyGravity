@@ -1,6 +1,6 @@
 import unittest
 from PyGravity import PyGravity, round_sig, Vector, Particle, Physics, Data_IO
-from decimal import *
+from math import sqrt
 '''
 Unit Tests for PyGravity. These Unit tests will run tests against the 
 installed PyGravity module and not against the source files in this 
@@ -26,18 +26,17 @@ class Round_test(unittest.TestCase):
 
 class Vector_Class_Tests(unittest.TestCase):
 	def setUp(self):
-		getcontext().prec = 400
 		self.A = Vector([1,2,3])
 		self.B = Vector([1,1,1])
 		self.C = Vector([2.334e+20, 3.123456e+20])
 		self.D = Vector([4.334e+20, 2.123456e+20])
-		self.E = Vector(['1.2131313131231231231231231231231231231123123123123',
-						 '2.213123123123131231231312312312312312123'])
-		self.F = Vector(['1.2131313131231231231231231231231231231123123123121', 
-						 '2.213123123123131231231312312312312312121'])
-		self.H = Vector(['1.00000000000000000000000000000000000000000000000001',
+		self.E = Vector(['1.2131313131233',
+						 '2.2131231231233'])
+		self.F = Vector(['1.2131313131231', 
+						 '2.2131231231231'])
+		self.H = Vector(['1.00000000000001',
 						 '0'])
-		self.I = Vector(['1.00000000000000000000000000000000000000000000000002',
+		self.I = Vector(['1.000000000000001',
 						 '0'])
 		self.L = Vector(['1.1111111111111111111111111111111111111222'])
 		self.M = Vector(['1.2345679133333333333333333333333333333456543211084'])
@@ -84,19 +83,19 @@ class Vector_Class_Tests(unittest.TestCase):
 
 
 	def test_magnitude(self):
-		a = Vector(['2','4','4'])
-		ans_a = Decimal('6')
+		a = Vector([2, 4, 4])
+		ans_a = 6.0
 		self.failUnless(a.magnitude() == ans_a)
 
 		b = Vector(['2.0000000000000000000000002e+21',
 					'4.4444444444444444444444444444e+20',
 					'4.111111111111111111111e+20'])
-		ans_b = Decimal('2089627528981311829491.1651755792781224241378604149887198762611497762517918313595066680613531301073141511728460949328602506908336809936538778205045521740966301651816135598736415281509427651835812164324')
+		ans_b = 2089627528981311829491.16517557927812
 		self.failUnless(round_sig(b.magnitude(),10) 
 					    == round_sig(ans_b,10))
 
 		c = Vector(['3','4'])
-		self.failUnless(c.magnitude() == Decimal('5'))
+		self.failUnless(c.magnitude() == 5.0)
 
 	def test_vector_unit(self):
 		a = Vector(['1.12','2.34','3.45'])
@@ -157,9 +156,9 @@ class Physics_Class_Tests(unittest.TestCase):
 		self.part1 = Particle('a',Vector([1,1,1]),
 								  Vector([1,1,1]), 
 								  Vector([5]))
-		self.part2 = Particle('b',Vector([2*10**42,1*10**42,3*10**42]), 
+		self.part2 = Particle('b',Vector([2.0e42,1.0e42,3.0e42]), 
 								  Vector([2.3, 1.2, 4.2]), 
-								  Vector([5*10**6]))
+								  Vector([5.0e6]))
 		part1 = Particle('aa',Vector(['1.00009','1.000009','1.000009']), 
 							  Vector(['1.09','1.09','1.09']), 
 							  Vector(['5']))
@@ -250,10 +249,9 @@ class Physics_Class_Tests(unittest.TestCase):
 		part2 = Particle('b',Vector(['1.00001','1.0000001','1.00001']), Vector(['1','1','1']), Vector(['5']))
 		part3 = Particle('c',Vector(['1.2e20','1.2e21','1.4e10']), Vector(['1','1','1']), Vector(['5.0']))
 		part4 = Particle('d',Vector(['1.01e-40','1.3e-40','1.4e-40']), Vector(['1','1','1']), Vector(['5.8e-100']))
-		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000000000001']), Vector(['1','1','1']), Vector(['5.2']))
+		part5 = Particle('e',Vector(['1.01e10','1.44440000001110','1.00000001']), Vector(['1','1','1']), Vector(['5.2']))
 		part6 = Particle('f',Vector(['-1.5','-1.5','-1.5']), Vector(['-1','1','1']), Vector(['5.3e24']))
 		base = PyGravity()
-		base.set_precision(200)
 		print Physics.Grav_Accel(part1,part2).round(5)
 		print  Physics.C_Grav_Accel(part1,part2).round(5)
 		self.failUnless(Physics.Grav_Accel(part1,part2).round(5) == Physics.C_Grav_Accel(part1,part2).round(5))
