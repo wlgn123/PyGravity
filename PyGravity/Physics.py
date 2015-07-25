@@ -30,6 +30,7 @@ def Grav_Force(A, B):
 		add parser to PyGravity to smartly determin working units.
 
 	'''
+
 	G = -6.67384e-11
 	r =  A.P - B.P   #vector between two particles
 	r_squared = r.magnitude() ** 2  # dist between A, B squared
@@ -37,6 +38,28 @@ def Grav_Force(A, B):
 	f_vec = r.unit() * f_mag
 	return f_vec
 
+def Grav_Force_tup(tup):
+	'''
+	Calculates the force of gravity between two particles. Uses Newton's
+	Law of Gravity. Gravitational constant is in standtard metric units.
+
+	:param: A(Particle): First particle
+
+	:param: B(Particle): Second Particle
+
+	:returns: Force(Vector): Force acting on particle A as a Vector.
+
+	.. todo:: abstract gravitational constant to PyGravity.py,
+		add parser to PyGravity to smartly determin working units.
+
+	'''
+	A, B = tup
+	G = -6.67384e-11
+	r =  A.P - B.P   #vector between two particles
+	r_squared = r.magnitude() ** 2  # dist between A, B squared
+	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
+	f_vec = r.unit() * f_mag
+	return f_vec
 
 def Total_Grav_Force(particle_list, particle):
 	'''
