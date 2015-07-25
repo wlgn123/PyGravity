@@ -151,6 +151,8 @@ class PyGravity():
 			item.accelerate((item.A + new_acceleration)*(self.time_interval/2.0), 1.0)
 			#item.V = new_v
 	
+
+			
 	def step_all(self):
 		'''
 		Iterates through all the particles in self.particle_list and
@@ -167,11 +169,20 @@ class PyGravity():
 			
 		
 		'''
-		for item in self.particle_list:
-			#calculate the acceleration vector
-			acceleration = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
-			# Call particle.accelerate() to apply above vector
-			item.accelerate(acceleration, self.time_interval)
-		for item in self.particle_list:
-			item.move(self.time_interval)
+		from multiprocessing import Pool
+		from functools import partial
+		p = Pool()
+		
+		Step = partial(step, self.particle_list, self.fast, self.time_interval)
+			
+			
+
+		p.map(Step, self.particle_list)
+		
+
 		self.currant_time += self.time_interval
+		
+def step(part_list, flag, time_interval, i):
+	acc = Physics.Sum_Grav_Accel(part_list, i, flag)
+	i.accelerate(acc, time_interval)
+	i.move(time_interval)
