@@ -171,15 +171,15 @@ class PyGravity():
 		'''
 		from multiprocessing import Pool
 		from functools import partial
-		p = Pool()
+		pool = Pool()
 		
 		Step = partial(step, self.particle_list, self.fast, self.time_interval)
-			
-			
-
-		p.map(Step, self.particle_list)
 		
-
+		pool.map(Step, self.particle_list)
+		
+		pool.close()
+		pool.join()
+		
 		self.currant_time += self.time_interval
 		
 def step(part_list, flag, time_interval, i):
