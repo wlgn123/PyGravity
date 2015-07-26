@@ -130,8 +130,6 @@ class PyGravity():
 		Using the Verlet veoloicy method for updating the particles 
 		position
 		
-		.. todo:: iterate through once, update position, iterate a second
-			time to do the velocity
 		
 		.. todo:: new particle method that does not use the time_interval. 
 			it is just uneeded computation when using verlet or rk4 methods.
