@@ -142,7 +142,7 @@ def C_Grav_Accel(A, B):
 			B.z(string)
 			)
 	
-	.. note:: The vectors being passed to this function need to be 
+	.. note:: The vhttp://www.pandora.com/station/play/844365380518691958ectors being passed to this function need to be 
 		created with the form Vector(['1.0']) and not Vector(['1'])
 		
 	.. todo:: Fix math error. Component is 10x too big if B is negative
@@ -161,10 +161,32 @@ def C_Grav_Accel(A, B):
 	acc = Vector.Vector(list(acc_string))
 	return acc
 	
+
+def Proto_Acc(A,B):
+	'''
+	Calculate the acceleration between two objects,
+	leaving the mass part out. Therefore:
+	
+	.. code-block:: python
+	
+		A = Obj1
+		B = Obj2
+		proto = Proto_Acc(A, B)
+		A_Acc = proto * B.mass         #Acceleration on A
+		B_Acc = proto * (-1.0)*A.mass   # Acceleration on B
+	'''
+	G = -6.67384e-11
+	r =  A.P - B.P 
+	r_mag = r.magniutde()   # r_mag = ||A-B||
+	r_mag_squared = r_mag^2
+	r_unit = r / r_mag
+	
+	return (G/r_mag_squared)*r_unit
+	
 def Sum_Grav_Accel(particle_list, A, fast_flag):
 	'''
 	Sum the total acceleration acting on a particle by using the
-	Grav_Accel function and iterating through the particle list
+	Grav_Accel function and iterating through the particle list.
 
 	:param: global_container(Global_Container): List of particles
 		to iteratethrough.
