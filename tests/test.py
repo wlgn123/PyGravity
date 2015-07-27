@@ -306,6 +306,13 @@ class Physics_Class_Tests(unittest.TestCase):
 											  base.particle_list[1])
 		acc_proto_method = acc_proto_method * base.particle_list[1].m[0]
 		self.failUnless(acc_proto_method.round(5) == acc_accel_method.round(5))
+		
+	def test_step_all_verlet(self):
+		base = PyGravity()
+		for part in self.part_list:
+			base.add_particle(part)
+		base.step_all_verlet()
+		
 
 class Data_io_Class_Tests(unittest.TestCase):
 	def setUp(self):
