@@ -97,7 +97,8 @@ class PyGravity():
 		The particles are then loaded into the objects list
 		under Physics.objects.
 		 
-		:param: file_name(string) Name of data file to be read.
+		:param: file_name(string) Name of dat		.. todo:: iterate through once, update position, iterate a second
+			time to do the velocitya file to be read.
 		
 		
 		:py:func:'PyGravity.set_dimension'
@@ -148,11 +149,31 @@ class PyGravity():
 			#print 'new acc',new_acceleration.round(2)
 			item.accelerate((item.A + new_acceleration)*(self.time_interval/2.0), 1.0)
 			#item.V = new_v
-	
+
+	def step_all_verlet_multi(self):
+		'''
+		Multicore Verlet method, assumes time_interval of 1
+		'''
+		p_len = len(self.particle_list)
+		half_list = []
+		for I in range(p_len):
+			for i in range(I+1, p_len):
+				half_list.append((self.particle_list[I],self.particle_list[i]))
+		print half_list
+			
+		from multiprocessing import Pool
+		pool = Pool()
+		pool.map(step_verlet_one, half_list)
+		pool.join()
+		pool.map(step_verlet_two, half_list)
+		pool.join()
+		pool.close()
+		
 
 			
 	def step_all(self):
-		'''
+		'''		.. todo:: iterate through once, update position, iterate a second
+			time to do the velocity
 		Iterates through all the particles in self.particle_list and
 		runs the Physics.Sum_Grav_Accel() function, and applies the 
 		acceleration to update each particle's velocity vector, then 
@@ -184,3 +205,21 @@ def step(part_list, flag, time_interval, i):
 	acc = Physics.Sum_Grav_Accel(part_list, i, flag)
 	i.accelerate(acc, time_interval)
 	i.move(time_interval)
+
+def step_verlet_one(pair):
+	A, B = pair
+	proto = Physics.Proto_Acc(A, B)
+	A_acc = proto * B.m
+	B_acc = (-1.0)* proto * A.m
+	A.store_acc(A_acc)
+	B.store_acc(B.acc)
+	A.P = A.P + A.V *time_interval + A_acc*(1.0/2.0)
+	B.P = B.P + B.V *time_interval + B_acc*(1.0/2.0)
+	
+def step_verlat_two(pair):
+	A, B = pair
+	proto = Physics.Proto_Acc(A, B)
+	A_acc = proto * B.m
+	B_acc = proto* (-1.0) * A.m
+	A.V = (A.store + A_acc)/(2.0) 
+	B.V = (B.store + A_acc)/2.0
