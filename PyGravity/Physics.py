@@ -108,7 +108,7 @@ def Grav_Accel(A, B):
 	
 	.. todo:: Maybe switch argument so the first particle is for the 
 		one being accelerated. Need to change alot of other methods for
-		consistancy.
+		consistancy.acc_force_method
 	'''
 	G = -6.67384e-11
 	r =  A.P - B.P   #vector between two particles
@@ -177,11 +177,10 @@ def Proto_Acc(A,B):
 	'''
 	G = -6.67384e-11
 	r =  A.P - B.P 
-	r_mag = r.magniutde()   # r_mag = ||A-B||
-	r_mag_squared = r_mag^2
-	r_unit = r / r_mag
+	r_mag = r.magnitude()   # r_mag = ||A-B||
+	r_mag_squared = r_mag * r_mag
 	
-	return (G/r_mag_squared)*r_unit
+	return r.unit() *(G/r_mag_squared)
 	
 def Sum_Grav_Accel(particle_list, A, fast_flag):
 	'''
