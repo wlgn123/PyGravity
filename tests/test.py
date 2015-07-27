@@ -294,6 +294,18 @@ class Physics_Class_Tests(unittest.TestCase):
 
 			self.failUnless(base.objects[0].P.y < 12)
 			self.failUnless(base.objects[0].P.y > (-12))
+			
+	def test_Proto_Accel(self):
+		base = PyGravity()
+		for part in self.part_list:
+			base.add_particle(part)
+
+		acc_accel_method = Physics.Grav_Accel(base.particle_list[0], 
+											  base.particle_list[1])
+		acc_proto_method = Physics.Proto_Acc(base.particle_list[0], 
+											  base.particle_list[1])
+		acc_proto_method = acc_proto_method * base.particle_list[1].m[0]
+		self.failUnless(acc_proto_method.round(5) == acc_accel_method.round(5))
 
 class Data_io_Class_Tests(unittest.TestCase):
 	def setUp(self):
@@ -341,7 +353,7 @@ class PyGravity_Class_Tests(unittest.TestCase):
 		self.failUnless(base.particle_list[0].V == a.V)
 		self.failUnless(base.particle_list[0].m == a.m)
 		
-	def test_step_all(self):
+	def _test_step_all(self):
 		'''
 		.. todo:: Test the steps by comparting several itarations against
 			an exact solution for various intervals and precision
