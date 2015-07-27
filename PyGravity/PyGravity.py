@@ -129,45 +129,41 @@ class PyGravity():
 	def step_all_verlet(self):
 		'''
 		Using the Verlet veoloicy method for updating the particles 
-		position
+		position. This method also uses the Proto_Accel and half_list 
+		method to reduce calculations by half. This method runs about 
+		twice as fast as the multi-core step_all method for set of 40 
+		points.
 		
-		
-		.. todo:: new particle method that does not use the time_interval. 
-			it is just uneeded computation when using verlet or rk4 methods.
-			
 		'''
 		
-		for item in self.particle_list:
-			acceleration  = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
-			#print 'Acc: ', acceleration.round(2)
-			new_p = item.P + item.V*self.time_interval + acceleration*(1.0/2.0)*self.time_interval**2
-			item.P = new_p
-			#print 'Pos: ',new_p.round(2)
-			item.store_acc(acceleration)
-		for item in self.particle_list:
-			new_acceleration = Physics.Sum_Grav_Accel(self.particle_list, item, self.fast)
-			#print 'new acc',new_acceleration.round(2)
-			item.accelerate((item.A + new_acceleration)*(self.time_interval/2.0), 1.0)
-			#item.V = new_v
+		
+		p_len = len(self.particle_list) 
+		half_list= []
+		for I in range(p_len):
+			for i in range(I+1, p_len):
+				half_list.append((self.particle_list[I],self.particle_list[i]))
+		
+		for pair in half_list:
+			Physics.step_verlet_one(pair)
+			Physics.step_verlet_two(pair)
+			
 
 	def step_all_verlet_multi(self):
 		'''
-		Multicore Verlet method, assumes time_interval of 1
+		Multicore Verlet method, assumes time_interval of 1.
+		Uses the new Proto_Accel and Half_List method for cutting down
+		on vector math.
 		'''
 		p_len = len(self.particle_list)
 		half_list = []
 		for I in range(p_len):
 			for i in range(I+1, p_len):
 				half_list.append((self.particle_list[I],self.particle_list[i]))
-		print half_list
+		for item in half_list:
+			print item
 			
-		from multiprocessing import Pool
-		pool = Pool()
-		pool.map(step_verlet_one, half_list)
-		pool.join()
-		pool.map(step_verlet_two, half_list)
-		pool.join()
-		pool.close()
+		pass
+
 		
 
 			
@@ -182,7 +178,7 @@ class PyGravity():
 		
 		.. note:: The acceleration is applied to the velocity using the
 			time interval. Thus the new velocity equals the currant
-			velocity plus the acceleration times the time_interval. 
+			velocity plus the acceleration times the time_interval. http://stackoverflow.com/questions/26520781/python-multiprocessing-poolwhats-the-difference-between-map-async-and-imap
 			The same procedure produces the new position using the same 
 			time_interval.
 			
@@ -206,20 +202,4 @@ def step(part_list, flag, time_interval, i):
 	i.accelerate(acc, time_interval)
 	i.move(time_interval)
 
-def step_verlet_one(pair):
-	A, B = pair
-	proto = Physics.Proto_Acc(A, B)
-	A_acc = proto * B.m
-	B_acc = (-1.0)* proto * A.m
-	A.store_acc(A_acc)
-	B.store_acc(B.acc)
-	A.P = A.P + A.V *time_interval + A_acc*(1.0/2.0)
-	B.P = B.P + B.V *time_interval + B_acc*(1.0/2.0)
-	
-def step_verlat_two(pair):
-	A, B = pair
-	proto = Physics.Proto_Acc(A, B)
-	A_acc = proto * B.m
-	B_acc = proto* (-1.0) * A.m
-	A.V = (A.store + A_acc)/(2.0) 
-	B.V = (B.store + A_acc)/2.0
+
