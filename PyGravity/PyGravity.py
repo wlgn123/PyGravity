@@ -148,22 +148,6 @@ class PyGravity():
 			Physics.step_verlet_two(pair)
 			
 
-	def step_all_verlet_multi(self):
-		'''
-		Multicore Verlet method, assumes time_interval of 1.
-		Uses the new Proto_Accel and Half_List method for cutting down
-		on vector math.
-		'''
-		p_len = len(self.particle_list)
-		half_list = []
-		for I in range(p_len):
-			for i in range(I+1, p_len):
-				half_list.append((self.particle_list[I],self.particle_list[i]))
-		for item in half_list:
-			print item
-			
-		pass
-
 		
 
 			
@@ -184,18 +168,9 @@ class PyGravity():
 			
 		
 		'''
-		from multiprocessing import Pool
-		from functools import partial
-		pool = Pool()
+		for item in self.particle_list:
+			step(self.particle_list, self.fast,self.time_interval, item)
 		
-		Step = partial(step, self.particle_list, self.fast, self.time_interval)
-		
-		pool.map(Step, self.particle_list)
-		
-		pool.close()
-		pool.join()
-		
-		self.currant_time += self.time_interval
 		
 def step(part_list, flag, time_interval, i):
 	acc = Physics.Sum_Grav_Accel(part_list, i, flag)
