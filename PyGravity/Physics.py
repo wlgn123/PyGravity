@@ -174,6 +174,10 @@ def Proto_Acc(A,B):
 		proto = Proto_Acc(A, B)
 		A_Acc = proto * B.mass         #Acceleration on A
 		B_Acc = proto * (-1.0)*A.mass   # Acceleration on B
+	
+	Seperating the calculations into two steps like this will allow 
+	for optinmizing acceleration calculations for a large set of 
+	objects.
 	'''
 	G = -6.67384e-11
 	r =  A.P - B.P 
@@ -263,6 +267,29 @@ def escaping(particle_list):
 
 
 
+def step_verlet_one(pair):
+	'''
+	First pass for the verlet method utilizing the proto_accel and 
+	half_list method
+	'''
+	A, B = pair
+	proto = Proto_Acc(A, B)
+	A_acc = proto * B.m[0]
+	B_acc =  proto * (-1.0)* A.m[0]
+	A.store_acc(A_acc)
+	B.store_acc(B_acc)
+	A.P = A.P + A.V  + A_acc*(1.0/2.0)
+	B.P = B.P + B.V  + B_acc*(1.0/2.0)
 
-
+def step_verlet_two(pair):
+	'''
+	First pass for the verlet method utilizing the proto_accel and 
+	half_list method
+	'''
+	A, B = pair
+	proto = Proto_Acc(A, B)
+	A_acc = proto * B.m[0]
+	B_acc = proto* (-1.0) * A.m[0]
+	A.V = (A.A + A_acc)*(1.0/2.0) 
+	B.V = (B.A + A_acc)*(1.0/2.0)
 
