@@ -79,7 +79,7 @@ def Total_Grav_Force(particle_list, particle):
 	force_list = []
 	for _particle in particle_list:
 		if _particle != particle:
-			force_list.append(self.Grav_Force(_particle, particle))
+			force_list.append(Grav_Force(_particle, particle))
 	f = lambda a,b: a+b
 	total_force = reduce(f, force_list)
 	return total_force
