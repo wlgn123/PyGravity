@@ -186,7 +186,7 @@ def Proto_Acc(A,B):
 	
 	return r.unit() *(G/r_mag_squared)
 	
-def Sum_Grav_Accel(particle_list, A, fast_flag):
+def Sum_Grav_Accel(particle_list, A, fast_flag = False):
 	'''
 	Sum the total acceleration acting on a particle by using the
 	Grav_Accel function and iterating through the particle list.
