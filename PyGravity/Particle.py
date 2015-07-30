@@ -1,4 +1,4 @@
-from Vector import Vector
+import numpy as np
 '''
 .. module:: Particle
    :platform: Unix
@@ -32,8 +32,18 @@ class Particle(object):
 		.. note:: The unites are not specified. It is up to the calling 
 			function to keep track of units.
 		'''
-		self.P = P        #particles position vector
-		self.V = V        #Particles velocity vector
+		#check inputs
+		assert type(P) is np.ndarray or list, 'Only numpy arrays, or lists are supported for Position Vector'
+		assert type(V) is np.ndarray or list, 'Only numpy arrays, or lists are supported for Velocity Vector'
+		
+		if m is not float:
+			try:
+				m = float(m)
+			except:
+				raise TypeError("Particle mass couldn't be converted to float")
+		
+		self.P = np.array(P, dtype=float)    #particles position vector
+		self.V = np.array(V, dtype=float)    #Particles velocity vector
 		self.m = m        #particles mass
 		self.name = name
 
@@ -63,7 +73,8 @@ class Particle(object):
 		self.P = new_pos
 
 	def store_acc(self, acc):
-		self.A = acc
+		assert type(acc) is np.ndarray, "Only numpy arrays are supported for Acc Vectors"
+		self.A = np.array(acc, dtype=float)
 		
 	def accelerate(self, A, timestep):
 		'''
@@ -89,7 +100,8 @@ class Particle(object):
 		:param: A(Vector): Acceleration vector
 		:param: timestep(int): Time increment.
 		'''
-		new = self.V + A*timestep
+		assert type(A) is np.ndarray, "Only numpy arrays are supported for Acc Vectors"
+		new = self.V + np.array(A, dtype=float)*timestep
 		self.V = new
 
 	def __str__(self):
