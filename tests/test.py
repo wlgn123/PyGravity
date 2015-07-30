@@ -232,7 +232,15 @@ class Physics_Class_Tests(unittest.TestCase):
 
 			self.failUnless(base.objects[0].P.y < 12)
 			self.failUnless(base.objects[0].P.y > (-12))
-			
+		
+	def test_escaping(self):
+		base = PyGravity()
+		base.add_particle(self.part1)
+		base.add_particle(self.part2)
+		for i in range(100):
+			base.step_all()
+		self.failIf(Physics.escaping(base.particle_list) == [])
+		
 	def test_Proto_Accel(self):
 		base = PyGravity()
 		for part in self.part_list:
