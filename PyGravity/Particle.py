@@ -73,7 +73,7 @@ class Particle(object):
 		self.P = new_pos
 
 	def store_acc(self, acc):
-		assert type(acc) is np.ndarray, "Only numpy arrays are supported for Acc Vectors"
+		assert type(acc) is np.ndarray or list, "Only numpy arrays/lists are supported for Acc Vectors"
 		self.A = np.array(acc, dtype=float)
 		
 	def accelerate(self, A, timestep):
@@ -100,7 +100,7 @@ class Particle(object):
 		:param: A(Vector): Acceleration vector
 		:param: timestep(int): Time increment.
 		'''
-		assert type(A) is np.ndarray, "Only numpy arrays are supported for Acc Vectors"
+		assert type(A) is np.ndarray or list, "Only numpy arrays/lists are supported for Acc Vectors"
 		new = self.V + np.array(A, dtype=float)*timestep
 		self.V = new
 
