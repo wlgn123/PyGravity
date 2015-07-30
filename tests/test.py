@@ -262,16 +262,28 @@ class Data_io_Class_Tests(unittest.TestCase):
 		self.failUnless(np.array_equal(base.objects[0].V, a.V))
 		self.failUnless(base.objects[0].m == a.m)
 
-	def test_read_xml(self):
-		a = Particle('A', np.array(['1','1','1']), np.array(['1','0','0']), 50000000)
-		d = Particle('D', np.array(['2.1','2.1','0']), np.array(['0','0','0']), 20)
+	def test_read_xml_int(self):
+		a = Particle('A', ['1','1','1'], ['1','0','0'], 50000000)
+		
 		base = Data_IO.Reader()
 		base.read_file('./test_data.xml')
 		self.failUnless(base.objects[0].name == a.name)
 		self.failUnless(np.array_equal(base.objects[0].P, a.P))
 		self.failUnless(np.array_equal(base.objects[0].V, a.V))
 		self.failUnless(base.objects[0].m == a.m)
+		
 
+		
+	def test_read_xml_float(self):
+		d = Particle('D', [4.4, 4.4, 4.4], [0, 0, 0], 5.1e5)
+		base = Data_IO.Reader()
+		base.read_file('./test_data.xml')
+		self.failUnless(base.objects[3].name == d.name)
+		self.failUnless(np.array_equal(base.objects[3].P, d.P))
+		self.failUnless(np.array_equal(base.objects[3].V, d.V))
+		self.failUnless(base.objects[3].m == d.m)
+		
+		
 class PyGravity_Class_Tests(unittest.TestCase):
 	def setUp(self):
 		self.A = Particle('A', np.array(['1']), np.array(['1']), 1)
