@@ -166,12 +166,8 @@ class PyGravity():
 		
 		'''
 		for item in self.particle_list:
-			step(self.particle_list, self.fast,self.time_interval, item)
+			Physics.step_euler(self.particle_list, self.fast,self.time_interval, item)
 		
 		
-def step(part_list, flag, time_interval, i):
-	acc = Physics.Sum_Grav_Accel(part_list, i, flag)
-	i.accelerate(acc, time_interval)
-	i.move(time_interval)
 
 

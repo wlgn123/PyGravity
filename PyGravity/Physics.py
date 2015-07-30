@@ -266,3 +266,7 @@ def step_verlet_two(pair):
 	A.V = (A.A + A_acc)*(1.0/2.0) 
 	B.V = (B.A + A_acc)*(1.0/2.0)
 
+def step_euler(part_list, flag, time_interval, i):
+	acc = Sum_Grav_Accel(part_list, i, flag)
+	i.accelerate(acc, time_interval)
+	i.move(time_interval)
