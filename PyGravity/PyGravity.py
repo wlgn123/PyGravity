@@ -97,7 +97,9 @@ class PyGravity():
 		The particles are then loaded into the objects list
 		under Physics.objects.
 		 
-		:param: file_name(string) Name of dat		.. todo:: iterate through once, update position, iterate a second
+		:param: file_name(string) Name of dat
+		
+		.. todo:: iterate through once, update position, iterate a second
 			time to do the velocitya file to be read.
 		
 		
@@ -162,7 +164,7 @@ class PyGravity():
 		
 		.. note:: The acceleration is applied to the velocity using the
 			time interval. Thus the new velocity equals the currant
-			velocity plus the acceleration times the time_interval. http://stackoverflow.com/questions/26520781/python-multiprocessing-poolwhats-the-difference-between-map-async-and-imap
+			velocity plus the acceleration times the time_interval.
 			The same procedure produces the new position using the same 
 			time_interval.
 			
