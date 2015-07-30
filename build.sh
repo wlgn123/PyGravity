@@ -78,14 +78,20 @@ clean_build () {
 	echo "CLEANING ..."	
 	echo
 	rm -r ./src/build
-	#rm -r ./git/documentation/build
+	cd ./documentation
+		if  make clean ; then
+		  cd ..
+	else
+		 echo "SPHINX CLEAN FAILD" 
+		 exit 1
+	fi
 	echo "... DONE"
 	echo
 }
 
 [[ ! $1 ]] && { usage; }
 
-while getopts hsitda opts; do
+while getopts hsitdac opts; do
    case ${opts} in
       h) usage ;;
       
