@@ -237,7 +237,7 @@ def escaping(particle_list):
 
 
 
-def step_verlet_one(pair):
+def step_verlet_one(pair, i):
 	'''
 	First pass for the verlet method utilizing the proto_accel and 
 	half_list method
@@ -250,10 +250,10 @@ def step_verlet_one(pair):
 	B_acc =  proto * (-1.0)* A.m
 	A.store_acc(A_acc)
 	B.store_acc(B_acc)
-	A.P = A.P + A.V  + A_acc*(1.0/2.0)
-	B.P = B.P + B.V  + B_acc*(1.0/2.0)
+	A.P = A.P + A.V  + A_acc*(i/2.0)
+	B.P = B.P + B.V  + B_acc*(i/2.0)
 
-def step_verlet_two(pair):
+def step_verlet_two(pair,i):
 	'''
 	First pass for the verlet method utilizing the proto_accel and 
 	half_list method
@@ -263,8 +263,8 @@ def step_verlet_two(pair):
 	proto = Proto_Acc(A, B)
 	A_acc = proto * B.m
 	B_acc = proto* (-1.0) * A.m
-	A.V = (A.A + A_acc)*(1.0/2.0) 
-	B.V = (B.A + A_acc)*(1.0/2.0)
+	A.V = (A.A + A_acc)*(i/2.0) 
+	B.V = (B.A + A_acc)*(i/2.0)
 
 def step_euler(part_list, flag, time_interval, i):
 	acc = Sum_Grav_Accel(part_list, i, flag)

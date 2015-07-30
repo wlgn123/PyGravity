@@ -142,8 +142,8 @@ class PyGravity():
 				half_list.append((self.particle_list[I],self.particle_list[i]))
 		
 		for pair in half_list:
-			Physics.step_verlet_one(pair)
-			Physics.step_verlet_two(pair)
+			Physics.step_verlet_one(pair,self.time_interval)
+			Physics.step_verlet_two(pair,self.time_interval)
 			
 
 		
