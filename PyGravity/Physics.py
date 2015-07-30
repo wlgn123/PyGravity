@@ -230,7 +230,7 @@ def escaping(particle_list):
 	escaping = []
 	for item in particle_list:
 		total_esc = Total_Escape_Velocity(particle_list, item)
-		if total_esc < item.V.magnitude():
+		if total_esc < np.linalg.norm(item.V):
 			escaping.append(item.name)
 	return escaping
 
