@@ -31,19 +31,17 @@ Start by downloading the PyGravity source::
 Then enter the PyGravity directory and run the build script::
 
 	cd PyGravity
-	./build.sh
-
-The build script is a pretty straight forward bash script. It will enter
-the src directory and use Python's setup tool to compile the C source 
-code for the extensions and install them into the Python directory.
+	./build.sh -i -t
 
 
-It will then go back to top level and install the rest of the PyGravity 
-module. Afterwards it will invoke the unittests and if those pass it will
-run Sphinx's makefile to make the html docs.
+the -i option will build and install the PyGravity module and the 
+-t option will run unittests. For my info on the build commands 
+type::
 
-It also checks the return values on each of the setup.py calls, and will 
-inform you if any step failed. 
+	./build.sh -h
+
+The build script also checks returns values and will fail and print an error 
+if on of the build steps or tests fails.
 
 .. note:: The unittests will run after the install against the installed PyGRavity
 	module and not the local source. Therefore if the unittests pass you should be 
@@ -59,8 +57,8 @@ meters apart, we can first use the Particle module to created two particle objec
 
 	>>> from PyGravity import Particle, Vector
 	
-	>>> A = Particle('A', Vector([0]), Vector([0]), Vector([1.0]))
-	>>> B = Particle('B', Vector([10]), Vector([0]), Vector([1.0]))
+	>>> A = Particle('A', [0], [0], 1.0)
+	>>> B = Particle('B', [10], [0], 1.0)
 	
 Then we can use the Physics module to calclate the force of gravity between the 
 two objects::
@@ -77,9 +75,9 @@ objects, which reside on a line.
 For a 2D scenarior we can create three particles which will form a triangle 
 on  plane::
 
-	>>> A = Particle('A', Vector([0, 0]), Vector([0,0]), Vector([1.0]))
-	>>> B = Particle('B', Vector([10,0]), Vector([0,0]), Vector([1.0]))
-	>>> C = Particle('C', Vector([10,10]), Vector([0,0]), Vector([1.0]))
+	>>> A = Particle('A', [0, 0), [0,0], 1.0)
+	>>> B = Particle('B', [10,0], [0,0], 1.0)
+	>>> C = Particle('C', [10,10], [0,0], 1.0)
 	
 Now to find the total force acting on a particle we can call Total_Grav_Force.
 This function takes a list of particles and iterates through them summing all the 
@@ -87,13 +85,13 @@ different froce vectors acting on one particle. So to find the total force
 acting on Particle A::
 
 	>>> print Physics.Total_Grav_Force([A,B,C], A)
-	(-9.03339876028e-13,-2.35955876028e-13)
+	[-9.03339876028e-13,-2.35955876028e-13]
 
 We can also find the acceleration acting on an object with the Grav_Accel,
 and accompaining Sum_Grav_Accel method::
 
 	>>> print Physics.Sum_Grav_Accel([A,B,C], A)
-	(9.03339876028e-13,2.35955876028e-13)
+	[9.03339876028e-13,2.35955876028e-13]
 	
 This is the acceleration vector acting on A. The Grav_Accel function works 
 just like the Grav_Force function but takes a math shortcut to find the 
@@ -120,3 +118,115 @@ From there we can run one of the built in simulators. Either the Euler method::
 or the Verlet Velocity method::
 
 	step_all_verlet()
+	
+In small time steps the Verlet Method doesn't offer much of an advantage. However, 
+with larger time steps the Verlet Method will conserver energy while the Euler 
+Method has a tendancy to send particles flying off in escape velocities in 
+situations that clearly violate conservation of energy.
+
+To continue our simulation we can load the data files, set the time_interval and 
+run through the simulator loop. For example lets run through the simulation at a 
+step of one hour for a week, printing the position of every particle once a day::
+
+	from PyGavity import *
+	
+	base = PyGravity()
+	base.read_file('some_data.xml')
+	base.set_time_interval(60*60) # an hour step
+	
+	for i in range(24*7):
+		#only print positions every day
+		if i % 24 == 0:
+			for item in base.particle_list:
+				print item.name, item.P
+		
+		base.step_all()
+
+To double check if any particles are zipping out of the simulation just check run the escaping() function
+from the Physics submodule once every iteration, or every day::
+
+	for i in range(24*7):
+		#only print positions every day
+		if i % 24 == 0:
+			for item in base.particle_list:
+				print item.name, item.P
+			
+			#exit if a particle is escaping from the system and list it
+			if Physics.escaping(base.particle_list) != []:
+				print Physics.escaping(base.particle_list)
+				break
+		
+		base.step_all()
+		
+		# here also works for escape checks, but might cause unneeded lag
+
+Simple Example with Graphing
+=============================
+We can easly take our above 2D example and graph the results with Matplotlib.
+Just add the particles' positions on each step or sub-step::
+
+	import matplotlib.pyplot as plt
+	import PyGravity
+
+	base = PyGravity.PyGravity()    # start by making base instance 
+	base.read_file('example_data.csv')
+	base.set_time_interval(100)
+
+	ax = []
+	ay = []
+	bx = []
+	by = []
+	cx = []
+	cy = []
+	dx = []
+	dy = []
+	
+	for i in range(200000):
+		if i % 200 == 0:
+			#some print statements to watch while the simulator runs
+			print i
+			print base.particle_list[0].P  
+			
+			#plot all the postions      
+			ax.append(base.particle_list[0].P[0])
+			ay.append(base.particle_list[0].P[1])
+			bx.append(base.particle_list[1].P[0])
+			by.append(base.particle_list[1].P[1])
+			cx.append(base.particle_list[2].P[0])
+			cy.append(base.particle_list[2].P[1])
+			dx.append(base.particle_list[3].P[0])
+			dy.append(base.particle_list[3].P[1])
+			
+			#Stop when a particle starts escaping the system
+			if PyGravity.Physics.escaping(base.particle_list) != []:
+				print PyGravity.Physics.escaping(base.particle_list)
+				break
+			
+		base.step_all()
+		
+	print 'Time: ', (base.currant_time), 'mins'
+	plt.scatter(ax, ay, s=10, c='b', alpha=0.5)
+	plt.scatter(bx, by, s=10, c='r', alpha=0.5)
+	plt.scatter(cx, cy, s=10, c='g', alpha=0.5)
+	plt.scatter(dx, dy, s=10, c='y', alpha=0.5)
+	plt.show()
+
+Generates the image
+
+	.. image:: simple_2d.png
+		:scale: 70 %
+		
+
+ 
+ Be careful with the time_interval setting. Too big of a step will
+ make it appear that the particles are escaping when in  reality they 
+ are just suffering from Euler's Method. The Verlet Method should 
+ fix this.
+
+
+
+3D Example
+========================
+ Soon to come!
+
+

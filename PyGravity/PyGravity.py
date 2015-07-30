@@ -1,5 +1,6 @@
 import Physics
 import Data_IO
+import sys
 
 '''
 .. module:: PyGravity
@@ -120,6 +121,7 @@ class PyGravity():
 		:param: (string)file_name File name and path to write current
 			dataset
 		
+		.. todo:: fix this function. it is completly fucked.
 		'''
 		self.writer.objects = self.particle_list
 		self.writer.write_file(file_name)
@@ -142,9 +144,13 @@ class PyGravity():
 				half_list.append((self.particle_list[I],self.particle_list[i]))
 		
 		for pair in half_list:
-			Physics.step_verlet_one(pair, self.time_interval)
-			Physics.step_verlet_two(pair, self.time_interval)
-			
+			try:
+				Physics.step_verlet_one(pair, self.time_interval)
+				Physics.step_verlet_two(pair, self.time_interval)
+			except RuntimeWarning as e:
+				print e
+				sys.exit(1)
+				
 
 		
 
@@ -166,7 +172,11 @@ class PyGravity():
 		
 		'''
 		for item in self.particle_list:
-			Physics.step_euler(self.particle_list, self.fast,self.time_interval, item)
+			try:
+				Physics.step_euler(self.particle_list, self.fast,self.time_interval, item)
+			except RuntimeWarning as e:
+				print e 
+				
 		
 		
 
