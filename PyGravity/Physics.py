@@ -246,8 +246,8 @@ def step_verlet_one(pair, i):
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * B.m
-	B_acc =  proto * (-1.0)* A.m
+	A_acc = proto * A.m
+	B_acc =  proto * (-1.0)* B.m
 	A.store_acc(A_acc)
 	B.store_acc(B_acc)
 	A.P = A.P + A.V  + A_acc*(i/2.0)
@@ -255,14 +255,14 @@ def step_verlet_one(pair, i):
 
 def step_verlet_two(pair,i):
 	'''
-	First pass for the verlet method utilizing the proto_accel and 
+	Second pass for the verlet method utilizing the proto_accel and 
 	half_list method
 	::param:: Tple of Particle objects
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * B.m
-	B_acc = proto* (-1.0) * A.m
+	A_acc = proto * A.m
+	B_acc = proto* (-1.0) * B.m
 	A.V = (A.A + A_acc)*(i/2.0) 
 	B.V = (B.A + A_acc)*(i/2.0)
 
