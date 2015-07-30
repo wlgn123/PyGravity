@@ -53,10 +53,12 @@ install_mod () {
 }
 
 test_mod () {
-	if ! python setup.py test ; then
+	cd ./tests
+	if ! python test.py ; then
 		 echo "Unititest Faild!" 
 		 exit 1
 	fi
+	cd ..
 }
 
 build_docs () {
