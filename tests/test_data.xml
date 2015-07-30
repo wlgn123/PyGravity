@@ -21,15 +21,15 @@
 	
 	<particle>
 		<name>C</name>
-		<position>3;3;3</position>
+		<position>3.3;3.3;3.3</position>
 		<velocity>0;0;0</velocity>
 		<mass>5000</mass>
 	</particle>
 	
 	<particle>
 		<name>D</name>
-		<position>4;4;4</position>
+		<position>4.4;4.4;4.4</position>
 		<velocity>0;0;0</velocity>
-		<mass>5000</mass>
+		<mass>5.1e5</mass>
 	</particle>
 </data>
