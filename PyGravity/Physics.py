@@ -1,7 +1,7 @@
 import Particle
 import Global_Container
-import Vector
 from math import sqrt
+import numpy as np
 from pygravity_grav_accel import grav_accel
 '''
 .. module:: Physics
@@ -32,33 +32,11 @@ def Grav_Force(A, B):
 	'''
 
 	G = -6.67384e-11
-	r =  A.P - B.P   #vector between two particles
-	r_squared = r.magnitude() ** 2  # dist between A, B squared
-	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
-	f_vec = r.unit() * f_mag
-	return f_vec
-
-def Grav_Force_tup(tup):
-	'''
-	Calculates the force of gravity between two particles. Uses Newton's
-	Law of Gravity. Gravitational constant is in standtard metric units.
-
-	:param: A(Particle): First particle
-
-	:param: B(Particle): Second Particle
-
-	:returns: Force(Vector): Force acting on particle A as a Vector.
-
-	.. todo:: abstract gravitational constant to PyGravity.py,
-		add parser to PyGravity to smartly determin working units.
-
-	'''
-	A, B = tup
-	G = -6.67384e-11
-	r =  A.P - B.P   #vector between two particles
-	r_squared = r.magnitude() ** 2  # dist between A, B squared
-	f_mag = (G*A.m.magnitude()*B.m.magnitude())*(r_squared**(-1))
-	f_vec = r.unit() * f_mag
+	r =  np.subtract(A.P , B.P)   #vector between two particles
+	r_norm = np.linalg.norm(r)
+	r_squared = r_norm ** 2  # dist between A, B squared
+	f_mag = (G*A.m * B.m)*(r_squared**(-1))
+	f_vec = r  * (f_mag/r_norm)
 	return f_vec
 
 def Total_Grav_Force(particle_list, particle):
@@ -111,9 +89,10 @@ def Grav_Accel(A, B):
 		consistancy.acc_force_method
 	'''
 	G = -6.67384e-11
-	r =  A.P - B.P   #vector between two particles
-	r_cube = r.magnitude() ** 3  # dist between A, B cubed
-	acc = G * B.m[0] / r_cube
+	r =  np.subtract(A.P , B.P)   #vector between two particles
+	r_norm = np.linalg.norm(r)
+	r_cube = r_norm ** 3  # dist between A, B cubed
+	acc = G * B.m / r_cube
 	return r * acc # the normilizer, r.unit, is hidden in r_cube
 
 def C_Grav_Accel(A, B):
@@ -142,7 +121,7 @@ def C_Grav_Accel(A, B):
 			B.z(string)
 			)
 	
-	.. note:: The vhttp://www.pandora.com/station/play/844365380518691958ectors being passed to this function need to be 
+	.. note:: The vectors being passed to this function need to be 
 		created with the form Vector(['1.0']) and not Vector(['1'])
 		
 	.. todo:: Fix math error. Component is 10x too big if B is negative
@@ -150,7 +129,7 @@ def C_Grav_Accel(A, B):
 	.. todo:: double check extension math. normailize?
 	'''
 	acc_string = grav_accel(
-							B.m[0],
+							B.m,
 							A.P[0],
 							A.P[1],
 							A.P[2],
@@ -158,7 +137,7 @@ def C_Grav_Accel(A, B):
 							B.P[1],
 							B.P[2]
 							)
-	acc = Vector.Vector(list(acc_string))
+	acc = np.array(list(acc_string))
 	return acc
 	
 
@@ -181,10 +160,10 @@ def Proto_Acc(A,B):
 	'''
 	G = -6.67384e-11
 	r =  A.P - B.P 
-	r_mag = r.magnitude()   # r_mag = ||A-B||
-	r_mag_squared = r_mag * r_mag
+	r_mag = np.linalg.norm(r)   # r_mag = ||A-B||
+	r_mag_cubed = r_mag * r_mag*r_mag
 	
-	return r.unit() *(G/r_mag_squared)
+	return r *(G/r_mag_cubed)
 	
 def Sum_Grav_Accel(particle_list, A, fast_flag = False):
 	'''
@@ -225,8 +204,8 @@ def Escape_Velocity(A, B):
 	:returns: Escape velocity as a Vector Object.
 	'''
 	G = 6.67384e-11
-	r = (A.P-B.P).magnitude() #distance between A and B
-	esc = sqrt( (G*B.m[0])/r ) # formula for escape velocity
+	r = np.linalg.norm(A.P-B.P) #distance between A and B
+	esc = sqrt( (G*B.m)/r ) # formula for escape velocity
 	return esc
 
 
@@ -271,11 +250,13 @@ def step_verlet_one(pair):
 	'''
 	First pass for the verlet method utilizing the proto_accel and 
 	half_list method
+	
+	::param:: Tple of Particle objects
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * B.m[0]
-	B_acc =  proto * (-1.0)* A.m[0]
+	A_acc = proto * B.m
+	B_acc =  proto * (-1.0)* A.m
 	A.store_acc(A_acc)
 	B.store_acc(B_acc)
 	A.P = A.P + A.V  + A_acc*(1.0/2.0)
@@ -285,11 +266,12 @@ def step_verlet_two(pair):
 	'''
 	First pass for the verlet method utilizing the proto_accel and 
 	half_list method
+	::param:: Tple of Particle objects
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * B.m[0]
-	B_acc = proto* (-1.0) * A.m[0]
+	A_acc = proto * B.m
+	B_acc = proto* (-1.0) * A.m
 	A.V = (A.A + A_acc)*(1.0/2.0) 
 	B.V = (B.A + A_acc)*(1.0/2.0)
 
