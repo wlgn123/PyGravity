@@ -258,17 +258,18 @@ class Physics_Class_Tests(unittest.TestCase):
 	def test_step_all_verlet_against_euler(self):
 		base_verlet = PyGravity()
 		base_euler = PyGravity()
-		base_euler.set_time_interval(60*60*24)
-		base_verlet.set_time_interval(60*60*24)
-		for part in self.part_list:
-			base_verlet.add_particle(part)
-			base_euler.add_particle(part)
+		base_euler.set_time_interval(60)
+		base_verlet.set_time_interval(60)
+		base_euler.read_file('example_data.csv')
+		base_verlet.read_file('example_data.csv')
 		for i in range(10):
 			base_verlet.step_all_verlet()
 			base_euler.step_all()
 			self.failUnless(np.allclose(base_euler.particle_list[0].P,
 										base_verlet.particle_list[0].P,
 										1.0e-6))
+			print base_verlet.particle_list[0].P
+			print base_euler.particle_list[0].P
 
 class Data_io_Class_Tests(unittest.TestCase):
 	def setUp(self):
