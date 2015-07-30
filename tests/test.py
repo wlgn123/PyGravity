@@ -2,6 +2,7 @@ import unittest
 from PyGravity import PyGravity, round_sig, Particle, Physics, Data_IO
 from math import sqrt
 import numpy as np
+import sys
 '''
 Unit Tests for PyGravity. These Unit tests will run tests against the 
 installed PyGravity module and not against the source files in this 
@@ -23,6 +24,7 @@ class Round_test(unittest.TestCase):
 	def test_neg_numbers(self):
 		a = -1.20
 		self.failUnless(round_sig(a,2) == -1.2)
+
 
 
 class Particle_Class_Tests(unittest.TestCase):
@@ -99,7 +101,7 @@ class Physics_Class_Tests(unittest.TestCase):
 
 
 
-	def test_Physics_Grav_Force(self):
+	def test_Grav_Force_against_known_answer(self):
 		part1 = Particle('a',[1, 1,1 ], 
 							 [1, 1, 1], 
 							 5.0)
@@ -110,7 +112,7 @@ class Physics_Class_Tests(unittest.TestCase):
 		force_vec = Physics.Grav_Force(part1, part2)
 		self.failUnless(np.allclose(answer, force_vec, 1.0e-6))
 		
-	def test_force_of_gravity_magnitude_against_precomputed_answer(self):
+	def test_force_of_gravity_magnitude_against_known_answer(self):
 		part1 = Particle('a',np.array(['1.0','1.0','1.0']), 
 							 np.array(['0','0','0']), 
 							 5.0e10)
@@ -140,7 +142,7 @@ class Physics_Class_Tests(unittest.TestCase):
 		                            Physics.Grav_Accel(A,part6),
 		                            1.0e-6))
 		
-	def test_Grav_Accel(self):
+	def test_Grav_Accel_against_known_answer(self):
 		part1 = Particle('a',np.array(['1.0','1.0','1.0']), 
 							 np.array([1,1,1]), 5.0)
 		
@@ -154,11 +156,15 @@ class Physics_Class_Tests(unittest.TestCase):
 		self.failUnless(np.allclose(Acc_vecc_two, Acceleration_answer,
 		                            1.0e-6))
 		
+	def test_Grav_Accl_vs_Grav_Force(self):
+		part1 = Particle('a',np.array(['1.0','1.0','1.0']), 
+							 np.array([1,1,1]), 5.0)
+							 
 		for i in self.part_list:
 			self.failUnless(np.allclose(Physics.Grav_Force(part1, i) * (1.0/part1.m), 
 							 Physics.Grav_Accel(part1, i)), 1.0e-6)
 		
-	def test_grav_accel_extension(self):
+	def test_grav_accel_extension_against_known_answer(self):
 		A = Particle('a',[1.0, 1.0, 1.0], [1,1,1], 5.0)
 		B = Particle('b',[2.0, 2.0, 2.0], [1,1,1], 10.0)
 		#the known_answer was calculated by hand and verified w/ wolfram|alpha
@@ -329,9 +335,25 @@ class PyGravity_Class_Tests(unittest.TestCase):
 
 
 
-def run_test():
-	unittest.main()
+#def run_test():
+#	unittest.main()
 
 if __name__ == "__main__":
-	run_test()
 
+	Round_test = unittest.TestLoader().loadTestsFromTestCase(Round_test)
+	Part_test = unittest.TestLoader().loadTestsFromTestCase(Particle_Class_Tests)
+	Physic_test = unittest.TestLoader().loadTestsFromTestCase(Physics_Class_Tests)
+	Data_test = unittest.TestLoader().loadTestsFromTestCase(Data_io_Class_Tests)
+	PyGrav_test = unittest.TestLoader().loadTestsFromTestCase(PyGravity_Class_Tests)
+	alltest = unittest.TestSuite([Round_test,
+								  Part_test,
+								  Physic_test,
+								  Data_test,
+								  PyGrav_test])
+
+
+	result = unittest.TextTestRunner(verbosity=2).run(alltest) 
+	if result.errors != []:
+		sys.exit('test errors\n')
+	if result.failures != []:
+		sys.exit('test failures\n')
