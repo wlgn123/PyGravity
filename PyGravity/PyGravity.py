@@ -99,10 +99,6 @@ class PyGravity():
 		 
 		:param: file_name(string) Name of dat
 		
-		.. todo:: iterate through once, update position, iterate a second
-			time to do the velocitya file to be read.
-		
-		
 		:py:func:'PyGravity.set_dimension'
 		
 		.. note::
@@ -154,8 +150,7 @@ class PyGravity():
 
 			
 	def step_all(self):
-		'''		.. todo:: iterate through once, update position, iterate a second
-			time to do the velocity
+		'''
 		Iterates through all the particles in self.particle_list and
 		runs the Physics.Sum_Grav_Accel() function, and applies the 
 		acceleration to update each particle's velocity vector, then 

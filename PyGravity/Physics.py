@@ -25,10 +25,6 @@ def Grav_Force(A, B):
 	:param: B(Particle): Second Particle
 
 	:returns: Force(Vector): Force acting on particle A as a Vector.
-
-	.. todo:: abstract gravitational constant to PyGravity.py,
-		add parser to PyGravity to smartly determin working units.
-
 	'''
 
 	G = -6.67384e-11
@@ -82,11 +78,11 @@ def Grav_Accel(A, B):
 		argument.
 		
 		
-	.. todo:: Add formated math example
+	.. todo:: Add formated math example, ie learn sphinx embedded math
 	
-	.. todo:: Maybe switch argument so the first particle is for the 
-		one being accelerated. Need to change alot of other methods for
-		consistancy.acc_force_method
+	.. todo:: double check consistancy of (A,B) accross all physics 
+		functions
+	
 	'''
 	G = -6.67384e-11
 	r =  np.subtract(A.P , B.P)   #vector between two particles
@@ -121,12 +117,7 @@ def C_Grav_Accel(A, B):
 			B.z(string)
 			)
 	
-	.. note:: The vectors being passed to this function need to be 
-		created with the form Vector(['1.0']) and not Vector(['1'])
 		
-	.. todo:: Fix math error. Component is 10x too big if B is negative
-	
-	.. todo:: double check extension math. normailize?
 	'''
 	acc_string = grav_accel(
 							B.m,
