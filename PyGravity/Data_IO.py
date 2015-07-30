@@ -2,7 +2,7 @@ import csv
 import xml.etree.ElementTree as ET
 from Particle import Particle
 from Vector import Vector
-import numpy as np
+
 '''
 .. module:: Data_IO
    :platform: Unix
