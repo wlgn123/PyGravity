@@ -33,15 +33,6 @@ unit vectors or anything else like that.
 	:members: 
 
 
-Vectors
-========================
-He is vector math. Adding, scalar multiplication, vector length, norming 
-vectors, and comparing vector dimension or values. All abstracted for 
-vectors of any length.
-
-.. automodule:: PyGravity.Vector
-    :members:
-    
 Particles
 ========================
 Particle objects. Depends heavily on vector. 
@@ -60,6 +51,19 @@ Here we can load or save the current list of particles.
 .. automodule:: PyGravity.Data_IO
     :members:
 
+Vectors
+========================
+He is some vector math. Adding, scalar multiplication, vector length, norming 
+vectors, and comparing vector dimension or values. All abstracted for 
+vectors of any length. This submodule was originally used for implementing 
+high precision vectors with the Decimal module. That has been replaced by 
+faster numpy arrays after giving into speed vs accuracy. This still will 
+have a use when high precision is need, so for the time being it will exist 
+as a ghost library.
+
+.. automodule:: PyGravity.Vector
+    :members:
+    
 
 ToDo
 ========================

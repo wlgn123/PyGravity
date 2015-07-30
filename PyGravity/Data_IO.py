@@ -17,17 +17,19 @@ class Reader(object):
 	
 	.. todo:: Change date format for easy continuation of simulations. 
 		add timestamp along with other particle attribute.
-		
+	
 	.. todo:: XML writer
-
+	
 	'''
 	def __init__(self):
 		'''
 		:attr: objects (list)
 		:attr: dimension (int)
+		
 		.. note::
 			Reader.object is init as empty. The calling function must
 			provide a reference to the global object list.
+		
 		'''
 		self.objects = [] 
 		self.dimension = 3
@@ -141,7 +143,7 @@ class Writer(object):
 	
 	def __init__(self):
 		'''
-		:attr: objects (list)
+		
 		'''
 		self.objects = []
 		

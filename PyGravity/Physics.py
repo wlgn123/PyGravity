@@ -1,8 +1,8 @@
 import Particle
-import Global_Container
 from math import sqrt
 import numpy as np
 from pygravity_grav_accel import grav_accel
+import sys
 '''
 .. module:: Physics
    :platform: Unix
@@ -87,6 +87,7 @@ def Grav_Accel(A, B):
 	G = -6.67384e-11
 	r =  np.subtract(A.P , B.P)   #vector between two particles
 	r_norm = np.linalg.norm(r)
+		
 	r_cube = r_norm ** 3  # dist between A, B cubed
 	acc = G * B.m / r_cube
 	return r * acc # the normilizer, r.unit, is hidden in r_cube
@@ -149,8 +150,8 @@ def Proto_Acc(A,B):
 	for optinmizing acceleration calculations for a large set of 
 	objects.
 	'''
-	G = -6.67384e-11
-	r =  A.P - B.P 
+	G = 6.67384e-11
+	r =  B.P - A.P 
 	r_mag = np.linalg.norm(r)   # r_mag = ||A-B||
 	r_mag_cubed = r_mag * r_mag*r_mag
 	
@@ -246,8 +247,8 @@ def step_verlet_one(pair, i):
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * A.m
-	B_acc =  proto * (-1.0)* B.m
+	A_acc = proto * B.m
+	B_acc =  proto * (-1.0)* A.m
 	A.store_acc(A_acc)
 	B.store_acc(B_acc)
 	A.P = A.P + A.V  + A_acc*(i/2.0)
@@ -261,8 +262,8 @@ def step_verlet_two(pair,i):
 	'''
 	A, B = pair
 	proto = Proto_Acc(A, B)
-	A_acc = proto * A.m
-	B_acc = proto* (-1.0) * B.m
+	A_acc = proto * B.m
+	B_acc = proto* (-1.0) * A.m
 	A.V = (A.A + A_acc)*(i/2.0) 
 	B.V = (B.A + A_acc)*(i/2.0)
 
