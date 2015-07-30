@@ -2,27 +2,22 @@
 ## Install
 
 
-    sudo python setup.py install
-    python setup.py test            # run unit tests
+    ./build.sh -i                   # build and install
+    ./build.sh -t                   # run unit tests
     
 Note: The unit tests run against the installed module, not the source.
 
 ## About
-#### What is it
-A library to simulate the motion due to gravity for any number of objects of any size to a high degree of precision. This program allows you to create any number of particles or asteriods or planets at any location in two or three dimensions and watch how they orbit eachother. 
-#### What it is not
-
--  In one word: fast. Using the awesomness of numpy's speed was scrapped for the accuracy of Decimal. So while you'll die of old age trying to simulate a very large system for more then a few seconds, you will be able to see how fast gravity could pull two baseballs together in deep space without the simulator rounding the extremly weak forces to zero.
--  This is also not realtivistic. So no black holes, no orbits near the speed of light, no time dialation. 
+GRavity Simulator.
 
 ## Documentaion
 #### core 
 The main docs are generated with Sphinx, find them at http://russloewe.com/PyGravity/index.html or generate
 them yourself by running 
     
-    make html
+    ./build.sh -d
     
-in ./documentation folder
+in the project root.
 
 #### example
 There are serveral examples that demsonstrate PyGravity in the ./examples folder. So for there is one 
