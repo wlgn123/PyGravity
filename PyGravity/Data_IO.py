@@ -2,6 +2,7 @@ import csv
 import xml.etree.ElementTree as ET
 from Particle import Particle
 from Vector import Vector
+import numpy as np
 '''
 .. module:: Data_IO
    :platform: Unix
@@ -72,14 +73,14 @@ class Reader(object):
 				try:
 					if self.dimension == 3:
 						self.add_obj(Particle(row[0],
-									 Vector(row[1:4]),
-									 Vector(row[4:7]),
-									 Vector(row[7:]) ) )
+									 row[1:4],
+									 row[4:7],
+									 float(str(row[7]) )))
 					elif self.dimension == 2:
 						self.add_obj(Particle(row[0],
-									 Vector(row[1:3]),
-									 Vector(row[3:5]),
-									 Vector(row[5:]) ) )
+									 row[1:3],
+									 row[3:5],
+									 float(str(row[5]) ) ))
 				except ValueError as e:
 					print e
 					
@@ -114,9 +115,9 @@ class Reader(object):
 				if item.tag == 'mass':
 					mass = item.text
 			new_part = Particle(name, 
-								Vector(position.split(';')),
-								Vector(velocity.split(';')), 
-								Vector([str(mass)]) )
+								position.split(';'),
+								velocity.split(';'), 
+								mass )
 			self.add_obj(new_part)
 
 	def add_obj(self, obj):
