@@ -227,6 +227,113 @@ Generates the image
 
 3D Example
 ========================
- Soon to come!
+For a 3D example let's graph the orbit of the Moon around the Earth. The 
+Earth weighs 5.972e24 kg and the Moon weighs 7.3477e22 kg. According to 
+NASA the moon has a semi-major axis of 0.3844e6 Km or .3866e9 meters. 
+
+.. note:: We need to convert to meters because the value of G in the 
+	simulator uses meters and kilograms, i.e. the standard metric value
+	of G
+	
+NASA [#moon_orbit]_ provides information for the Perigee and Apogee of the Moon and 
+the respective velocities, it is not as easy to find the volecity vector
+of a planet on an ellipse as it is to find the velocity vector for a 
+planet on a circle. So, for this simulation let's pick the orbit radius 
+as the semi-major axis (0.3844e6 Km), and the velocity using an online 
+circular orbit calculator [#circ]_ to give 1.018159e3 m/s. This way the 
+velocity is the tangent vector to the orbit.
+
+Now, using XML, we have the datafile: earth_moon.xml::
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<data>
+		
+		<particle>
+			<name>Earth</name>
+			<position>0;0;0</position>
+			<velocity>0;0;0</velocity>
+			<mass>5.972e24</mass>
+		</particle>
+		
+		<particle>
+			<name>Moon</name>
+			<position>0.3844e9;0;0</position>
+			<velocity>0;1.018159e3;0</velocity>
+			<mass>7.3477e22</mass>
+		</particle>
+		
+	</data>
+
+Using our PyGravity, along with Matplotlib, we can load this file and 
+run through the simulator simular to the 2D example above, except this
+time using pretty much one a slighlty modified Matplotlib 3D line 
+[#3d]_ example::
+
+	import matplotlib as mpl
+	from mpl_toolkits.mplot3d import Axes3D
+	import numpy as np
+	import matplotlib.pyplot as plt
+	import PyGravity
+
+	#PyGravity stuff
+	base = PyGravity.PyGravity()    # start by making base instance 
+	base.read_file('earth_moon.xml')
+	base.set_time_interval(1)
+	base.set_fast(True)
+
+	#Plotting stuff
+	mpl.rcParams['legend.fontsize'] = 10
+	fig = plt.figure()
+	ax = fig.gca(projection='3d')
+	Ax = []
+	Ay = []
+	Az = []
+	Bx = []
+	By = []
+	Bz = []
+
+	one_hour = 60*60
+	one_day = one_hour* 24
+
+	for i in range(one_day * 27 ):
+		# Show what day the simulator is on
+		if i % one_day == 0:
+			print 'Day: ', i/one_day
+			
+		#plot a point for every hour
+		if i % one_hour == 0:
+			Ax.append(float(base.particle_list[0].P[0]))
+			Ay.append(float(base.particle_list[0].P[1]))
+			Az.append(float(base.particle_list[0].P[2]))
+			Bx.append(float(base.particle_list[1].P[0]))
+			By.append(float(base.particle_list[1].P[1]))
+			Bz.append(float(base.particle_list[1].P[2]))
+
+			if PyGravity.Physics.escaping(base.particle_list) != []:
+				print 'escaping',PyGravity.Physics.escaping(base.particle_list)
+				break
+		base.step_all()
+	print 'Time: ', (base.currant_time)/(60*60), 'hrs'
+
+	ax.plot(Ax, Ay, Az, label='Earth')
+	ax.plot(Bx, By, Bz, label='Moon')
+	ax.legend()
+	plt.show()
+
+This will generate the plot:
+
+	.. image:: earth_moon.png
+		:scale: 70 %
+
+Note the slight movement of the Earth from the Moon's pull and the 
+slight overlap on the Moon's orbit because of orbi procession. Also note 
+that there is an overlap in the orbit after 27 days, where as the real 
+Moon takes 27.3 days to complete a full orbit [#moon_orbit]_ 
+
+.. rubric:: Footnotes
+
+.. [#moon_orbit] http://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html
+.. [#circ] http://orbitsimulator.com/formulas/vcirc.html
+.. [#3d] http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html#line-plots
 
 
