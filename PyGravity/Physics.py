@@ -101,7 +101,15 @@ def C_Grav_Accel(A, B):
 	:param: B(Particle) second particle
 	:returns: Acceleration as a Vector
 	
-	.. note:: This wrapps the c extension: pygravity_grav_accel.grav_accel.
+	This wraps the C extension pygravity_grav_accel.grav_accel . This
+	function provided a great speed up when the high precision Vector 
+	class was the backbone for the vectors. Now we have moved to numpy 
+	for the vector calculations. Numpy isn't as precise as the Vector 
+	class, but when the value of the gravitational constant, G, has only 
+	like 6 significant digits it is deffiniatly worth it to scrap really 
+	high precision. This, along with the vector class remains incase it is 
+	needed later. But, for the moment, it is just an example of using 
+	C to extend Python.
 	
 	The call signature for grav_accel() is as follows:
 	
