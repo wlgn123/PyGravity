@@ -26,7 +26,7 @@ Installation
 ====================================
 Start by downloading the PyGravity source::
 
-	git clone http::/github.com/russloewe/PyGravity
+	git clone http://github.com/russloewe/PyGravity
 
 Then enter the PyGravity directory and run the build script::
 
@@ -41,7 +41,7 @@ type::
 	./build.sh -h
 
 The build script also checks returns values and will fail and print an error 
-if on of the build steps or tests fails.
+if one of the build steps or tests fails.
 
 .. note:: The unittests will run after the install against the installed PyGRavity
 	module and not the local source. Therefore if the unittests pass you should be 
@@ -217,11 +217,18 @@ Generates the image
 		:scale: 70 %
 		
 
- 
- Be careful with the time_interval setting. Too big of a step will
- make it appear that the particles are escaping when in  reality they 
- are just suffering from Euler's Method. The Verlet Method should 
- fix this.
+.. note::
+	I have no idea what I did , but the current "example_data.csv" 
+	and 2D_Physics.py files in the exmples folder will not reproduce the 
+	above results. I accidentally scrapped the right data/config to make that
+	image.
+	
+
+
+Be careful with the time_interval setting. Too big of a step will
+make it appear that the particles are escaping when in  reality they 
+are just suffering from Euler's Method. The Verlet Method should 
+fix this.
 
 
 
@@ -266,7 +273,7 @@ Now, using XML, we have the datafile: earth_moon.xml::
 
 Using our PyGravity, along with Matplotlib, we can load this file and 
 run through the simulator simular to the 2D example above, except this
-time using pretty much one a slighlty modified Matplotlib 3D line 
+time using pretty much a slighlty modified Matplotlib 3D line 
 [#3d]_ example::
 
 	import matplotlib as mpl
@@ -336,4 +343,9 @@ Moon takes 27.3 days to complete a full orbit [#moon_orbit]_
 .. [#circ] http://orbitsimulator.com/formulas/vcirc.html
 .. [#3d] http://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html#line-plots
 
+Issues
+==========================
+For bugs and issues please use the Gitbhub page at 
+https://github.com/russloewe/PyGravity 
+or contact me directly at russloewe@gmail.com .
 
