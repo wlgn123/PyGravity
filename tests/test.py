@@ -109,7 +109,7 @@ class Physics_Class_Tests(unittest.TestCase):
                              [2.3, 1.2, 4.2], 
                              10)
         answer = np.array([6.42e-10, 6.42e-10,6.42e-10 ])
-        force_vec = Physics.Grav_Force(part1, part2)
+        force_vec = Physics.grav_force(part1, part2)
         self.failUnless(np.allclose(answer, force_vec, 1.0e-6))
         
     def test_force_of_gravity_magnitude_against_known_answer(self):
@@ -118,7 +118,7 @@ class Physics_Class_Tests(unittest.TestCase):
                              5.0e10)
         part2 = Particle('b',np.array(['11.0','1.0','1.0']), 
                              np.array(['0','0','0']), 5.0e10)
-        force_vec = Physics.Grav_Force(part1, part2)
+        force_vec = Physics.grav_force(part1, part2)
         self.failUnless(np.linalg.norm(force_vec) == 1668460000)
 
     def test_grav_accel_against_known_answer(self):
@@ -130,7 +130,7 @@ class Physics_Class_Tests(unittest.TestCase):
         known_answer = np.array([1.28438e-10,
                                1.28438e-10, 1.28438e-10])
         self.failUnless(np.allclose(known_answer , 
-                        Physics.Grav_Accel(A,B),
+                        Physics.grav_accel(A,B),
                         1.0e-6))
         
         part6 = Particle('f',np.array(['1.5','-1.2','-1.5']), 
@@ -139,7 +139,7 @@ class Physics_Class_Tests(unittest.TestCase):
                                        -2.03776810e+09,
                                        -2.31564557e+09])
         self.failUnless(np.allclose(known_answer_part_6,
-                                    Physics.Grav_Accel(A,part6),
+                                    Physics.grav_accel(A,part6),
                                     1.0e-6))
         
     def test_Grav_Accel_against_known_answer(self):
@@ -149,8 +149,8 @@ class Physics_Class_Tests(unittest.TestCase):
         Acceleration_answer = np.array([6.42e-10, 
                                       6.42e-10,
                                       6.42e-10 ]) * (1/part1.m)
-        Acc_vecc_one = (Physics.Grav_Force(part1, self.part_list[1]) * (1/part1.m))
-        Acc_vecc_two = Physics.Grav_Accel(part1, self.part_list[1])
+        Acc_vecc_one = (Physics.grav_force(part1, self.part_list[1]) * (1/part1.m))
+        Acc_vecc_two = Physics.grav_accel(part1, self.part_list[1])
         self.failUnless(np.allclose(Acc_vecc_one, Acceleration_answer,
                                     1.0e-6))
         self.failUnless(np.allclose(Acc_vecc_two, Acceleration_answer,
@@ -163,8 +163,8 @@ class Physics_Class_Tests(unittest.TestCase):
         for i in self.part_list:
             self.failUnless(
             np.allclose(
-                Physics.Grav_Force(part1, i) * (-1.0/part1.m), 
-                Physics.Grav_Accel(part1, i),
+                Physics.grav_force(part1, i) * (-1.0/part1.m), 
+                Physics.grav_accel(part1, i),
                 1.0e-6)
             )
         
@@ -173,7 +173,7 @@ class Physics_Class_Tests(unittest.TestCase):
         B = Particle('b',[2.0, 2.0, 2.0], [1,1,1], 10.0)
         #the known_answer was calculated by hand and verified w/ wolfram|alpha
         known_answer = np.array([1.28438e-10, 1.28438e-10, 1.28438e-10])
-        Acc_vec_one = Physics.C_Grav_Accel(A, B)
+        Acc_vec_one = Physics.c_grav_accel(A, B)
         self.failUnless(np.allclose(Acc_vec_one, known_answer, 1.0e-6))
         
         
@@ -185,28 +185,28 @@ class Physics_Class_Tests(unittest.TestCase):
         part5 = Particle('e',[1.01e10, 1.44440000001110, 1.00000001], [1, 1, 1], 5.2)
         part6 = Particle('f',[-1.5, -1.5, -1.5], [-1, 1, 1], 5.3e24)
         base = PyGravity()
-        self.failUnless(np.allclose(Physics.Grav_Accel(part1,part2), 
-                                     Physics.C_Grav_Accel(part1,part2),
+        self.failUnless(np.allclose(Physics.grav_accel(part1,part2), 
+                                     Physics.c_grav_accel(part1,part2),
                                      1.0e-6))
                                      
-        self.failUnless(np.allclose(Physics.Grav_Accel(part1,part3),
-                                     Physics.C_Grav_Accel(part1,part3),
+        self.failUnless(np.allclose(Physics.grav_accel(part1,part3),
+                                     Physics.c_grav_accel(part1,part3),
                                      1.0e-6))
                                      
         #self.failUnless(Physics.Grav_Accel(part1,part4).round(5) == Physics.C_Grav_Accel(part1,part4).round(5))
-        self.failUnless(np.allclose(Physics.Grav_Accel(part1,part5),
-                                     Physics.C_Grav_Accel(part1,part5),
+        self.failUnless(np.allclose(Physics.grav_accel(part1,part5),
+                                     Physics.c_grav_accel(part1,part5),
                                      1.0e-6))
                                      
-        self.failUnless(np.allclose(Physics.Grav_Accel(part1,part6),
-                                     Physics.C_Grav_Accel(part1,part6),
+        self.failUnless(np.allclose(Physics.grav_accel(part1,part6),
+                                     Physics.c_grav_accel(part1,part6),
                                      1.0e-6))
         
     def test_Total_Escape_Velocity(self):
         base = PyGravity()
         base.read_file('test_data.csv')
         escape_answer = 0.00003149801963613010526842131136
-        escape = Physics.Total_Escape_Velocity(base.particle_list, base.particle_list[0])
+        escape = Physics.total_escape_velocity(base.particle_list, base.particle_list[0])
         self.failUnless(round(escape,20) == round(escape_answer, 20))
 
     def _test_Physics_force_gravity_summation_for_one_particle(self):
@@ -250,9 +250,9 @@ class Physics_Class_Tests(unittest.TestCase):
         for part in self.part_list:
             base.add_particle(part)
 
-        acc_accel_method = Physics.Grav_Accel(base.particle_list[0], 
+        acc_accel_method = Physics.grav_accel(base.particle_list[0], 
                                               base.particle_list[1])
-        acc_proto_method = Physics.Proto_Acc(base.particle_list[0], 
+        acc_proto_method = Physics.proto_acc(base.particle_list[0], 
                                               base.particle_list[1])
         acc_proto_method = acc_proto_method * base.particle_list[1].m
         self.failUnless(np.allclose(acc_proto_method,
@@ -278,12 +278,12 @@ class Physics_Class_Tests(unittest.TestCase):
 
     def test_step_verlet_one(self):
         #just check for errors
-        Physics.step_verlet_one((self.part1,self.part2), 1)
+        Physics._step_verlet_one((self.part1,self.part2), 1)
         
     def test_step_verlet_two(self):
         #just check for errors
-        Physics.step_verlet_one((self.part1,self.part2), 1)
-        Physics.step_verlet_two((self.part1,self.part2), 1)
+        Physics._step_verlet_one((self.part1,self.part2), 1)
+        Physics._step_verlet_two((self.part1,self.part2), 1)
         
 class Data_io_Class_Tests(unittest.TestCase):
     def setUp(self):
