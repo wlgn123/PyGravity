@@ -276,6 +276,15 @@ class Physics_Class_Tests(unittest.TestCase):
             print base_verlet.particle_list[0].P
             print base_euler.particle_list[0].P
 
+    def test_step_verlet_one(self):
+        #just check for errors
+        Physics.step_verlet_one((self.part1,self.part2), 1)
+        
+    def test_step_verlet_two(self):
+        #just check for errors
+        Physics.step_verlet_one((self.part1,self.part2), 1)
+        Physics.step_verlet_two((self.part1,self.part2), 1)
+        
 class Data_io_Class_Tests(unittest.TestCase):
     def setUp(self):
         pass
