@@ -14,9 +14,10 @@ import sys
     Create a seperate object to hold particle list, vector deminsion
     and time step and time counter
 '''
+# global constant
+G = 6.67384e-11
 
-
-def Grav_Force(A, B):
+def Grav_Force(a_part, b_part):
     '''
     Calculates the force of gravity between two particles. Uses Newton's
     Law of Gravity. Gravitational constant is in standtard metric units.
@@ -27,13 +28,11 @@ def Grav_Force(A, B):
 
     :returns: Force(Vector): Force acting on particle A as a Vector.
     '''
-
-    G = -6.67384e-11
-    r = A.P-B.P   # vector between two particles
-    r_norm = np.linalg.norm(r)
+    r_vec = a_part.P-b_part.P   # vector between two particles
+    r_norm = np.linalg.norm(r_vec)
     r_squared = r_norm ** 2  # dist between A, B squared
-    f_mag = (G*A.m * B.m)*(r_squared**(-1))
-    f_vec = r * (f_mag/r_norm)
+    f_mag = (G*a_part.m * b_part.m)*(r_squared**(-1))
+    f_vec = r_vec * (f_mag/r_norm)
     return f_vec
 
 
@@ -60,12 +59,8 @@ def Total_Grav_Force(particle_list, particle):
     total_force = reduce(f, force_list)
     return total_force
 
-# find acceleration from total force, apply using Particle.accelerate()
 
-
-# more direct way to find acceleration, skipping some steps
-
-def Grav_Accel(A, B):
+def Grav_Accel(a_part, b_part):
     '''
     Calculate the acceleration between particle A and B due to
     gravity. Uses math shortcuts to reduce total number of calculations
@@ -86,16 +81,15 @@ def Grav_Accel(A, B):
         functions
 
     '''
-    G = -6.67384e-11
-    r = A.P-B.P   # vector between two particles
-    r_norm = np.linalg.norm(r)
+    r_vec = b_part.P-a_part.P   # vector between two particles
+    r_norm = np.linalg.norm(r_vec)
 
     r_cube = r_norm ** 3  # dist between A, B cubed
-    acc = G * B.m / r_cube
-    return r * acc  # the normilizer, r.unit, is hidden in r_cube
+    acc = G * b_part.m / r_cube
+    return r_vec * acc  # the normilizer, r.unit, is hidden in r_cube
 
 
-def C_Grav_Accel(A, B):
+def C_Grav_Accel(a_part, b_part):
     '''
     Wrapper for the pygravity_grav_accel extension. Does same thing as
     the Grav_Accel function but in pre-compiled C.
@@ -132,19 +126,19 @@ def C_Grav_Accel(A, B):
 
     '''
     acc_string = grav_accel(
-        B.m,
-        A.P[0],
-        A.P[1],
-        A.P[2],
-        B.P[0],
-        B.P[1],
-        B.P[2]
+        b_part.m,
+        a_part.P[0],
+        a_part.P[1],
+        a_part.P[2],
+        b_part.P[0],
+        b_part.P[1],
+        b_part.P[2]
         )
-    acc = np.array(list(acc_string), dtype=float)
-    return acc
+    acc_vec = np.array(list(acc_string), dtype=float)
+    return acc_vec
 
 
-def Proto_Acc(A, B):
+def Proto_Acc(a_part, b_part):
     '''
     Calculate the acceleration between two objects,
     leaving the mass part out. Therefore:
@@ -161,15 +155,14 @@ def Proto_Acc(A, B):
     for optinmizing acceleration calculations for a large set of
     objects.
     '''
-    G = 6.67384e-11
-    r = B.P-A.P
-    r_mag = np.linalg.norm(r)   # r_mag = ||A-B||
+    r_vec = b_part.P-a_part.P
+    r_mag = np.linalg.norm(r_vec)   # r_mag = ||A-B||
     r_mag_cubed = r_mag * r_mag * r_mag
 
-    return r * (G/r_mag_cubed)
+    return r_vec * (G/r_mag_cubed)
 
 
-def Sum_Grav_Accel(particle_list, A, fast_flag=False):
+def Sum_Grav_Accel(particle_list, a_part, fast_flag=False):
     '''
     Sum the total acceleration acting on a particle by using the
     Grav_Accel function and iterating through the particle list.
@@ -184,20 +177,20 @@ def Sum_Grav_Accel(particle_list, A, fast_flag=False):
     if fast_flag:
         acc_list = []
         for particle in particle_list:
-            if particle != A:
-                acc_list.append(C_Grav_Accel(A, particle))
+            if particle != a_part:
+                acc_list.append(C_Grav_Accel(a_part, particle))
         total_acc = reduce(lambda a, b: a+b, acc_list)
         return total_acc
     else:
         acc_list = []
         for particle in particle_list:
-            if particle != A:
-                acc_list.append(Grav_Accel(A, particle))
+            if particle != a_part:
+                acc_list.append(Grav_Accel(a_part, particle))
         total_acc = reduce(lambda a, b: a+b, acc_list)
         return total_acc
 
 
-def Escape_Velocity(A, B):
+def Escape_Velocity(a_part, b_part):
     '''
     Calculate the escape velocity between two objects.
 
@@ -207,13 +200,12 @@ def Escape_Velocity(A, B):
 
     :returns: Escape velocity as a Vector Object.
     '''
-    G = 6.67384e-11
-    r = np.linalg.norm(A.P-B.P)  # distance between A and B
-    esc = sqrt((G*B.m)/r)        # formula for escape velocity
+    r_vec = np.linalg.norm(a_part.P-b_part.P)  # distance between A and B
+    esc = sqrt((G*b_part.m)/r_vec)        # formula for escape velocity
     return esc
 
 
-def Total_Escape_Velocity(particle_list, A):
+def Total_Escape_Velocity(particle_list, a_part):
     '''
     Find the total escape velocity acting on a particle with repect
     to the rest of the active particles in the simulation.
@@ -225,8 +217,8 @@ def Total_Escape_Velocity(particle_list, A):
     '''
     esc_list = []
     for item in particle_list:
-        if A != item:
-            esc_list.append(Escape_Velocity(A, item))
+        if a_part != item:
+            esc_list.append(Escape_Velocity(a_part, item))
     return reduce(lambda a, b: a+b, esc_list)
 
 
@@ -248,7 +240,7 @@ def escaping(particle_list):
     return escaping
 
 
-def step_verlet_one(pair, i):
+def step_verlet_one(pair, delta_t):
     '''
     First pass for the verlet method utilizing the proto_accel and
     half_list method
@@ -261,11 +253,11 @@ def step_verlet_one(pair, i):
     B_acc = proto * (-1.0) * A.m
     A.store_acc(A_acc)
     B.store_acc(B_acc)
-    A.P = A.P + A.V + A_acc*(i/2.0)
-    B.P = B.P + B.V + B_acc*(i/2.0)
+    A.P = A.P + A.V + A_acc*(delta_t/2.0)
+    B.P = B.P + B.V + B_acc*(delta_t/2.0)
 
 
-def step_verlet_two(pair, i):
+def step_verlet_two(pair, delta_t):
     '''
     Second pass for the verlet method utilizing the proto_accel and
     half_list method
@@ -275,11 +267,11 @@ def step_verlet_two(pair, i):
     proto = Proto_Acc(A, B)
     A_acc = proto * B.m
     B_acc = proto * (-1.0) * A.m
-    A.V = (A.A + A_acc)*(i/2.0)
-    B.V = (B.A + B_acc)*(i/2.0)
+    A.V = (A.A + A_acc)*(delta_t/2.0)
+    B.V = (B.A + B_acc)*(delta_t/2.0)
 
 
-def step_euler(part_list, flag, time_interval, i):
-    acc = Sum_Grav_Accel(part_list, i, flag)
-    i.accelerate(acc, time_interval)
-    i.move(time_interval)
+def step_euler(part_list, flag, delta_t, part):
+    acc = Sum_Grav_Accel(part_list, part, flag)
+    part.accelerate(acc, delta_t)
+    part.move(delta_t)
