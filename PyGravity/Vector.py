@@ -103,10 +103,7 @@ class Vector(object):
 			raise ValueError('vector dimension doesnt match')
 		i = 0
 		for element in self.vector:
-			try:
-				if element != other_vector.vector[i]:
-					return False
-			except Exception:
+			if element != other_vector.vector[i]:
 				return False
 			i += 1
 		return True
