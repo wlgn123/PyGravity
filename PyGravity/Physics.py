@@ -247,14 +247,14 @@ def step_verlet_one(pair, delta_t):
 
     ::param:: Tple of Particle objects
     '''
-    A, B = pair
-    proto = Proto_Acc(A, B)
-    A_acc = proto * B.m
-    B_acc = proto * (-1.0) * A.m
-    A.store_acc(A_acc)
-    B.store_acc(B_acc)
-    A.P = A.P + A.V + A_acc*(delta_t/2.0)
-    B.P = B.P + B.V + B_acc*(delta_t/2.0)
+    a_part, b_part = pair
+    proto = Proto_Acc(a_part, b_part)
+    a_acc = proto * b_part.m
+    b_acc = proto * (-1.0) * a_part.m
+    a_part.store_acc(a_acc)
+    b_part.store_acc(b_acc)
+    a_part.P = a_part.P + a_part.V + a_acc*(delta_t/2.0)
+    b_part.P = b_part.P + b_part.V + b_acc*(delta_t/2.0)
 
 
 def step_verlet_two(pair, delta_t):
@@ -263,12 +263,12 @@ def step_verlet_two(pair, delta_t):
     half_list method
     ::param:: Tple of Particle objects
     '''
-    A, B = pair
-    proto = Proto_Acc(A, B)
-    A_acc = proto * B.m
-    B_acc = proto * (-1.0) * A.m
-    A.V = (A.A + A_acc)*(delta_t/2.0)
-    B.V = (B.A + B_acc)*(delta_t/2.0)
+    a_part, b_part = pair
+    proto = Proto_Acc(a_part, b_part)
+    a_acc = proto * b_part.m
+    b_acc = proto * (-1.0) * a_part.m
+    a_part.V = (a_part.A + a_acc)*(delta_t/2.0)
+    b_part.V = (b_part.A + b_acc)*(delta_t/2.0)
 
 
 def step_euler(part_list, flag, delta_t, part):
