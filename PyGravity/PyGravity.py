@@ -145,8 +145,8 @@ class PyGravity():
 		
 		for pair in half_list:
 			try:
-				Physics.step_verlet_one(pair, self.time_interval)
-				Physics.step_verlet_two(pair, self.time_interval)
+				Physics._step_verlet_one(pair, self.time_interval)
+				Physics._step_verlet_two(pair, self.time_interval)
 			except RuntimeWarning as e:
 				print e
 				sys.exit(1)
@@ -173,7 +173,7 @@ class PyGravity():
 		'''
 		for item in self.particle_list:
 			try:
-				Physics.step_euler(self.particle_list, self.fast,self.time_interval, item)
+				Physics._step_euler(self.particle_list, self.fast,self.time_interval, item)
 			except RuntimeWarning as e:
 				print e 
 				
