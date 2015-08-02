@@ -1,7 +1,3 @@
-import Physics
-import Data_IO
-import sys
-
 '''
 .. module:: PyGravity
    :platform: Unix
@@ -10,35 +6,41 @@ import sys
 .. moduleauthor:: Russell Loewe <russloewe@gmail.com>
 
 '''
+
+from . import Physics
+from . import Data_IO
+import sys
+
+
+
 class PyGravity(object):
     '''Main class for  combining submodules
     '''
     def __init__(self):
         '''initialize data reader and writer
         Also set global diminsion
+        .. todo:: reomve data_io attribute, just call data_io
         '''
         self.reader = Data_IO.Reader()
         self.writer = Data_IO.Writer()
-        #particels in active simulation
+        # particels in active simulation
         self.particle_list = []
-        #time stuff
+        # time stuff
         self.time_interval = 1.0
-        self.initial_time = 0
         self.currant_time = 0
-        #vector dimensions
+        # vector dimensions
         self.dimension = 3
-        #use faster extension,
+        # use faster extension,
         self.fast = False
-
 
     def set_fast(self, booln):
         '''
         Sets falg so the faster grav_accel function is used.
         Just a stand in until new extension is complete and tested.
         '''
-        if booln == True:
+        if booln:
             self.fast = True
-        elif booln == False:
+        elif not booln:
             self.fast = False
         else:
             raise TypeError("Only True or False boolean accepted")
@@ -55,7 +57,6 @@ class PyGravity(object):
         '''
         self.dimension = dim
 
-
     def set_time_interval(self, interval):
         '''
         Adjust the time step of the currant simulation.
@@ -63,7 +64,6 @@ class PyGravity(object):
         :param: interval(int): Interval to use
         '''
         self.time_interval = float(interval)
-
 
     def add_particle(self, particle):
         '''
@@ -87,7 +87,6 @@ class PyGravity(object):
                 self.particle_list.append(particle)
                 break
 
-
     def read_file(self, file_name):
         '''
         Use to load a set of particles from a CSV data file,
@@ -105,7 +104,6 @@ class PyGravity(object):
         self.reader.read_file(file_name)
         for item in self.reader.objects:
             self.add_particle(item)
-
 
     def write_file(self, file_name):
         '''
@@ -146,11 +144,10 @@ class PyGravity(object):
                 print excpt
                 sys.exit(1)
 
-
     def step_all(self):
         '''
         Iterates through all the particles in self.particle_list and
-        runs the Physics.Sum_Grav_Accel() function, and applies the 
+        runs the Physics.Sum_Grav_Accel() function, and applies the
         acceleration to update each particle's velocity vector, then
         finally iterates through each particle and moves that particle
         moving the new velocity.
