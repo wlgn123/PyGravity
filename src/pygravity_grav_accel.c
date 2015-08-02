@@ -3,7 +3,7 @@
 
 #define ROUND_MODE MPFR_RNDZ
 
-static PyObject *grav_accel(PyObject *self, PyObject *args) {
+static PyObject *ext_grav_accel(PyObject *self, PyObject *args) {
 
 
    //DECLARE DOUBLE TYPES
@@ -46,9 +46,7 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
 	
 	
 	
-	/*multiply by G and mass then divide by R_temp
-	 * So i don't have to use another mpfr val, I will
-	 * divide r_tmp by G, then Mass, then invert
+	/*start claculating the force
 	*/
 	R_tmp = (Mass*G)/ (R_mag*R_mag);
 
@@ -61,12 +59,12 @@ static PyObject *grav_accel(PyObject *self, PyObject *args) {
    return Py_BuildValue("ddd", A1,A2,A3);
 }
 
-static char pygravity_grav_accel[] =
+static char pygravity_ext_grav_accel[] =
     "pygravity_grav_accel( ): Compute Gravity Acceleration in C!!\n";
 
 static PyMethodDef _funcs[] = {
     
-       { "grav_accel", grav_accel, METH_VARARGS, NULL },
+       { "ext_grav_accel", ext_grav_accel, METH_VARARGS, NULL },
     {NULL}
 };
 
