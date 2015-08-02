@@ -1,7 +1,7 @@
 import Particle
 from math import sqrt
 import numpy as np
-from pygravity_grav_accel import grav_accel
+from pygravity_grav_accel import ext_grav_accel
 import sys
 
 '''
@@ -17,7 +17,7 @@ import sys
 # global constant
 G = 6.67384e-11
 
-def Grav_Force(a_part, b_part):
+def grav_force(a_part, b_part):
     '''
     Calculates the force of gravity between two particles. Uses Newton's
     Law of Gravity. Gravitational constant is in standtard metric units.
@@ -36,7 +36,7 @@ def Grav_Force(a_part, b_part):
     return f_vec
 
 
-def Total_Grav_Force(particle_list, particle):
+def total_grav_force(particle_list, particle):
     '''
     Finds the the total force of gravity acting on one particle.
     The force of gravity acting on the supplied particle is claculated
@@ -54,13 +54,13 @@ def Total_Grav_Force(particle_list, particle):
     force_list = []
     for _particle in particle_list:
         if _particle != particle:
-            force_list.append(Grav_Force(_particle, particle))
+            force_list.append(grav_force(_particle, particle))
     f = lambda a, b: a+b
     total_force = reduce(f, force_list)
     return total_force
 
 
-def Grav_Accel(a_part, b_part):
+def grav_accel(a_part, b_part):
     '''
     Calculate the acceleration between particle A and B due to
     gravity. Uses math shortcuts to reduce total number of calculations
@@ -89,7 +89,7 @@ def Grav_Accel(a_part, b_part):
     return r_vec * acc  # the normilizer, r.unit, is hidden in r_cube
 
 
-def C_Grav_Accel(a_part, b_part):
+def c_grav_accel(a_part, b_part):
     '''
     Wrapper for the pygravity_grav_accel extension. Does same thing as
     the Grav_Accel function but in pre-compiled C.
@@ -125,7 +125,7 @@ def C_Grav_Accel(a_part, b_part):
 
 
     '''
-    acc_string = grav_accel(
+    acc_string = ext_grav_accel(
         b_part.m,
         a_part.P[0],
         a_part.P[1],
@@ -138,7 +138,7 @@ def C_Grav_Accel(a_part, b_part):
     return acc_vec
 
 
-def Proto_Acc(a_part, b_part):
+def proto_acc(a_part, b_part):
     '''
     Calculate the acceleration between two objects,
     leaving the mass part out. Therefore:
@@ -162,7 +162,7 @@ def Proto_Acc(a_part, b_part):
     return r_vec * (G/r_mag_cubed)
 
 
-def Sum_Grav_Accel(particle_list, a_part, fast_flag=False):
+def sum_grav_accel(particle_list, a_part, fast_flag=False):
     '''
     Sum the total acceleration acting on a particle by using the
     Grav_Accel function and iterating through the particle list.
@@ -178,19 +178,19 @@ def Sum_Grav_Accel(particle_list, a_part, fast_flag=False):
         acc_list = []
         for particle in particle_list:
             if particle != a_part:
-                acc_list.append(C_Grav_Accel(a_part, particle))
+                acc_list.append(c_grav_accel(a_part, particle))
         total_acc = reduce(lambda a, b: a+b, acc_list)
         return total_acc
     else:
         acc_list = []
         for particle in particle_list:
             if particle != a_part:
-                acc_list.append(Grav_Accel(a_part, particle))
+                acc_list.append(grav_accel(a_part, particle))
         total_acc = reduce(lambda a, b: a+b, acc_list)
         return total_acc
 
 
-def Escape_Velocity(a_part, b_part):
+def escape_velocity(a_part, b_part):
     '''
     Calculate the escape velocity between two objects.
 
@@ -205,7 +205,7 @@ def Escape_Velocity(a_part, b_part):
     return esc
 
 
-def Total_Escape_Velocity(particle_list, a_part):
+def total_escape_velocity(particle_list, a_part):
     '''
     Find the total escape velocity acting on a particle with repect
     to the rest of the active particles in the simulation.
@@ -218,7 +218,7 @@ def Total_Escape_Velocity(particle_list, a_part):
     esc_list = []
     for item in particle_list:
         if a_part != item:
-            esc_list.append(Escape_Velocity(a_part, item))
+            esc_list.append(escape_velocity(a_part, item))
     return reduce(lambda a, b: a+b, esc_list)
 
 
@@ -234,13 +234,13 @@ def escaping(particle_list):
     '''
     escaping = []
     for item in particle_list:
-        total_esc = Total_Escape_Velocity(particle_list, item)
+        total_esc = total_escape_velocity(particle_list, item)
         if total_esc < np.linalg.norm(item.V):
             escaping.append(item.name)
     return escaping
 
 
-def step_verlet_one(pair, delta_t):
+def _step_verlet_one(pair, delta_t):
     '''
     First pass for the verlet method utilizing the proto_accel and
     half_list method
@@ -248,7 +248,7 @@ def step_verlet_one(pair, delta_t):
     ::param:: Tple of Particle objects
     '''
     a_part, b_part = pair
-    proto = Proto_Acc(a_part, b_part)
+    proto = proto_acc(a_part, b_part)
     a_acc = proto * b_part.m
     b_acc = proto * (-1.0) * a_part.m
     a_part.store_acc(a_acc)
@@ -257,21 +257,21 @@ def step_verlet_one(pair, delta_t):
     b_part.P = b_part.P + b_part.V + b_acc*(delta_t/2.0)
 
 
-def step_verlet_two(pair, delta_t):
+def _step_verlet_two(pair, delta_t):
     '''
     Second pass for the verlet method utilizing the proto_accel and
     half_list method
     ::param:: Tple of Particle objects
     '''
     a_part, b_part = pair
-    proto = Proto_Acc(a_part, b_part)
+    proto = proto_acc(a_part, b_part)
     a_acc = proto * b_part.m
     b_acc = proto * (-1.0) * a_part.m
     a_part.V = (a_part.A + a_acc)*(delta_t/2.0)
     b_part.V = (b_part.A + b_acc)*(delta_t/2.0)
 
 
-def step_euler(part_list, flag, delta_t, part):
-    acc = Sum_Grav_Accel(part_list, part, flag)
+def _step_euler(part_list, flag, delta_t, part):
+    acc = sum_grav_accel(part_list, part, flag)
     part.accelerate(acc, delta_t)
     part.move(delta_t)
