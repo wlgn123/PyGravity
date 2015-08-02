@@ -1,4 +1,3 @@
-import Particle
 from math import sqrt
 import numpy as np
 from pygravity_grav_accel import ext_grav_accel
