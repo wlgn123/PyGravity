@@ -168,6 +168,8 @@ class Writer(object):
 		
 		:param: ob(PyGravity.Particle) Particle object to be formated 
 		:returns: Formatted string 
+		
+		.. todo:: need better way of makeing objects into strings:
 		'''
 		string = ob.name + ':' 
 		for item in ob.P:
