@@ -35,9 +35,9 @@ class Particle_Class_Tests(unittest.TestCase):
         a = Particle('a',np.array([1,2,3]),
                          np.array([1,1,1]), 
                          55.5)
-        self.failUnless(hasattr(a, 'P'))
-        self.failUnless(hasattr(a, 'V'))
-        self.failUnless(hasattr(a, 'm'))
+        self.failUnless(hasattr(a, 'pos'))
+        self.failUnless(hasattr(a, 'vol'))
+        self.failUnless(hasattr(a, 'mass'))
         self.failUnless(a.name == 'a')
 
     def test_particle_motion(self):
@@ -47,7 +47,7 @@ class Particle_Class_Tests(unittest.TestCase):
         a.move(1)
         V = np.array([1,1,1])
         P = np.array([2,3,4])
-        self.failUnless(np.array_equal(P, a.P))
+        self.failUnless(np.array_equal(P, a.pos))
 
     def test_particle_motion2(self):
         a = Particle('a',[1.1,2.1,3.0],
@@ -56,19 +56,21 @@ class Particle_Class_Tests(unittest.TestCase):
         Accel = np.array([2,2,-4])
         Ans = np.array([3.1, 4.1, -1.0])
         a.accelerate(Accel,1)
-        self.failUnless(np.array_equal(Ans, a.V))
+        self.failUnless(np.array_equal(Ans, a.vol))
 
     def test_particle_acceleration(self):
-        a = Particle('a',np.array([1, 1, 1]), 
-                         np.array([1,1,1]), 
+        a = Particle('a',[1, 1, 1], 
+                         [1,1,1], 
                          44)
         Acc = np.array([3, 3, -1])
-        V_ans = np.array([4, 4, 0])
-        P_ans = np.array([5, 5, 1])
+        V_ans = np.array([4, 4, 0], dtype=float)
+        P_ans = np.array([5, 5, 1], dtype=float)
         a.accelerate(Acc,1)
-        self.failUnless(np.array_equal(V_ans, a.V))
-        a.move(1)
-        self.failUnless(np.array_equal(P_ans, a.P))
+        self.failUnless(np.array_equal(V_ans, a.vol))
+        a.move(1.0)
+        print P_ans
+        print a.pos
+        self.failUnless(np.array_equal(P_ans, a.pos))
 
 class Physics_Class_Tests(unittest.TestCase):
     def setUp(self):
@@ -148,8 +150,8 @@ class Physics_Class_Tests(unittest.TestCase):
         
         Acceleration_answer = np.array([6.42e-10, 
                                       6.42e-10,
-                                      6.42e-10 ]) * (1/part1.m)
-        Acc_vecc_one = (Physics.grav_force(part1, self.part_list[1]) * (1/part1.m))
+                                      6.42e-10 ]) * (1/part1.mass)
+        Acc_vecc_one = (Physics.grav_force(part1, self.part_list[1]) * (1/part1.mass))
         Acc_vecc_two = Physics.grav_accel(part1, self.part_list[1])
         self.failUnless(np.allclose(Acc_vecc_one, Acceleration_answer,
                                     1.0e-6))
@@ -163,7 +165,7 @@ class Physics_Class_Tests(unittest.TestCase):
         for i in self.part_list:
             self.failUnless(
             np.allclose(
-                Physics.grav_force(part1, i) * (-1.0/part1.m), 
+                Physics.grav_force(part1, i) * (-1.0/part1.mass), 
                 Physics.grav_accel(part1, i),
                 1.0e-6)
             )
@@ -231,11 +233,11 @@ class Physics_Class_Tests(unittest.TestCase):
         for i in range(1000):
             base.apply_gravitational_acceleration(base.objects[0])
             base.objects[0].move
-            self.failIf(base.objects[0].P.y > 12)
-            self.failIf(base.objects[0].P.y < (-12))
+            self.failIf(base.objects[0].pos.y > 12)
+            self.failIf(base.objects[0].pos.y < (-12))
 
-            self.failUnless(base.objects[0].P.y < 12)
-            self.failUnless(base.objects[0].P.y > (-12))
+            self.failUnless(base.objects[0].pos.y < 12)
+            self.failUnless(base.objects[0].pos.y > (-12))
         
     def test_escaping(self):
         base = PyGravity()
@@ -254,7 +256,7 @@ class Physics_Class_Tests(unittest.TestCase):
                                               base.particle_list[1])
         acc_proto_method = Physics.proto_acc(base.particle_list[0], 
                                               base.particle_list[1])
-        acc_proto_method = acc_proto_method * base.particle_list[1].m
+        acc_proto_method = acc_proto_method * base.particle_list[1].mass
         self.failUnless(np.allclose(acc_proto_method,
                                        acc_accel_method,
                                        1.0e-6))
@@ -270,20 +272,20 @@ class Physics_Class_Tests(unittest.TestCase):
         for i in range(10):
             base_verlet.step_all_verlet()
             base_euler.step_all()
-            self.failUnless(np.allclose(base_euler.particle_list[0].P,
-                                        base_verlet.particle_list[0].P,
+            self.failUnless(np.allclose(base_euler.particle_list[0].pos,
+                                        base_verlet.particle_list[0].pos,
                                         1.0e-6))
-            print base_verlet.particle_list[0].P
-            print base_euler.particle_list[0].P
+            print base_verlet.particle_list[0].pos
+            print base_euler.particle_list[0].pos
 
     def test_step_verlet_one(self):
         #just check for errors
-        Physics._step_verlet_one((self.part1,self.part2), 1)
+        Physics.step_verlet_one((self.part1,self.part2), 1)
         
     def test_step_verlet_two(self):
         #just check for errors
-        Physics._step_verlet_one((self.part1,self.part2), 1)
-        Physics._step_verlet_two((self.part1,self.part2), 1)
+        Physics.step_verlet_one((self.part1,self.part2), 1)
+        Physics.step_verlet_two((self.part1,self.part2), 1)
         
 class Data_io_Class_Tests(unittest.TestCase):
     def setUp(self):
@@ -295,9 +297,9 @@ class Data_io_Class_Tests(unittest.TestCase):
         base = Data_IO.Reader()
         base.read_file('./test_data.csv')
         self.failUnless(base.objects[0].name == a.name)
-        self.failUnless(np.array_equal(base.objects[0].P, a.P))
-        self.failUnless(np.array_equal(base.objects[0].V, a.V))
-        self.failUnless(base.objects[0].m == a.m)
+        self.failUnless(np.array_equal(base.objects[0].pos, a.pos))
+        self.failUnless(np.array_equal(base.objects[0].vol, a.vol))
+        self.failUnless(base.objects[0].mass == a.mass)
 
     def test_read_xml_int(self):
         a = Particle('A', ['1','1','1'], ['1','0','0'], 50000000)
@@ -305,9 +307,9 @@ class Data_io_Class_Tests(unittest.TestCase):
         base = Data_IO.Reader()
         base.read_file('./test_data.xml')
         self.failUnless(base.objects[0].name == a.name)
-        self.failUnless(np.array_equal(base.objects[0].P, a.P))
-        self.failUnless(np.array_equal(base.objects[0].V, a.V))
-        self.failUnless(base.objects[0].m == a.m)
+        self.failUnless(np.array_equal(base.objects[0].pos, a.pos))
+        self.failUnless(np.array_equal(base.objects[0].vol, a.vol))
+        self.failUnless(base.objects[0].mass == a.mass)
         
 
         
@@ -316,9 +318,9 @@ class Data_io_Class_Tests(unittest.TestCase):
         base = Data_IO.Reader()
         base.read_file('./test_data.xml')
         self.failUnless(base.objects[3].name == d.name)
-        self.failUnless(np.array_equal(base.objects[3].P, d.P))
-        self.failUnless(np.array_equal(base.objects[3].V, d.V))
-        self.failUnless(base.objects[3].m == d.m)
+        self.failUnless(np.array_equal(base.objects[3].pos, d.pos))
+        self.failUnless(np.array_equal(base.objects[3].vol, d.vol))
+        self.failUnless(base.objects[3].mass == d.mass)
         
         
 class PyGravity_Class_Tests(unittest.TestCase):
@@ -339,9 +341,9 @@ class PyGravity_Class_Tests(unittest.TestCase):
         base = PyGravity()
         base.read_file('./test_data.csv')
         self.failUnless(base.particle_list[0].name == a.name)
-        self.failUnless(np.array_equal(base.particle_list[0].P, a.P))
-        self.failUnless(np.array_equal(base.particle_list[0].V, a.V))
-        self.failUnless(base.particle_list[0].m == a.m)
+        self.failUnless(np.array_equal(base.particle_list[0].pos, a.pos))
+        self.failUnless(np.array_equal(base.particle_list[0].vol, a.vol))
+        self.failUnless(base.particle_list[0].mass == a.mass)
         
     def _test_step_all(self):
         '''
@@ -355,14 +357,14 @@ class PyGravity_Class_Tests(unittest.TestCase):
         base.add_particle(A)
         base.add_particle(B)
         base.step_all()
-        self.failUnless(base.particle_list[0].P.round(10) == np.array(['-1.084971875','1.0','0']).round(10))
-        self.failUnless(base.particle_list[0].V.round(10) == np.array(['-2.084971875','0','0']).round(10))
+        self.failUnless(base.particle_list[0].pos.round(10) == np.array(['-1.084971875','1.0','0']).round(10))
+        self.failUnless(base.particle_list[0].vol.round(10) == np.array(['-2.084971875','0','0']).round(10))
 
-        self.failUnless(base.particle_list[1].P.round(10) == np.array(['7.084971875','1.0','0']).round(10))
-        self.failUnless(base.particle_list[1].V.round(10) == np.array(['2.084971875','0','0']).round(10))
+        self.failUnless(base.particle_list[1].pos.round(10) == np.array(['7.084971875','1.0','0']).round(10))
+        self.failUnless(base.particle_list[1].vol.round(10) == np.array(['2.084971875','0','0']).round(10))
         
-        self.failIf(base.particle_list[0].P == np.array(['2.91442500000000', '1.00000000000000', '0']))
-        self.failIf(base.particle_list[0].V == np.array(['-2.08557500000000', '0E-14', '0']))
+        self.failIf(base.particle_list[0].pos == np.array(['2.91442500000000', '1.00000000000000', '0']))
+        self.failIf(base.particle_list[0].vol == np.array(['-2.08557500000000', '0E-14', '0']))
 
 
 

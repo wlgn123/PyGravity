@@ -6,7 +6,7 @@
 .. moduleauthor:: Russell Loewe <russloewe@gmail.com>
 
 '''
-from round_sig import round_sig
+from .round_sig import round_sig
 from math import sqrt
 
 

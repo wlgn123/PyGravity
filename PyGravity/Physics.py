@@ -1,7 +1,3 @@
-from math import sqrt
-import numpy as np
-from pygravity_grav_accel import ext_grav_accel
-
 '''
 .. module:: Physics
    :platform: Unix
@@ -12,6 +8,12 @@ from pygravity_grav_accel import ext_grav_accel
     Create a seperate object to hold particle list, vector deminsion
     and time step and time counter
 '''
+
+from math import sqrt
+import numpy as np
+from pygravity_grav_accel import ext_grav_accel
+
+
 # global constant
 G = 6.67384e-11
 
@@ -26,10 +28,10 @@ def grav_force(a_part, b_part):
 
     :returns: Force(Vector): Force acting on particle A as a Vector.
     '''
-    r_vec = a_part.P-b_part.P   # vector between two particles
+    r_vec = a_part.pos-b_part.pos   # vector between two particles
     r_norm = np.linalg.norm(r_vec)
     r_squared = r_norm ** 2  # dist between A, B squared
-    f_mag = (G*a_part.m * b_part.m)*(r_squared**(-1))
+    f_mag = (G*a_part.mass * b_part.mass)*(r_squared**(-1))
     f_vec = r_vec * (f_mag/r_norm)
     return f_vec
 
@@ -79,11 +81,11 @@ def grav_accel(a_part, b_part):
         functions
 
     '''
-    r_vec = b_part.P-a_part.P   # vector between two particles
+    r_vec = b_part.pos-a_part.pos   # vector between two particles
     r_norm = np.linalg.norm(r_vec)
 
     r_cube = r_norm ** 3  # dist between A, B cubed
-    acc = G * b_part.m / r_cube
+    acc = G * b_part.mass / r_cube
     return r_vec * acc  # the normilizer, r.unit, is hidden in r_cube
 
 
@@ -124,13 +126,13 @@ def c_grav_accel(a_part, b_part):
 
     '''
     acc_string = ext_grav_accel(
-        b_part.m,
-        a_part.P[0],
-        a_part.P[1],
-        a_part.P[2],
-        b_part.P[0],
-        b_part.P[1],
-        b_part.P[2]
+        b_part.mass,
+        a_part.pos[0],
+        a_part.pos[1],
+        a_part.pos[2],
+        b_part.pos[0],
+        b_part.pos[1],
+        b_part.pos[2]
         )
     acc_vec = np.array(list(acc_string), dtype=float)
     return acc_vec
@@ -153,7 +155,7 @@ def proto_acc(a_part, b_part):
     for optinmizing acceleration calculations for a large set of
     objects.
     '''
-    r_vec = b_part.P-a_part.P
+    r_vec = b_part.pos-a_part.pos
     r_mag = np.linalg.norm(r_vec)   # r_mag = ||A-B||
     r_mag_cubed = r_mag * r_mag * r_mag
 
@@ -169,7 +171,9 @@ def sum_grav_accel(particle_list, a_part, fast_flag=False):
         to iteratethrough.
 
     :param: A(Vector): Vector to calculate acceleration for.
+
     :returns: Acceleraton as a Vector Object
+
     .. todo:: need unittest.
     '''
     if fast_flag:
@@ -198,8 +202,8 @@ def escape_velocity(a_part, b_part):
 
     :returns: Escape velocity as a Vector Object.
     '''
-    r_vec = np.linalg.norm(a_part.P-b_part.P)  # distance between A and B
-    esc = sqrt((G*b_part.m)/r_vec)        # formula for escape velocity
+    r_vec = np.linalg.norm(a_part.pos-b_part.pos)  # distance between A and B
+    esc = sqrt((G*b_part.mass)/r_vec)        # formula for escape velocity
     return esc
 
 
@@ -233,12 +237,12 @@ def escaping(particle_list):
     escap_list = []
     for item in particle_list:
         total_esc = total_escape_velocity(particle_list, item)
-        if total_esc < np.linalg.norm(item.V):
+        if total_esc < np.linalg.norm(item.vol):
             escap_list.append(item.name)
     return escap_list
 
 
-def _step_verlet_one(pair, delta_t):
+def step_verlet_one(pair, delta_t):
     '''
     First pass for the verlet method utilizing the proto_accel and
     half_list method
@@ -247,15 +251,15 @@ def _step_verlet_one(pair, delta_t):
     '''
     a_part, b_part = pair
     proto = proto_acc(a_part, b_part)
-    a_acc = proto * b_part.m
-    b_acc = proto * (-1.0) * a_part.m
+    a_acc = proto * b_part.mass
+    b_acc = proto * (-1.0) * a_part.mass
     a_part.store_acc(a_acc)
     b_part.store_acc(b_acc)
-    a_part.P = a_part.P + a_part.V + a_acc*(delta_t/2.0)
-    b_part.P = b_part.P + b_part.V + b_acc*(delta_t/2.0)
+    a_part.P = a_part.pos + a_part.vol + a_acc*(delta_t/2.0)
+    b_part.P = b_part.pos + b_part.vol + b_acc*(delta_t/2.0)
 
 
-def _step_verlet_two(pair, delta_t):
+def step_verlet_two(pair, delta_t):
     '''
     Second pass for the verlet method utilizing the proto_accel and
     half_list method
@@ -263,13 +267,13 @@ def _step_verlet_two(pair, delta_t):
     '''
     a_part, b_part = pair
     proto = proto_acc(a_part, b_part)
-    a_acc = proto * b_part.m
-    b_acc = proto * (-1.0) * a_part.m
-    a_part.V = (a_part.A + a_acc)*(delta_t/2.0)
-    b_part.V = (b_part.A + b_acc)*(delta_t/2.0)
+    a_acc = proto * b_part.mass
+    b_acc = proto * (-1.0) * a_part.mass
+    a_part.vol = (a_part.acc + a_acc)*(delta_t/2.0)
+    b_part.vol = (b_part.acc + b_acc)*(delta_t/2.0)
 
 
-def _step_euler(part_list, flag, delta_t, part):
+def step_euler(part_list, flag, delta_t, part):
     '''
     helper for step_all function
     '''

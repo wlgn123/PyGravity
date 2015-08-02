@@ -1,9 +1,19 @@
+'''
+.. module:: RoundSig
+   :platform: Unix
+   :synopsis: Rounding to sig digits
+
+.. moduleauthor:: Russell Loewe <russloewe@gmail.com>
+
+'''
 from math import log10, floor
-def round_sig(x, sig=2):
-    if x == 0:
+def round_sig(number, sig=2):
+    '''
+    Round to significant digits
+    '''
+    if number == 0:
         return 0
-    if x < 0:
-        x = -x
-        return round(x, sig-int(floor(log10(x)))-1) * (-1)
-    
-    return round(x, sig-int(floor(log10(x)))-1)
+    if number < 0:
+        number = -number
+        return round(number, sig-int(floor(log10(number)))-1) * (-1)
+    return round(number, sig-int(floor(log10(number)))-1)

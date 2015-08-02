@@ -50,6 +50,7 @@ class Particle(object):
         self.vol = np.array(vol, dtype=float)    # Particles velocity vector
         self.mass = mass                           # particles mass
         self.name = name
+        self.acc = None
 
     def move(self, delta_t):
         '''
