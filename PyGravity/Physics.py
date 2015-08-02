@@ -3,6 +3,7 @@ from math import sqrt
 import numpy as np
 from pygravity_grav_accel import grav_accel
 import sys
+
 '''
 .. module:: Physics
    :platform: Unix
@@ -28,7 +29,7 @@ def Grav_Force(A, B):
     '''
 
     G = -6.67384e-11
-    r = np.subtract(A.P, B.P)   # vector between two particles
+    r = A.P-B.P   # vector between two particles
     r_norm = np.linalg.norm(r)
     r_squared = r_norm ** 2  # dist between A, B squared
     f_mag = (G*A.m * B.m)*(r_squared**(-1))
@@ -86,7 +87,7 @@ def Grav_Accel(A, B):
 
     '''
     G = -6.67384e-11
-    r = np.subtract(A.P, B.P)   # vector between two particles
+    r = A.P-B.P   # vector between two particles
     r_norm = np.linalg.norm(r)
 
     r_cube = r_norm ** 3  # dist between A, B cubed
@@ -139,7 +140,7 @@ def C_Grav_Accel(A, B):
         B.P[1],
         B.P[2]
         )
-    acc = np.array(list(acc_string))
+    acc = np.array(list(acc_string), dtype=float)
     return acc
 
 
@@ -177,8 +178,8 @@ def Sum_Grav_Accel(particle_list, A, fast_flag=False):
         to iteratethrough.
 
     :param: A(Vector): Vector to calculate acceleration for.
-
     :returns: Acceleraton as a Vector Object
+    .. todo:: need unittest.
     '''
     if fast_flag:
         acc_list = []
@@ -192,7 +193,7 @@ def Sum_Grav_Accel(particle_list, A, fast_flag=False):
         for particle in particle_list:
             if particle != A:
                 acc_list.append(Grav_Accel(A, particle))
-        total_acc = reduce(lambda a, cb: ca+b, acc_list)
+        total_acc = reduce(lambda a, b: a+b, acc_list)
         return total_acc
 
 
@@ -275,7 +276,7 @@ def step_verlet_two(pair, i):
     A_acc = proto * B.m
     B_acc = proto * (-1.0) * A.m
     A.V = (A.A + A_acc)*(i/2.0)
-    B.V = (B.A + A_acc)*(i/2.0)
+    B.V = (B.A + B_acc)*(i/2.0)
 
 
 def step_euler(part_list, flag, time_interval, i):
