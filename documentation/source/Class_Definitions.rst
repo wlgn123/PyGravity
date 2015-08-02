@@ -5,8 +5,12 @@
 
 Class Definitions
 =====================================
-Here's a more indepth loog at the PyGravity classes and methods.
+Here's a more indepth look at the PyGravity classes and methods.
 
+
+.. toctree::
+   :maxdepth: 2
+   
 full source http://github.com/russloewe/PyGravity
 
 PyGravity 
@@ -63,10 +67,4 @@ as a ghost library.
 
 .. automodule:: PyGravity.Vector
     :members:
-    
-
-ToDo
-========================
-
-
-.. todolist::
+ 
