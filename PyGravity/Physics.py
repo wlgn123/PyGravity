@@ -1,7 +1,6 @@
 from math import sqrt
 import numpy as np
 from pygravity_grav_accel import ext_grav_accel
-import sys
 
 '''
 .. module:: Physics
@@ -54,8 +53,8 @@ def total_grav_force(particle_list, particle):
     for _particle in particle_list:
         if _particle != particle:
             force_list.append(grav_force(_particle, particle))
-    f = lambda a, b: a+b
-    total_force = reduce(f, force_list)
+    force = lambda a, b: a+b
+    total_force = reduce(force, force_list)
     return total_force
 
 
@@ -231,12 +230,12 @@ def escaping(particle_list):
 
     :returns: List of particles exceeding escape velocity.
     '''
-    escaping = []
+    escap_list = []
     for item in particle_list:
         total_esc = total_escape_velocity(particle_list, item)
         if total_esc < np.linalg.norm(item.V):
-            escaping.append(item.name)
-    return escaping
+            escap_list.append(item.name)
+    return escap_list
 
 
 def _step_verlet_one(pair, delta_t):
@@ -271,6 +270,9 @@ def _step_verlet_two(pair, delta_t):
 
 
 def _step_euler(part_list, flag, delta_t, part):
+    '''
+    helper for step_all function
+    '''
     acc = sum_grav_accel(part_list, part, flag)
     part.accelerate(acc, delta_t)
     part.move(delta_t)
