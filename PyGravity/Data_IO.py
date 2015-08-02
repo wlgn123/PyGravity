@@ -169,7 +169,7 @@ class Writer(object):
 		:param: ob(PyGravity.Particle) Particle object to be formated 
 		:returns: Formatted string 
 		'''
-		string = str(ob.name) + ':' 
+		string = ob.name + ':' 
 		for item in ob.P:
 			string = string + str(item) +':'
 		for item in ob.V:
