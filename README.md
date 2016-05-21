@@ -12,7 +12,7 @@ Gravity Simulator.
 
 ## Documentaion
 #### core 
-The main docs are generated with Sphinx, find them at http://russloewe.com/PyGravity/index.html or generate
+The main docs are generated with Sphinx. Generate
 them yourself by running 
     
     ./build.sh -d
@@ -24,7 +24,7 @@ There are serveral examples that demsonstrate PyGravity in the ./examples folder
 main file called 2D_Physics.py which demonstrates several key features. There are also a collection of 
 ipython notebooks. 
 
-Documentation illustrating a couple of examples can be found at http://russloewe.com/PyGravity/index.html
+Documentation illustrating a couple of examples to be posted.
 
 ## Features
 - Loading a set of objects from a CSV file.
@@ -32,8 +32,5 @@ Documentation illustrating a couple of examples can be found at http://russloewe
 - Adjusting precision for speed vs precision trade-off.
 - Adjusting time interval, also allows trade-off between precison and speed.
 - Use vector math and physics calculations as a stand alone tool, outside of the simulator.
-
-## TODO
-The todo list is generated from doc strings and can be viewed at http://russloewe.com/PyGravity/todo.html
 
 
