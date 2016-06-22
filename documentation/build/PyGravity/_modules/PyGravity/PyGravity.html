@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyGravity.PyGravity &mdash; PyGravity 1.01 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PyGravity 1.01 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for PyGravity.PyGravity</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. module:: PyGravity</span>
+<span class="sd">   :platform: Unix</span>
+<span class="sd">   :synopsis: Main PyGravity mod.</span>
+
+<span class="sd">.. moduleauthor:: Russell Loewe &lt;russloewe@gmail.com&gt;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Physics</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Data_IO</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+
+<div class="viewcode-block" id="PyGravity"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity">[docs]</a><span class="k">class</span> <span class="nc">PyGravity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Main class for  combining submodules</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="PyGravity.__init__"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;initialize data reader and writer</span>
+<span class="sd">        Also set global diminsion</span>
+<span class="sd">        .. todo:: reomve data_io attribute, just call data_io</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">Data_IO</span><span class="o">.</span><span class="n">Reader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">Data_IO</span><span class="o">.</span><span class="n">Writer</span><span class="p">()</span>
+        <span class="c"># particels in active simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># time stuff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currant_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c"># vector dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="c"># use faster extension,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fast</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="PyGravity.set_fast"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.set_fast">[docs]</a>    <span class="k">def</span> <span class="nf">set_fast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">booln</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets falg so the faster grav_accel function is used.</span>
+<span class="sd">        Just a stand in until new extension is complete and tested.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">booln</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fast</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">booln</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fast</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Only True or False boolean accepted&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PyGravity.set_dimension"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.set_dimension">[docs]</a>    <span class="k">def</span> <span class="nf">set_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set global dimension</span>
+<span class="sd">        Dimension is defaulted to 3, but can be overriden here</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            PyGravity.set_dimension(4)</span>
+
+<span class="sd">        :param: (int) The diminsion of the vectors</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dim</span>
+</div>
+<div class="viewcode-block" id="PyGravity.set_time_interval"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.set_time_interval">[docs]</a>    <span class="k">def</span> <span class="nf">set_time_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Adjust the time step of the currant simulation.</span>
+
+<span class="sd">        :param: interval(int): Interval to use</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PyGravity.add_particle"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.add_particle">[docs]</a>    <span class="k">def</span> <span class="nf">add_particle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        add a particle to the list of active particles. The particles</span>
+<span class="sd">        is compared to existing particles. If a particle name is already</span>
+<span class="sd">        used the addition will be deined.</span>
+
+<span class="sd">        :param: particle(Particle Object): particle to add.</span>
+
+<span class="sd">        :returns: none</span>
+
+<span class="sd">        :raises: ValueError if particle name already exists in</span>
+<span class="sd">            particle_list.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">particle</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;particle name already present&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+                <span class="k">break</span>
+</div>
+<div class="viewcode-block" id="PyGravity.read_file"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.read_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Use to load a set of particles from a CSV data file,</span>
+<span class="sd">        The particles are then loaded into the objects list</span>
+<span class="sd">        under Physics.objects.</span>
+
+<span class="sd">        :param: file_name(string) Name of data file</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            the dimension of the PyGravity.dimension must match the</span>
+<span class="sd">            the dimension of the particles in the CSV file.</span>
+
+<span class="sd">        .. todo:: figure out sphinx references</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_particle</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PyGravity.write_file"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.write_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Write current particle set to output file</span>
+
+<span class="sd">        :param: (string)file_name File name and path to write current</span>
+<span class="sd">            dataset</span>
+
+<span class="sd">        .. todo:: fix this function. The values are not corresponding to</span>
+<span class="sd">            known solutions</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PyGravity.step_all_verlet"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.step_all_verlet">[docs]</a>    <span class="k">def</span> <span class="nf">step_all_verlet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Using the Verlet veoloicy method for updating the particles</span>
+<span class="sd">        position. This method also uses the Proto_Accel and half_list</span>
+<span class="sd">        method to reduce calculations by half. This method runs about</span>
+<span class="sd">        twice as fast as the multi-core step_all method for set of 40</span>
+<span class="sd">        points.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">p_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">)</span>
+        <span class="n">half_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">part1_indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p_len</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">part2_indx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">part1_indx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">p_len</span><span class="p">):</span>
+                <span class="n">half_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">[</span><span class="n">part1_indx</span><span class="p">],</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">[</span><span class="n">part2_indx</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">half_list</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Physics</span><span class="o">.</span><span class="n">step_verlet_one</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">)</span>
+                <span class="n">Physics</span><span class="o">.</span><span class="n">step_verlet_two</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeWarning</span> <span class="k">as</span> <span class="n">excpt</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">excpt</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PyGravity.step_all"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.step_all">[docs]</a>    <span class="k">def</span> <span class="nf">step_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Iterates through all the particles in self.particle_list and</span>
+<span class="sd">        runs the Physics.Sum_Grav_Accel() function, and applies the</span>
+<span class="sd">        acceleration to update each particle&#39;s velocity vector, then</span>
+<span class="sd">        finally iterates through each particle and moves that particle</span>
+<span class="sd">        moving the new velocity.</span>
+
+<span class="sd">        .. note:: The acceleration is applied to the velocity using the</span>
+<span class="sd">            time interval. Thus the new velocity equals the currant</span>
+<span class="sd">            velocity plus the acceleration times the time_interval.</span>
+<span class="sd">            The same procedure produces the new position using the same</span>
+<span class="sd">            time_interval.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Physics</span><span class="o">.</span><span class="n">step_euler</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">fast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">,</span>
+                    <span class="n">item</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeWarning</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">excp</span>
+
+</div>
+<div class="viewcode-block" id="PyGravity.step_rk4"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.PyGravity.PyGravity.step_rk4">[docs]</a>    <span class="k">def</span> <span class="nf">step_rk4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Iterates through all the particles in self.particle_list and</span>
+<span class="sd">        runs the Physics.Sum_Grav_Accel() function, and applies the</span>
+<span class="sd">        acceleration to update each particle&#39;s velocity vector, then</span>
+<span class="sd">        finally iterates through each particle and moves that particle</span>
+<span class="sd">        moving the new velocity.</span>
+
+<span class="sd">        .. note:: The acceleration is applied to the velocity using the</span>
+<span class="sd">            time interval. Thus the new velocity equals the currant</span>
+<span class="sd">            velocity plus the acceleration times the time_interval.</span>
+<span class="sd">            The same procedure produces the new position using the same</span>
+<span class="sd">            time_interval.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Physics</span><span class="o">.</span><span class="n">rk4</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">particle_list</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">time_interval</span><span class="p">,</span>
+                    <span class="n">item</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeWarning</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">excp</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Russell Loewe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

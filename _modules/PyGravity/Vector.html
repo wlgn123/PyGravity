@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyGravity.Vector &mdash; PyGravity 1.01 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PyGravity 1.01 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for PyGravity.Vector</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. module:: Vector</span>
+<span class="sd">   :platform: Unix</span>
+<span class="sd">   :synopsis: Vector Mod</span>
+
+<span class="sd">.. moduleauthor:: Russell Loewe &lt;russloewe@gmail.com&gt;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">.round_sig</span> <span class="kn">import</span> <span class="n">round_sig</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+
+
+<div class="viewcode-block" id="Vector"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector">[docs]</a><span class="k">class</span> <span class="nc">Vector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Vector class for creating a vector object</span>
+
+<span class="sd">    If A, and B are vectors then the following operations are supported:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        A + B</span>
+<span class="sd">        A - B</span>
+<span class="sd">        print A</span>
+<span class="sd">        A == B</span>
+<span class="sd">        A[1]</span>
+<span class="sd">        A * 2</span>
+
+<span class="sd">    .. note:: The scalar multiplication is supported by A*2, however</span>
+<span class="sd">        2*A is not supported.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Vector.__init__"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The vector object is intialized with an array</span>
+<span class="sd">        containing the values for the vector. The length of the</span>
+<span class="sd">        array is arbitrary, thus vectors of any dimension can easily</span>
+<span class="sd">        be created. For example a vector of 3 dimensions is created</span>
+<span class="sd">        by</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            A = Vector([&#39;1&#39;,&#39;2&#39;,&#39;3&#39;])</span>
+
+<span class="sd">        and a vector of 6 dimensions is created by</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            B = Vector([&#39;1&#39;,&#39;2&#39;,&#39;3&#39;,&#39;4&#39;,&#39;5&#39;,&#39;6&#39;]).</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            To ensure accuracy use strings not floats. As in [&#39;1.1&#39;, &#39;2.1&#39;].</span>
+<span class="sd">            The vector uses floats for compromised accuracy.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_float</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&#39;(&#39;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="s">&#39;,&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="s">&#39;)&#39;</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_mismatch</span><span class="p">(</span><span class="n">other_vector</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;vector dimension doesnt match&#39;</span><span class="p">)</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">):</span>
+            <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_mismatch</span><span class="p">(</span><span class="n">other_vector</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;vector dimension doesnt match&#39;</span><span class="p">)</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">):</span>
+            <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">):</span>
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">):</span>
+            <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">):</span>
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">):</span>
+            <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_mismatch</span><span class="p">(</span><span class="n">other_vector</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;vector dimension doesnt match&#39;</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span> <span class="o">!=</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="Vector.make_float"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.make_float">[docs]</a>    <span class="k">def</span> <span class="nf">make_float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Iterate through incoming array, switching value types to floats</span>
+<span class="sd">        when nedded.</span>
+
+<span class="sd">        :raises: TypeError, if input isn&#39;t a Float, Int or String.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">array</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Vectors can only be initialized </span><span class="se">\</span>
+<span class="s">                    with Foats, Ints, or Strings&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_array</span>
+</div>
+<div class="viewcode-block" id="Vector.array_mismatch"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.array_mismatch">[docs]</a>    <span class="k">def</span> <span class="nf">array_mismatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Checks dimension of current vector against another vector.</span>
+<span class="sd">        For example, for two vectors A and B, A.array_mismatch(B)</span>
+<span class="sd">        checks A against B. Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; A = Vector([&#39;1&#39;,&#39;2&#39;])</span>
+<span class="sd">            &gt;&gt;&gt; B = Vector([&#39;3&#39;, &#39;4&#39;, &#39;5&#39;])</span>
+<span class="sd">            &gt;&gt;&gt; C = Vector([&#39;9&#39;, &#39;7&#39;])</span>
+
+<span class="sd">            &gt;&gt;&gt; A.array_mismatch(B)</span>
+<span class="sd">            True</span>
+<span class="sd">            &gt;&gt;&gt; A.array_mistmatch(C)</span>
+<span class="sd">            False</span>
+
+<span class="sd">        :returns: True if the two Vectors are of different size, False</span>
+<span class="sd">            if they are the same size</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">vector</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">):</span>
+        <span class="n">new_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">:</span>
+            <span class="n">new_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">scalar</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Vector.round"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.round">[docs]</a>    <span class="k">def</span> <span class="nf">round</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Rounds the indiviedule components to &#39;a&#39; sig digits.</span>
+
+<span class="sd">        :param: a(int): noumber of sig digits to round to</span>
+<span class="sd">        :returns: Vector</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Only rounds up to 10 sig digits untill the underlaying,</span>
+<span class="sd">            round_sig function is fixed</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">integer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">round_sig</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">:</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">round_sig</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">integer</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Vector.magnitude"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.magnitude">[docs]</a>    <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Find the magnitude of the current vector using Pythagorean theorem.</span>
+<span class="sd">        This is independant of the dimension of the vector and will find the</span>
+<span class="sd">        megnitude for any vector.</span>
+
+<span class="sd">        :returns: magniutude as a float</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">item</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Vector.unit"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Vector.Vector.unit">[docs]</a>    <span class="k">def</span> <span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Normalize Vector</span>
+
+<span class="sd">        :returns: New Vector that is the unit vector of the original.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; A = Vector([&#39;1&#39;, &#39;2&#39;])</span>
+<span class="sd">            &gt;&gt;&gt; print A</span>
+<span class="sd">            (1,2)</span>
+<span class="sd">            &gt;&gt;&gt; print A.unit()</span>
+<span class="sd">            (0.4472135954999579392818347337,0.8944271909999158785636694674)</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Russell Loewe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,997 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class Definitions &mdash; PyGravity 1.01 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PyGravity 1.01 documentation" href="index.html" />
+    <link rel="next" title="PyGravity ToDo List" href="todo.html" />
+    <link rel="prev" title="PyGravity Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="todo.html" title="PyGravity ToDo List"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="PyGravity Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyGravity 1.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-definitions">
+<h1>Class Definitions<a class="headerlink" href="#class-definitions" title="Permalink to this headline">¶</a></h1>
+<p>Here&#8217;s a more indepth look at the PyGravity classes and methods.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<p>full source <a class="reference external" href="http://github.com/russloewe/PyGravity">http://github.com/russloewe/PyGravity</a></p>
+</div>
+<div class="section" id="pygravity">
+<h1>PyGravity<a class="headerlink" href="#pygravity" title="Permalink to this headline">¶</a></h1>
+<p>The PyGravity module is the top layer that wraps the project.
+Contains global values for maintaining the state of the system.</p>
+<span class="target" id="module-PyGravity.PyGravity"></span><span class="target" id="module-PyGravity"></span><dl class="class">
+<dt id="PyGravity.PyGravity.PyGravity">
+<em class="property">class </em><tt class="descclassname">PyGravity.PyGravity.</tt><tt class="descname">PyGravity</tt><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class for  combining submodules</p>
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize data reader and writer
+Also set global diminsion
+.. todo:: reomve data_io attribute, just call data_io</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.add_particle">
+<tt class="descname">add_particle</tt><big>(</big><em>particle</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.add_particle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.add_particle" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a particle to the list of active particles. The particles
+is compared to existing particles. If a particle name is already
+used the addition will be deined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">particle(Particle Object): particle to add.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">none</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">ValueError if particle name already exists in
+particle_list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.read_file">
+<tt class="descname">read_file</tt><big>(</big><em>file_name</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use to load a set of particles from a CSV data file,
+The particles are then loaded into the objects list
+under Physics.objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">file_name(string) Name of data file</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the dimension of the PyGravity.dimension must match the
+the dimension of the particles in the CSV file.</p>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">figure out sphinx references</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.set_dimension">
+<tt class="descname">set_dimension</tt><big>(</big><em>dim</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.set_dimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.set_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global dimension
+Dimension is defaulted to 3, but can be overriden here</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PyGravity</span><span class="o">.</span><span class="n">set_dimension</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">(int) The diminsion of the vectors</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.set_fast">
+<tt class="descname">set_fast</tt><big>(</big><em>booln</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.set_fast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.set_fast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets falg so the faster grav_accel function is used.
+Just a stand in until new extension is complete and tested.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.set_time_interval">
+<tt class="descname">set_time_interval</tt><big>(</big><em>interval</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.set_time_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.set_time_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust the time step of the currant simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">interval(int): Interval to use</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.step_all">
+<tt class="descname">step_all</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.step_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.step_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all the particles in self.particle_list and
+runs the Physics.Sum_Grav_Accel() function, and applies the
+acceleration to update each particle&#8217;s velocity vector, then
+finally iterates through each particle and moves that particle
+moving the new velocity.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The acceleration is applied to the velocity using the
+time interval. Thus the new velocity equals the currant
+velocity plus the acceleration times the time_interval.
+The same procedure produces the new position using the same
+time_interval.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.step_all_verlet">
+<tt class="descname">step_all_verlet</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.step_all_verlet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.step_all_verlet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the Verlet veoloicy method for updating the particles
+position. This method also uses the Proto_Accel and half_list
+method to reduce calculations by half. This method runs about
+twice as fast as the multi-core step_all method for set of 40
+points.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.step_rk4">
+<tt class="descname">step_rk4</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.step_rk4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.step_rk4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through all the particles in self.particle_list and
+runs the Physics.Sum_Grav_Accel() function, and applies the
+acceleration to update each particle&#8217;s velocity vector, then
+finally iterates through each particle and moves that particle
+moving the new velocity.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The acceleration is applied to the velocity using the
+time interval. Thus the new velocity equals the currant
+velocity plus the acceleration times the time_interval.
+The same procedure produces the new position using the same
+time_interval.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.PyGravity.PyGravity.write_file">
+<tt class="descname">write_file</tt><big>(</big><em>file_name</em><big>)</big><a class="reference internal" href="_modules/PyGravity/PyGravity.html#PyGravity.write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.PyGravity.PyGravity.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write current particle set to output file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">(string)file_name File name and path to write current
+dataset</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-1">
+<p class="first admonition-title">Todo</p>
+<p class="last">fix this function. The values are not corresponding to
+known solutions</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="physics">
+<h1>Physics<a class="headerlink" href="#physics" title="Permalink to this headline">¶</a></h1>
+<p>Performs physics related computations. All calculations that involve
+anythng that is purly physics is contained here. For example, force
+calculations, acceleration caculations. Straight vector math is included
+in the vector module. So this module does not deal with vector lengths,
+unit vectors or anything else like that.</p>
+<span class="target" id="module-PyGravity.Physics"></span><span class="target" id="module-Physics"></span><div class="admonition-todo admonition" id="index-2">
+<p class="first admonition-title">Todo</p>
+<p class="last">Create a seperate object to hold particle list, vector deminsion
+and time step and time counter</p>
+</div>
+<dl class="function">
+<dt id="PyGravity.Physics.c_grav_accel">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">c_grav_accel</tt><big>(</big><em>a_part</em>, <em>b_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#c_grav_accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.c_grav_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for the pygravity_grav_accel extension. Does same thing as
+the Grav_Accel function but in pre-compiled C.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A(Particle) first particle</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">B(Particle) second particle</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Acceleration as a Vector</td>
+</tr>
+</tbody>
+</table>
+<p>This wraps the C extension pygravity_grav_accel.grav_accel . This
+function provided a great speed up when the high precision Vector
+class was the backbone for the vectors. Now we have moved to numpy
+for the vector calculations. Numpy isn&#8217;t as precise as the Vector
+class, but when the value of the gravitational constant, G, has only
+like 6 significant digits it is deffiniatly worth it to scrap really
+high precision. This, along with the vector class remains incase it is
+needed later. But, for the moment, it is just an example of using
+C to extend Python.</p>
+<p>The call signature for grav_accel() is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">grav_accel</span><span class="p">(</span>
+    <span class="n">precision</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+    <span class="n">mass</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">B</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">B</span><span class="o">.</span><span class="n">y</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>
+    <span class="n">B</span><span class="o">.</span><span class="n">z</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.escape_velocity">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">escape_velocity</tt><big>(</big><em>a_part</em>, <em>b_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#escape_velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.escape_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the escape velocity between two objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A(Particle): First particle.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">B(Particle): Second particle.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Escape velocity as a Vector Object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.escaping">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">escaping</tt><big>(</big><em>particle_list</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#escaping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.escaping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all the particles in the currant system that are exceeding
+the escape velocity for said system of particles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">global_container(Global_Container): Container object for
+particles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of particles exceeding escape velocity.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.grav_accel">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">grav_accel</tt><big>(</big><em>a_part</em>, <em>b_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#grav_accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.grav_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the acceleration between particle A and B due to
+gravity. Uses math shortcuts to reduce total number of calculations
+as apposed to using Grav_Force / mass to find acceleration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A(Vector): The first vector.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">B(Vector): The second vector.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The acceleration as a Vector Object.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Force returned is the force acting on B, the second
+argument.</p>
+</div>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add formated math example, ie learn sphinx embedded math</p>
+</div>
+<div class="admonition-todo admonition" id="index-4">
+<p class="first admonition-title">Todo</p>
+<p class="last">double check consistancy of (A,B) accross all physics
+functions</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.grav_force">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">grav_force</tt><big>(</big><em>a_part</em>, <em>b_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#grav_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.grav_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the force of gravity between two particles. Uses Newton&#8217;s
+Law of Gravity. Gravitational constant is in standtard metric units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A(Particle): First particle</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">B(Particle): Second Particle</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Force(Vector): Force acting on particle A as a Vector.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.proto_acc">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">proto_acc</tt><big>(</big><em>a_part</em>, <em>b_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#proto_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.proto_acc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the acceleration between two objects,
+leaving the mass part out. Therefore:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">Obj1</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">Obj2</span>
+<span class="n">proto</span> <span class="o">=</span> <span class="n">Proto_Acc</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="n">A_Acc</span> <span class="o">=</span> <span class="n">proto</span> <span class="o">*</span> <span class="n">B</span><span class="o">.</span><span class="n">mass</span>         <span class="c">#Acceleration on A</span>
+<span class="n">B_Acc</span> <span class="o">=</span> <span class="n">proto</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">mass</span>   <span class="c"># Acceleration on B</span>
+</pre></div>
+</div>
+<p>Seperating the calculations into two steps like this will allow
+for optinmizing acceleration calculations for a large set of
+objects.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.step_euler">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">step_euler</tt><big>(</big><em>part_list</em>, <em>flag</em>, <em>delta_t</em>, <em>part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#step_euler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.step_euler" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper for step_all function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.step_verlet_one">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">step_verlet_one</tt><big>(</big><em>pair</em>, <em>delta_t</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#step_verlet_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.step_verlet_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>First pass for the verlet method utilizing the proto_accel and
+half_list method</p>
+<p>::param:: Tple of Particle objects</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.step_verlet_two">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">step_verlet_two</tt><big>(</big><em>pair</em>, <em>delta_t</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#step_verlet_two"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.step_verlet_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second pass for the verlet method utilizing the proto_accel and
+half_list method
+::param:: Tple of Particle objects</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.sum_grav_accel">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">sum_grav_accel</tt><big>(</big><em>particle_list</em>, <em>a_part</em>, <em>fast_flag=False</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#sum_grav_accel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.sum_grav_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum the total acceleration acting on a particle by using the
+Grav_Accel function and iterating through the particle list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">global_container(Global_Container): List of particles
+to iteratethrough.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">A(Vector): Vector to calculate acceleration for.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Acceleraton as a Vector Object</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-5">
+<p class="first admonition-title">Todo</p>
+<p class="last">need unittest.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.total_escape_velocity">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">total_escape_velocity</tt><big>(</big><em>particle_list</em>, <em>a_part</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#total_escape_velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.total_escape_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the total escape velocity acting on a particle with repect
+to the rest of the active particles in the simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">global_containter(Global_Container): Attribute container.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">A(Vector): Particle to find escape velocity for.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyGravity.Physics.total_grav_force">
+<tt class="descclassname">PyGravity.Physics.</tt><tt class="descname">total_grav_force</tt><big>(</big><em>particle_list</em>, <em>particle</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Physics.html#total_grav_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Physics.total_grav_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the the total force of gravity acting on one particle.
+The force of gravity acting on the supplied particle is claculated
+for every particle in the global particle list. The result is then
+summed and returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Para:</th><td class="field-body">particle_list(list): List of particle objects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">parrticle(Particle): Particle for which the force of gravity is
+being calculated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Force of gravity as a Vector Object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="particles">
+<h1>Particles<a class="headerlink" href="#particles" title="Permalink to this headline">¶</a></h1>
+<p>Particle objects. Depends heavily on vector.</p>
+<span class="target" id="module-PyGravity.Particle"></span><span class="target" id="module-Particle"></span><dl class="class">
+<dt id="PyGravity.Particle.Particle">
+<em class="property">class </em><tt class="descclassname">PyGravity.Particle.</tt><tt class="descname">Particle</tt><big>(</big><em>name</em>, <em>pos</em>, <em>vol</em>, <em>mass</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Particle.html#Particle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Particle.Particle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for creating a Particle object. Depends on Vectors.</p>
+<dl class="method">
+<dt id="PyGravity.Particle.Particle.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>name</em>, <em>pos</em>, <em>vol</em>, <em>mass</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Particle.html#Particle.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Particle.Particle.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates particle with initial values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">name(string): Name of the particle. Used for keeping
+track of particles when reading or writing to data files, or
+printing to console.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">P(Vector): Postitional vector of particle.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">V(Vector): Velocity vector of particle.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">m(Vector): Mass of the Particle. Represented as a 1
+dimensional vector.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Mass is represented as a 1D vector. A 1D vector is the
+same as a scalar, but by using vector objects the abstraction
+makes the code in the Physics Module a little bit more straight
+forward. It is possible to use a 2D or higher vector for mass
+but unless new physics is discovered this won&#8217;t make sense.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The unites are not specified. It is up to the calling
+function to keep track of units.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Particle.Particle.accelerate">
+<tt class="descname">accelerate</tt><big>(</big><em>acc_vec</em>, <em>delta_t</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Particle.html#Particle.accelerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Particle.Particle.accelerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase velocity by specified acceleration and timestep.
+Example using same particle from move() function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">A: Position: (1,1), Velocity: (1,2), Mass: (1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_acc</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">accelerate</span><span class="p">(</span><span class="n">A_acc</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">A: Position: (1,1), Velocity: (2,3), Mass: (1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">accelerate</span><span class="p">(</span><span class="n">A_acc</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">A: Position: (1,1), Velocity: (4,5), Mass: (1)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The intention is that the timestep argument is defined
+globaly by the connecting module, and thus timestep for
+accelerate() and timestep for move() should be the same.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">A(Vector): Acceleration vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Param:</th><td class="field-body">timestep(int): Time increment.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Particle.Particle.move">
+<tt class="descname">move</tt><big>(</big><em>delta_t</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Particle.html#Particle.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Particle.Particle.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the particle based on the current velocity stored in
+self.V by the specified time_step. Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A_pos</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_veloc</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_mass</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="n">A_pos</span><span class="p">,</span> <span class="n">A_veloc</span><span class="p">,</span> <span class="n">A_mass</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">A: Position: (1,1), Velocity: (1,2), Mass: (1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">A: Position: (2,3), Velocity: (1,2), Mass: (1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">A: Position: (4,7), Velocity: (1,2), Mass: (1)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">timestep(int): Increment of time to move by.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Particle.Particle.store_acc">
+<tt class="descname">store_acc</tt><big>(</big><em>acc</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Particle.html#Particle.store_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Particle.Particle.store_acc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store the acceleration vector on the object to
+be retrived later for multipass numeric integrations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="data-input-ouptut">
+<h1>Data Input Ouptut<a class="headerlink" href="#data-input-ouptut" title="Permalink to this headline">¶</a></h1>
+<p>This module handles reading and writing the simulation state to disk.
+Here we can load or save the current list of particles.</p>
+<div class="admonition-todo admonition" id="index-6">
+<p class="first admonition-title">Todo</p>
+<p class="last">Complete state saving using xml so computations can be easily
+continued by without prior knowledge of the system parameters.</p>
+</div>
+<span class="target" id="module-PyGravity.Data_IO"></span><span class="target" id="module-Data_IO"></span><dl class="class">
+<dt id="PyGravity.Data_IO.Reader">
+<em class="property">class </em><tt class="descclassname">PyGravity.Data_IO.</tt><tt class="descname">Reader</tt><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data reading and writing class.</p>
+<div class="admonition-todo admonition" id="index-7">
+<p class="first admonition-title">Todo</p>
+<p class="last">Change date format for easy continuation of simulations.
+add timestamp along with other particle attribute.</p>
+</div>
+<div class="admonition-todo admonition" id="index-8">
+<p class="first admonition-title">Todo</p>
+<p class="last">XML writer</p>
+</div>
+<dl class="method">
+<dt id="PyGravity.Data_IO.Reader.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attr:</th><td class="field-body">objects (list)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attr:</th><td class="field-body">dimension (int)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reader.object is init as empty. The calling function must
+provide a reference to the global object list.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Reader.add_obj">
+<tt class="descname">add_obj</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader.add_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader.add_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Once a line from the data file is parsed and loaded into a
+partilce object, this function adds the particle to the given
+list of objects. The list of objects is provided by the parent
+function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">obj(PyGravity.Particle) Particle to be added to global
+list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Reader.csv_reader">
+<tt class="descname">csv_reader</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader.csv_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader.csv_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads from a CSV file and parses the the values into particle
+objects from the PyGravity.Particle module</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">path(string) Name and path to the data file. Either
+relative or absolute path</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Vector dimension needs to be given to the reader beforehand.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Reader.read_file">
+<tt class="descname">read_file</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a dataset from a file. Will detect the format
+of the data file. Currently only CSV and XML is supported, so only
+.csv or .xml files are execpted. Later when other formates are included
+this will be where the correct parser is chosen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">path(string) File name and path of data file. Example,
+&#8216;./data.csv&#8217;, or &#8216;/home/russ/data/set1.xml&#8217;</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError for incompatible file types</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Reader.xml_reader">
+<tt class="descname">xml_reader</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Reader.xml_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Reader.xml_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML Reader. Will read an xml data file and load the particles
+into the self.objects list for the PyGravity base to later
+unload.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">path(string): Path to xml file.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This parser does not need to know the dimension for the
+vectors. It passes the vector strings straight into the Vector
+object as-is.</p>
+</div>
+<div class="admonition-todo admonition" id="index-9">
+<p class="first admonition-title">Todo</p>
+<p class="last">Error handling for parser</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyGravity.Data_IO.Writer">
+<em class="property">class </em><tt class="descclassname">PyGravity.Data_IO.</tt><tt class="descname">Writer</tt><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to create a Writer object</p>
+<dl class="method">
+<dt id="PyGravity.Data_IO.Writer.__init__">
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Writer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Writer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>pass</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Writer.object_to_string">
+<tt class="descname">object_to_string</tt><big>(</big><em>objec</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Writer.object_to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Writer.object_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a particle object and formates it to a CSV string for file
+output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">ob(PyGravity.Particle) Particle object to be formated</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Formatted string</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-10">
+<p class="first admonition-title">Todo</p>
+<p class="last">need better way of makeing objects into strings:</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Data_IO.Writer.write_file">
+<tt class="descname">write_file</tt><big>(</big><em>file_name</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Data_IO.html#Writer.write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Data_IO.Writer.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write current global dataset in objects list to
+a CSV file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">file_name(string) Name and path for output file.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Output file will be created if it&#8217;s not already on
+the disk</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="vectors">
+<h1>Vectors<a class="headerlink" href="#vectors" title="Permalink to this headline">¶</a></h1>
+<p>He is some vector math. Adding, scalar multiplication, vector length, norming
+vectors, and comparing vector dimension or values. All abstracted for
+vectors of any length. This submodule was originally used for implementing
+high precision vectors with the Decimal module. That has been replaced by
+faster numpy arrays after giving into speed vs accuracy. This still will
+have a use when high precision is need, so for the time being it will exist
+as a ghost library.</p>
+<span class="target" id="module-PyGravity.Vector"></span><span class="target" id="module-Vector"></span><dl class="class">
+<dt id="PyGravity.Vector.Vector">
+<em class="property">class </em><tt class="descclassname">PyGravity.Vector.</tt><tt class="descname">Vector</tt><big>(</big><em>array</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vector class for creating a vector object</p>
+<p>If A, and B are vectors then the following operations are supported:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span> <span class="o">+</span> <span class="n">B</span>
+<span class="n">A</span> <span class="o">-</span> <span class="n">B</span>
+<span class="k">print</span> <span class="n">A</span>
+<span class="n">A</span> <span class="o">==</span> <span class="n">B</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">A</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The scalar multiplication is supported by A*2, however
+2*A is not supported.</p>
+</div>
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>array</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The vector object is intialized with an array
+containing the values for the vector. The length of the
+array is arbitrary, thus vectors of any dimension can easily
+be created. For example a vector of 3 dimensions is created
+by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span><span class="s">&#39;2&#39;</span><span class="p">,</span><span class="s">&#39;3&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>and a vector of 6 dimensions is created by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">B</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span><span class="s">&#39;2&#39;</span><span class="p">,</span><span class="s">&#39;3&#39;</span><span class="p">,</span><span class="s">&#39;4&#39;</span><span class="p">,</span><span class="s">&#39;5&#39;</span><span class="p">,</span><span class="s">&#39;6&#39;</span><span class="p">])</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To ensure accuracy use strings not floats. As in [&#8216;1.1&#8217;, &#8216;2.1&#8217;].
+The vector uses floats for compromised accuracy.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.array_mismatch">
+<tt class="descname">array_mismatch</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.array_mismatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.array_mismatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks dimension of current vector against another vector.
+For example, for two vectors A and B, A.array_mismatch(B)
+checks A against B. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span><span class="s">&#39;2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;9&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">array_mismatch</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">array_mistmatch</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the two Vectors are of different size, False
+if they are the same size</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.magnitude">
+<tt class="descname">magnitude</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the magnitude of the current vector using Pythagorean theorem.
+This is independant of the dimension of the vector and will find the
+megnitude for any vector.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">magniutude as a float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.make_float">
+<tt class="descname">make_float</tt><big>(</big><em>array</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.make_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.make_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through incoming array, switching value types to floats
+when nedded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">TypeError, if input isn&#8217;t a Float, Int or String.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.round">
+<tt class="descname">round</tt><big>(</big><em>number</em><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rounds the indiviedule components to &#8216;a&#8217; sig digits.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">a(int): noumber of sig digits to round to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Vector</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only rounds up to 10 sig digits untill the underlaying,
+round_sig function is fixed</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyGravity.Vector.Vector.unit">
+<tt class="descname">unit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/PyGravity/Vector.html#Vector.unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyGravity.Vector.Vector.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize Vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">New Vector that is the unit vector of the original.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">([</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span>
+<span class="go">(1,2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">unit</span><span class="p">()</span>
+<span class="go">(0.4472135954999579392818347337,0.8944271909999158785636694674)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class Definitions</a></li>
+<li><a class="reference internal" href="#pygravity">PyGravity</a></li>
+<li><a class="reference internal" href="#physics">Physics</a></li>
+<li><a class="reference internal" href="#particles">Particles</a></li>
+<li><a class="reference internal" href="#data-input-ouptut">Data Input Ouptut</a></li>
+<li><a class="reference internal" href="#vectors">Vectors</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">PyGravity  Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="todo.html"
+                        title="next chapter">PyGravity  ToDo List</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/Class_Definitions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="todo.html" title="PyGravity ToDo List"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="PyGravity Documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">PyGravity 1.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Russell Loewe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

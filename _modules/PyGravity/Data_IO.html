@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyGravity.Data_IO &mdash; PyGravity 1.01 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PyGravity 1.01 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for PyGravity.Data_IO</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">.. module:: Data_IO</span>
+<span class="sd">   :platform: Unix</span>
+<span class="sd">   :synopsis: data imput output</span>
+
+<span class="sd">.. moduleauthor:: Russell Loewe &lt;russloewe@gmail.com&gt;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">as</span> <span class="nn">ET</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Particle</span>
+
+
+<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Data reading and writing class.</span>
+
+<span class="sd">    .. todo:: Change date format for easy continuation of simulations.</span>
+<span class="sd">        add timestamp along with other particle attribute.</span>
+
+<span class="sd">    .. todo:: XML writer</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Reader.__init__"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :attr: objects (list)</span>
+<span class="sd">        :attr: dimension (int)</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Reader.object is init as empty. The calling function must</span>
+<span class="sd">            provide a reference to the global object list.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+</div>
+<div class="viewcode-block" id="Reader.read_file"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader.read_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Read a dataset from a file. Will detect the format</span>
+<span class="sd">        of the data file. Currently only CSV and XML is supported, so only</span>
+<span class="sd">        .csv or .xml files are execpted. Later when other formates are included</span>
+<span class="sd">        this will be where the correct parser is chosen.</span>
+
+<span class="sd">        :param: path(string) File name and path of data file. Example,</span>
+<span class="sd">            &#39;./data.csv&#39;, or &#39;/home/russ/data/set1.xml&#39;</span>
+
+<span class="sd">        :raises: ValueError for incompatible file types</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">file_type</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s">&#39;csv&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csv_reader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s">&#39;xml&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xml_reader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;File type not supported&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Reader.csv_reader"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader.csv_reader">[docs]</a>    <span class="k">def</span> <span class="nf">csv_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Reads from a CSV file and parses the the values into particle</span>
+<span class="sd">        objects from the PyGravity.Particle module</span>
+
+<span class="sd">        :param: path(string) Name and path to the data file. Either</span>
+<span class="sd">            relative or absolute path</span>
+
+<span class="sd">        .. note:: Vector dimension needs to be given to the reader beforehand.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s">&#39;|&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">spamreader</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_obj</span><span class="p">(</span>
+                            <span class="n">Particle</span><span class="p">(</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span>
+                                <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_obj</span><span class="p">(</span>
+                            <span class="n">Particle</span><span class="p">(</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
+                                <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span>
+                                <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">excep</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="n">excep</span>
+</div>
+<div class="viewcode-block" id="Reader.xml_reader"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader.xml_reader">[docs]</a>    <span class="k">def</span> <span class="nf">xml_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        XML Reader. Will read an xml data file and load the particles</span>
+<span class="sd">        into the self.objects list for the PyGravity base to later</span>
+<span class="sd">        unload.</span>
+
+<span class="sd">        :param: path(string): Path to xml file.</span>
+
+<span class="sd">        .. note:: This parser does not need to know the dimension for the</span>
+<span class="sd">            vectors. It passes the vector strings straight into the Vector</span>
+<span class="sd">            object as-is.</span>
+
+<span class="sd">        .. todo:: Error handling for parser</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;particle&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">particle</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;name&#39;</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;position&#39;</span><span class="p">:</span>
+                    <span class="n">position</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;velocity&#39;</span><span class="p">:</span>
+                    <span class="n">velocity</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;mass&#39;</span><span class="p">:</span>
+                    <span class="n">mass</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">new_part</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">position</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">),</span>
+                <span class="n">velocity</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">),</span>
+                <span class="n">mass</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_obj</span><span class="p">(</span><span class="n">new_part</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Reader.add_obj"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Reader.add_obj">[docs]</a>    <span class="k">def</span> <span class="nf">add_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Once a line from the data file is parsed and loaded into a</span>
+<span class="sd">        partilce object, this function adds the particle to the given</span>
+<span class="sd">        list of objects. The list of objects is provided by the parent</span>
+<span class="sd">        function.</span>
+
+<span class="sd">        :param: obj(PyGravity.Particle) Particle to be added to global</span>
+<span class="sd">            list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;duplicate name found, not adding last entry&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class to create a Writer object</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Writer.__init__"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Writer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        pass</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="Writer.write_file"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Writer.write_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Write current global dataset in objects list to</span>
+<span class="sd">        a CSV file</span>
+
+<span class="sd">        :param: file_name(string) Name and path for output file.</span>
+
+<span class="sd">        .. note:: Output file will be created if it&#39;s not already on</span>
+<span class="sd">            the disk</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">d_file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">objec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+                <span class="n">d_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_to_string</span><span class="p">(</span><span class="n">objec</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Writer.object_to_string"><a class="viewcode-back" href="../../Class_Definitions.html#PyGravity.Data_IO.Writer.object_to_string">[docs]</a>    <span class="k">def</span> <span class="nf">object_to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Takes a particle object and formates it to a CSV string for file</span>
+<span class="sd">        output</span>
+
+<span class="sd">        :param: ob(PyGravity.Particle) Particle object to be formated</span>
+<span class="sd">        :returns: Formatted string</span>
+
+<span class="sd">        .. todo:: need better way of makeing objects into strings:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">objec</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">objec</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">objec</span><span class="o">.</span><span class="n">V</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">objec</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="k">return</span> <span class="n">string</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyGravity 1.01 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Russell Loewe.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
