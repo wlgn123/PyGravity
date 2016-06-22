@@ -11,6 +11,7 @@ Note: The unit tests run against the installed module, not the source.
 Gravity Simulator.
 
 ## Documentaion
+http://russloewe.github.io/PyGravity
 #### core 
 The main docs are generated with Sphinx. Generate
 them yourself by running 
